@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1000
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BoundBox", "BoundBox\BoundBox.vcxproj", "{FAEBC0D8-CC72-4D3D-8296-8DDEACF01656}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dark", "Dark\Dark.vcxproj", "{A6402EAA-518D-480C-B2B9-D271DB63F292}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6402EAA-518D-480C-B2B9-D271DB63F292}.Debug|x64.ActiveCfg = Debug|x64
+		{A6402EAA-518D-480C-B2B9-D271DB63F292}.Debug|x64.Build.0 = Debug|x64
+		{A6402EAA-518D-480C-B2B9-D271DB63F292}.Release|x64.ActiveCfg = Release|x64
+		{A6402EAA-518D-480C-B2B9-D271DB63F292}.Release|x64.Build.0 = Release|x64
+		{FAEBC0D8-CC72-4D3D-8296-8DDEACF01656}.Debug|x64.ActiveCfg = Debug|x64
+		{FAEBC0D8-CC72-4D3D-8296-8DDEACF01656}.Debug|x64.Build.0 = Debug|x64
+		{FAEBC0D8-CC72-4D3D-8296-8DDEACF01656}.Release|x64.ActiveCfg = Release|x64
+		{FAEBC0D8-CC72-4D3D-8296-8DDEACF01656}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {566164A6-A7C9-4FD5-8DCB-31F0C8E492DD}
+	EndGlobalSection
+EndGlobal
