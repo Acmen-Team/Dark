@@ -5,7 +5,7 @@ Dark主要是基于Windows的交互式应用程序和渲染引擎。目前还没
 ## 入门
 
 
-[英文](https://github.com/Acmen-Team/Dark/blob/huangxin/README.md) | 中文
+[english](https://github.com/Acmen-Team/Dark/blob/huangxin/README.md) | 中文
 
 建议使用Visual Studio 2017或2019，Dark在其他开发环境上尚未经过正式测试，而我们专注于Windows构建。
 
