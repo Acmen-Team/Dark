@@ -1,6 +1,11 @@
 Dark is primarily an early-stage interactive application and rendering engine for Windows. Currently not much is implemented.
 
 ## Getting Started
+
+
+ | [中文](https://github.com/Acmen-Team/Dark/blob/huangxin/README-CN.md)
+
+
 Visual Studio 2017 or 2019 is recommended, Dark is officially untested on other development environments whilst we focus on a Windows build.
 
 Start by cloning the repository with `git clone --recursive https://github.com/Acmen-Team/Dark`.
