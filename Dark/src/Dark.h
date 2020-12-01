@@ -1,6 +1,7 @@
 #pragma once
 
-namespace Dark
-{
-	_declspec(dllexport) void Print();
-}
+#include "Dark/Application.h"
+
+// ----------EntryPoint---------------
+#include "Dark/EntryPoint.h"
+// -----------------------------------

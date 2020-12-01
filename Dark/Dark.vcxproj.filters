@@ -15,12 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Dark\Application.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Dark\Core.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="src\Dark.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Dark\EntryPoint.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Dark.cpp">
+    <ClCompile Include="src\Dark\Application.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
