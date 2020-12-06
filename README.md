@@ -1,8 +1,10 @@
-[![Dj84lF.png](https://s3.ax1x.com/2020/12/06/Dj84lF.png)](https://imgchr.com/i/Dj84lF)
+[![DjT8PA.md.png](https://s3.ax1x.com/2020/12/06/DjT8PA.md.png)](https://imgchr.com/i/DjT8PA)
+
+# Dark Game Engine
+
+ English | [简体中文](./README-CN.md)
 
 Dark is primarily an early-stage interactive application and rendering engine for Windows. Currently not much is implemented.
-
-English | [中文](https://github.com/Acmen-Team/Dark/blob/huangxin/README-CN.md)
 
 ## Getting Started
 

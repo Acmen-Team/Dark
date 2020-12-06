@@ -1,13 +1,12 @@
-[![Dj84lF.png](https://s3.ax1x.com/2020/12/06/Dj84lF.png)](https://imgchr.com/i/Dj84lF)
+[![DjT8PA.md.png](https://s3.ax1x.com/2020/12/06/DjT8PA.md.png)](https://imgchr.com/i/DjT8PA)
 
 # Dark Game Engine
 
+[English](./README.md) | 简体中文
+
 Dark主要是基于Windows的交互式应用程序和渲染引擎。目前还没有实现太多。
 
-[English](https://github.com/Acmen-Team/Dark/blob/huangxin/README.md) | 中文
-
 ## 入门
-
 
 建议使用Visual Studio 2017或2019，Dark在其他开发环境上尚未经过正式测试，而我们专注于Windows构建。
 
