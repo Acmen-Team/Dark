@@ -1,3 +1,5 @@
+(logo)[https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/preview/boxcnEh40bjnQqe8otsICPmOuUg?preview_type=16&version=6900206785244725251]
+
 # Dark Game Engine
 
 Dark主要是基于Windows的交互式应用程序和渲染引擎。目前还没有实现太多。
