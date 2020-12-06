@@ -1,4 +1,5 @@
-[![DjVcIH.png](https://s3.ax1x.com/2020/12/06/DjVcIH.png)](https://imgchr.com/i/DjVcIH)
+[![Dj84lF.png](https://s3.ax1x.com/2020/12/06/Dj84lF.png)](https://imgchr.com/i/Dj84lF)
+
 # Dark Game Engine
 
 Dark主要是基于Windows的交互式应用程序和渲染引擎。目前还没有实现太多。

@@ -1,4 +1,4 @@
-[![DjVcIH.png](https://s3.ax1x.com/2020/12/06/DjVcIH.png)](https://imgchr.com/i/DjVcIH)
+[![Dj84lF.png](https://s3.ax1x.com/2020/12/06/Dj84lF.png)](https://imgchr.com/i/Dj84lF)
 
 Dark is primarily an early-stage interactive application and rendering engine for Windows. Currently not much is implemented.
 
