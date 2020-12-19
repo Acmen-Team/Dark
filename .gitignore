@@ -260,4 +260,11 @@ paket-files/
 __pycache__/
 *.pyc
 
+# VS Build File
 .VS
+*.sln
+*.vcxproj
+*.vcxproj.filters
+
+# Create File
+bin-int
