@@ -20,6 +20,9 @@ project "Dark"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "dkpch.h"
+	pchsource "Dark/src/dkpch.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",
@@ -28,6 +31,7 @@ project "Dark"
 
 	includedirs
 	{
+		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include"
 	}
 
