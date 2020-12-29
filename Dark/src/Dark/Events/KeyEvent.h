@@ -37,6 +37,8 @@ namespace Dark {
 	  ss << "KeyPressedEvent: " << m_KeyCode << " (" << m_RepeatCount << " repeats)";
 	  return ss.str();
 	}
+
+	EVENT_CLASS_TYPE(KeyPressed)
   private:
 	int m_RepeatCount;
   };
@@ -53,7 +55,7 @@ namespace Dark {
 	  return ss.str();
 	}
 
-	EVENT_CLASS_TYPE(keyReleased)
+	EVENT_CLASS_TYPE(KeyReleased)
   };
 
 }

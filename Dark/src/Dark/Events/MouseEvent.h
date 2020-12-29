@@ -83,6 +83,7 @@ namespace Dark {
 
   class DARK_API MouseButtonReleasedEvent : public MouseButtonEvent
   {
+  public:
 	MouseButtonReleasedEvent(int button) :MouseButtonEvent(button) {}
 
 	std::string ToString() const override
