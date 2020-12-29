@@ -18,6 +18,8 @@ Description:pch file
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Dark/Log.h"
+
 #ifdef DK_PLATFORM_WINDOWS
   #include <Windows.h>
 #endif

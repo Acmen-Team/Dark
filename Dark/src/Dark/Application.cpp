@@ -3,11 +3,12 @@
 #include "Events/ApplicationEvent.h"
 #include "Log.h"
 
+#include <GLFW/glfw3.h>
 
 namespace Dark {
 	Application::Application()
 	{
-
+	  m_Window = std::unique_ptr<Window>(Window::Create());
 	}
 
 	Application::~Application()
@@ -20,13 +21,12 @@ namespace Dark {
 	  WindowResizeEvent e(1280, 720);
 	  if (e.IsInCategory(EventCategoryApplication))
 	  {
-		DK_TRACE(e);
+		while (m_Running)
+		{
+		  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		  glClear(GL_COLOR_BUFFER_BIT);
+		  m_Window->OnUpdate();
+		}
 	  }
-	  if (e.IsInCategory(EventCategoryInput))
-	  {
-		DK_TRACE(e);
-	  }
-
-	  while (true);
 	}
 }
