@@ -19,17 +19,17 @@ public:
 class SandBox :public Dark::Application
 {
 public:
-	SandBox()
-	{
-	  PushLayer(new ExampleLayer());
-	}
-	~SandBox()
-	{
-
-	}
+  SandBox()
+  {
+	PushLayer(new ExampleLayer());
+  }
+  ~SandBox()
+  {
+	
+  }
 };
 
 Dark::Application* Dark::CreateApplication()
 {
-	return new SandBox();
+  return new SandBox();
 }

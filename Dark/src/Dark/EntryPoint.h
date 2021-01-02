@@ -6,18 +6,18 @@ extern Dark::Application* Dark::CreateApplication();
 
 int main()
 {
-	int mainVer = 0;
-	int minVer = 3;
+  int mainVer = 0;
+  int minVer = 3;
 
-	Dark::Log::Init();
+  Dark::Log::Init();
 
-	DK_CORE_TRACE("------Initialized Log!------");
-	DK_CORE_INFO("------Dark Engine StartUp!------");
-	DK_CORE_INFO("------Version(Alpha):{0}.{1}-------", mainVer, minVer);
-	DK_INFO("------SandBox Application Created!------");
+  DK_CORE_TRACE("------Initialized Log!------");
+  DK_CORE_INFO("------Dark Engine StartUp!------");
+  DK_CORE_INFO("------Version(Alpha):{0}.{1}-------", mainVer, minVer);
+  DK_INFO("------SandBox Application Created!------");
 
-	auto app = Dark::CreateApplication();
-	app->StartUp();
-	delete app;
+  auto app = Dark::CreateApplication();
+  app->StartUp();
+  delete app;
 }
 #endif

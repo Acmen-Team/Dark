@@ -8,8 +8,6 @@ Description:Mouse Event
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Dark {
 
   class DARK_API MouseMovedEvent :public Event

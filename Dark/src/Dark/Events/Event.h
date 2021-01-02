@@ -8,9 +8,6 @@ Description:Event System
 
 #include "Dark/Core.h"
 
-#include <functional>
-#include <string>
-
 namespace Dark {
 
   enum class EventType

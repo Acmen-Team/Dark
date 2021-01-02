@@ -8,8 +8,6 @@ Description:Key Event
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Dark {
 
   class DARK_API KeyEvent :public Event
