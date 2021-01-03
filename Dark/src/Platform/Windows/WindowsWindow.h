@@ -8,6 +8,7 @@ Description:Windows PlatForm Window class
 
 #include "Dark/Window.h"
 
+#include "glad/glad.h"
 #include <GLFW/glfw3.h>
 
 namespace Dark {
