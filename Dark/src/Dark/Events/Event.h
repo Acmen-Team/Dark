@@ -8,9 +8,6 @@ Description:Event System
 
 #include "Dark/Core.h"
 
-#include <functional>
-#include <string>
-
 namespace Dark {
 
   enum class EventType
@@ -40,8 +37,9 @@ namespace Dark {
 
   class DARK_API Event
   {
-	friend class EventDispatcher;
   public:
+	bool Handled = false;
+
 	virtual EventType GetEventType() const = 0;
 	virtual const char* GetName() const = 0;
 	virtual int GetCategoryFlags() const = 0;
@@ -51,8 +49,6 @@ namespace Dark {
 	{
 	  return GetCategoryFlags() & category;
 	}
-  protected:
-	bool m_Handled = false;
   };
 
   class EventDispatcher
@@ -65,9 +61,9 @@ namespace Dark {
 	template<typename T>
 	bool Dispatch(EventFn<T> func)
 	{
-	  if (m_Event.GetEventType())
+	  if (m_Event.GetEventType() == T::GetStaticType())
 	  {
-		m_Event.m_Handled = func();
+		m_Event.Handled = func(*(T*)&m_Event);
 		return true;
 	  }
 	  return false;

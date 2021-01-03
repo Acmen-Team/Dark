@@ -8,8 +8,6 @@ Description:Mouse Event
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Dark {
 
   class DARK_API MouseMovedEvent :public Event
@@ -83,6 +81,7 @@ namespace Dark {
 
   class DARK_API MouseButtonReleasedEvent : public MouseButtonEvent
   {
+  public:
 	MouseButtonReleasedEvent(int button) :MouseButtonEvent(button) {}
 
 	std::string ToString() const override

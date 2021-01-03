@@ -8,8 +8,6 @@ Description:Application Event
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Dark {
 
   class DARK_API WindowResizeEvent :public Event
