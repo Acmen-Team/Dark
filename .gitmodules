@@ -4,6 +4,9 @@
 [submodule "Dark/vendor/GLFW"]
 	path = Dark/vendor/GLFW
 	url = https://github.com/Holy-YxY/glfw
+[submodule "Dark/vendor/imgui"]
+	path = Dark/vendor/imgui
+	url = https://github.com/Holy-YxY/imgui
 [submodule "Dark/vendor/glm"]
 	path = Dark/vendor/glm
 	url = https://github.com/g-truc/glm
