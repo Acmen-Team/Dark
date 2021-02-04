@@ -15,6 +15,8 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Dark/vendor/GLFW/include"
 IncludeDir["Glad"] = "Dark/vendor/Glad/include"
+IncludeDir["glm"] = "Dark/vendor/glm"
+
 
 include "Dark/vendor/GLFW"
 include "Dark/vendor/Glad"
@@ -34,7 +36,9 @@ project "Dark"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
 
 	includedirs
@@ -42,7 +46,8 @@ project "Dark"
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.Glad}"
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -100,7 +105,8 @@ project "Sandbox"
 	includedirs
 	{
 		"Dark/vendor/spdlog/include",
-		"Dark/src;"
+		"Dark/src",
+		"%{IncludeDir.glm}"
 	}
 
 	links
