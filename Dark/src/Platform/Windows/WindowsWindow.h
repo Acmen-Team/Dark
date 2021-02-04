@@ -21,6 +21,7 @@ namespace Dark {
 
 	void OnUpdate() override;
 	
+	virtual void* GetNativeWindow() const override { return m_Window; }
 	inline unsigned int GetWidth() const override { return m_Data.Width; }
 	inline unsigned int GetHeight() const override { return m_Data.Height; }
 
