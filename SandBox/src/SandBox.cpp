@@ -7,7 +7,10 @@ public:
 
   void OnUpdate() override
   {
-	DK_INFO("ExampleLayer::Update");
+	if (Dark::Input::IsKeyPressed(DK_KEY_W))
+	  DK_TRACE("W keyboard is Pressed!");
+
+	//DK_INFO("ExampleLayer::Update");
   }
 
   void OnEvent(Dark::Event& event) override
@@ -22,6 +25,7 @@ public:
   SandBox()
   {
 	PushLayer(new ExampleLayer());
+	PushOverlay(new Dark::ImGuiLayer());
   }
   ~SandBox()
   {

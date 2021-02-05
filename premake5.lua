@@ -15,17 +15,18 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Dark/vendor/GLFW/include"
 IncludeDir["Glad"] = "Dark/vendor/Glad/include"
+IncludeDir["ImGui"] = "Dark/vendor/imgui"
 IncludeDir["glm"] = "Dark/vendor/glm"
-
 
 include "Dark/vendor/GLFW"
 include "Dark/vendor/Glad"
+include "Dark/vendor/imgui"
 
 project "Dark"
 	location "Dark"
 	kind "SharedLib"
 	language "C++"
-	staticruntime "On"
+	staticruntime "Off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -47,6 +48,7 @@ project "Dark"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
+		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}"
 	}
 
@@ -54,6 +56,7 @@ project "Dark"
 	{
 		"GLFW",
 		"Glad",
+		"ImGui",
 		"opengl32.lib"
 	}
 
@@ -91,7 +94,6 @@ project "Sandbox"
 	location "Sandbox"
 	language "C++"
 	staticruntime "Off"
-
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")

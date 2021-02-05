@@ -8,7 +8,7 @@
 #include "Dark/Events/ApplicationEvent.h"
 
 namespace Dark {
-
+  
   class DARK_API Application
   {
   public:
@@ -20,12 +20,17 @@ namespace Dark {
 
 	void PushLayer(Layer* layer);
 	void PushOverlay(Layer* layer);
+
+	inline Window& GetWindow() { return *m_Window; }
+	inline static Application& Get() { return *m_Instance; }
   private:
 	bool OnWindowClose(WindowCloseEvent& e);
 
 	std::unique_ptr<Window> m_Window;
 	bool m_Running = true;
 	LayerStack m_LayerStack;
+  private:
+	static Application* m_Instance;
   };
 
   // define in CLIENT

@@ -35,6 +35,7 @@ namespace Dark {
 
 	virtual void OnUpdate() = 0;
 
+	virtual void* GetNativeWindow() const = 0;
 	virtual unsigned int GetWidth() const = 0;
 	virtual unsigned int GetHeight() const = 0;
 
