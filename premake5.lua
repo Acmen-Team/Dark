@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Dark/vendor/GLFW/include"
 IncludeDir["Glad"] = "Dark/vendor/Glad/include"
 IncludeDir["ImGui"] = "Dark/vendor/imgui"
+IncludeDir["glm"] = "Dark/vendor/glm"
 
 include "Dark/vendor/GLFW"
 include "Dark/vendor/Glad"
@@ -36,7 +37,9 @@ project "Dark"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
 
 	includedirs
@@ -45,7 +48,8 @@ project "Dark"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -88,7 +92,6 @@ project "Dark"
 
 project "Sandbox"
 	location "Sandbox"
-	kind "ConsoleApp"
 	language "C++"
 	staticruntime "Off"
 
@@ -104,7 +107,8 @@ project "Sandbox"
 	includedirs
 	{
 		"Dark/vendor/spdlog/include",
-		"Dark/src;"
+		"Dark/src",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -124,14 +128,17 @@ project "Sandbox"
 	filter "configurations:Debug"
 		defines "DK_DEBUG"
 		runtime "Debug"
+		kind "ConsoleApp"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "DK_RELEASE"
 		runtime "Release"
+		kind "WindowedApp"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "DK_Dist"
 		runtime "Release"
+		kind "WindowedApp"
 		optimize "On"

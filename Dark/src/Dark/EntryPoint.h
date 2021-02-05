@@ -4,6 +4,10 @@
 
 extern Dark::Application* Dark::CreateApplication();
 
+#ifdef DK_RELEASE
+  #pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" )
+#endif // DK_DEBUG
+
 int main()
 {
   int mainVer = 0;
