@@ -25,7 +25,6 @@ public:
   SandBox()
   {
 	PushLayer(new ExampleLayer());
-	PushOverlay(new Dark::ImGuiLayer());
   }
   ~SandBox()
   {

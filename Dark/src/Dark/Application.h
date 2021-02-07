@@ -7,6 +7,8 @@
 #include "Dark/Events/Event.h"
 #include "Dark/Events/ApplicationEvent.h"
 
+#include "Dark/ImGui/ImGuiLayer.h"
+
 namespace Dark {
   
   class DARK_API Application
@@ -27,6 +29,7 @@ namespace Dark {
 	bool OnWindowClose(WindowCloseEvent& e);
 
 	std::unique_ptr<Window> m_Window;
+	ImGuiLayer* m_ImGuiLayer;
 	bool m_Running = true;
 	LayerStack m_LayerStack;
   private:
