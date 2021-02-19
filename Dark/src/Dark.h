@@ -12,5 +12,5 @@
 #include "Dark/ImGui/ImGuiLayer.h"
 
 // ----------EntryPoint---------------
-#include "Dark/EntryPoint.h"
+//#include "Dark/EntryPoint.h"
 // -----------------------------------

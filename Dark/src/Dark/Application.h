@@ -14,7 +14,7 @@ namespace Dark {
   class DARK_API Application
   {
   public:
-	Application();
+	Application(const std::string& name = "DarK");
 	virtual ~Application();
 
 	void StartUp();
@@ -22,6 +22,8 @@ namespace Dark {
 
 	void PushLayer(Layer* layer);
 	void PushOverlay(Layer* layer);
+
+	void Exit();
 
 	inline Window& GetWindow() { return *m_Window; }
 	inline static Application& Get() { return *m_Instance; }

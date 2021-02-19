@@ -1,6 +1,6 @@
 workspace "Dark"
-	architecture "x64"
-	startproject "Sandbox"
+	architecture "x86_64"
+	startproject "Dark-Editor"
 
 	configurations
 	{
@@ -18,9 +18,11 @@ IncludeDir["Glad"] = "Dark/vendor/Glad/include"
 IncludeDir["ImGui"] = "Dark/vendor/imgui"
 IncludeDir["glm"] = "Dark/vendor/glm"
 
-include "Dark/vendor/GLFW"
-include "Dark/vendor/Glad"
-include "Dark/vendor/imgui"
+group "Dependencies"
+	include "Dark/vendor/GLFW"
+	include "Dark/vendor/Glad"
+	include "Dark/vendor/imgui"
+group ""
 
 project "Dark"
 	location "Dark"
@@ -109,6 +111,61 @@ project "Sandbox"
 	{
 		"Dark/vendor/spdlog/include",
 		"Dark/src",
+		"Dark/vendor",
+		"%{IncludeDir.glm}"
+	}
+
+	links
+	{
+		"Dark"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+		defines
+		{
+			"DK_PLATFORM_WINDOWS",	
+		}
+
+	filter "configurations:Debug"
+		defines "DK_DEBUG"
+		runtime "Debug"
+		kind "ConsoleApp"
+		symbols "On"
+
+	filter "configurations:Release"
+		defines "DK_RELEASE"
+		runtime "Release"
+		kind "WindowedApp"
+		optimize "On"
+
+	filter "configurations:Dist"
+		defines "DK_Dist"
+		runtime "Release"
+		kind "WindowedApp"
+		optimize "On"
+
+project "Dark-Editor"
+	location "Dark-Editor"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "On"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs
+	{
+		"Dark/vendor/spdlog/include",
+		"Dark/src",
+		"Dark/vendor",
 		"%{IncludeDir.glm}"
 	}
 
