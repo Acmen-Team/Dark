@@ -7,6 +7,7 @@ Description:Windows PlatForm Window class
 #pragma once
 
 #include "Dark/Window.h"
+#include "Dark/Renderer/RendererContext.h"
 
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
@@ -34,6 +35,7 @@ namespace Dark {
 	virtual void Shutdown();
   private:
 	GLFWwindow* m_Window;
+	RenderContext *m_Context;
 
 	struct WindowData
 	{
