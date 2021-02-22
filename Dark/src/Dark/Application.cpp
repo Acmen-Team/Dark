@@ -56,7 +56,7 @@ namespace Dark {
 	EventDispatcher dispatcher(e);
 	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 
-	DK_CORE_TRACE("{0}", e);
+	//DK_CORE_TRACE("{0}", e);
 
 	for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 	{
