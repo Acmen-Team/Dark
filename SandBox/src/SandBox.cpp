@@ -18,7 +18,7 @@ public:
 
   void OnEvent(Dark::Event& event) override
   {
-	DK_TRACE("{0}", event);
+	//DK_TRACE("{0}", event);
   }
 
   void OnImGuiRender() override
