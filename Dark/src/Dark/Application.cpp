@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Log.h"
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace Dark {
@@ -20,6 +21,54 @@ namespace Dark {
 
 	m_ImGuiLayer = new ImGuiLayer();
 	PushOverlay(m_ImGuiLayer);
+
+	//矩形顶点数据
+	float vertices[] = {
+		 0.5f, 0.5f, 0.0f,   // 右上角
+		0.5f, -0.5f, 0.0f,  // 右下角
+		-0.5f, -0.5f, 0.0f, // 左下角
+		-0.5f, 0.5f, 0.0f   // 左上角
+	};
+	//索引绘制
+	uint32_t indices[] = { // 注意索引从0开始! 
+		0, 1, 3, // 第一个三角形
+		1, 2, 3  // 第二个三角形
+	};
+
+	m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+
+	//顶点数组对象VAO
+	unsigned int VAO;
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	//启用顶点数据，默认禁止
+	glEnableVertexAttribArray(0);
+
+	std::string vertexShaderSource = R"(
+	  #version 330 core
+	  layout(location = 0) in vec3 aPos;
+
+	  void main() 
+	  {
+		gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+	  }
+	)";
+
+	std::string fragmentShaderSource = R"(
+	  #version 330 core
+	  out vec4 FragColor;
+
+	  void main() 
+	  {
+		FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+	  }
+	)";
+
+	m_Shader.reset(new Shader(vertexShaderSource, fragmentShaderSource));
   }
   
   Application::~Application()
@@ -36,6 +85,9 @@ namespace Dark {
 	  {
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		m_Shader->use();
+		glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
 
 		for (Layer* layer : m_LayerStack)
 		  layer->OnUpdate();
