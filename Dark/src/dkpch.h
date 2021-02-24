@@ -17,6 +17,7 @@ Description:pch file
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+#include <fstream>
 
 #include "Dark/Log.h"
 
