@@ -72,7 +72,8 @@ project "Dark"
 		defines
 		{
 			"DK_PLATFORM_WINDOWS",
-			"DK_BUILD_DLL"		
+			"DK_BUILD_DLL",
+			"DK_ENABLE_ASSERTS"
 		}
 
 	filter "configurations:Debug"
