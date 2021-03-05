@@ -12,6 +12,7 @@
 #include "Dark/Renderer/Shader.h"
 #include "Dark/Renderer/Buffer.h"
 #include "Dark/Renderer/VertexArray.h"
+#include "Dark/Renderer/OrthographicCamera.h"
 
 namespace Dark {
   
@@ -39,6 +40,8 @@ namespace Dark {
 
 	std::shared_ptr<VertexArray> m_VertexArray;
 	std::shared_ptr<Shader> m_Shader;
+
+	OrthographicCamera m_Camera;
   private:
 	static Application* m_Instance;
   };
