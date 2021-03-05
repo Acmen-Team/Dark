@@ -11,8 +11,8 @@ namespace Dark {
   {
 	switch (Renderer::GetAPI())
 	{
-	  case RendererAPI::None:  DK_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
-	  case RendererAPI::OpenGL: return new OpenGLVertexBuffer(vertices, size);
+	  case RendererAPI::API::None:  DK_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
+	  case RendererAPI::API::OpenGL: return new OpenGLVertexBuffer(vertices, size);
 	}
 
 	DK_CORE_ASSERT(false, "Unkonw RendererAPI!");
@@ -23,8 +23,8 @@ namespace Dark {
   {
 	switch (Renderer::GetAPI())
 	{
-	case RendererAPI::None:  DK_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
-	case RendererAPI::OpenGL: return new OpenGLIndexBuffer(indices, count);
+	  case RendererAPI::API::None:  DK_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
+	  case RendererAPI::API::OpenGL: return new OpenGLIndexBuffer(indices, count);
 	}
 
 	DK_CORE_ASSERT(false, "Unkonw RendererAPI!");

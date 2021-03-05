@@ -11,8 +11,8 @@ namespace Dark {
   {
 	switch (Renderer::GetAPI())
 	{
-	  case RendererAPI::None:  DK_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
-	  case RendererAPI::OpenGL: return new OpenGLVertexArray();
+	  case RendererAPI::API::None:  DK_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
+	  case RendererAPI::API::OpenGL: return new OpenGLVertexArray();
 	}
 
 	DK_CORE_ASSERT(false, "Unkonw RendererAPI!");

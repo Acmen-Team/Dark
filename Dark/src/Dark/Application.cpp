@@ -5,6 +5,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "Renderer/RenderCommand.h"
+#include "Renderer/Renderer.h"
+
 namespace Dark {
 
   #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -91,12 +94,16 @@ namespace Dark {
 	{
 	  while (m_Running)
 	  {
-		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		RenderCommand::SetClearColor({ 0.1f, 0.2f, 0.2f, 1.0f });
+		RenderCommand::Clear();
 
-		m_Shader->use();
-		m_VertexArray->Bind();
-		glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		// Begin Rendering
+		{
+		  Renderer::BeginScene();
+		  m_Shader->use();
+		  Renderer::Submit(m_VertexArray);
+		  Renderer::EndScene();
+		}
 
 		for (Layer* layer : m_LayerStack)
 		  layer->OnUpdate();
