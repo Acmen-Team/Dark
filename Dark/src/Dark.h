@@ -10,6 +10,8 @@
 
 #include "Dark/ImGui/ImGuiLayer.h"
 
+#include "Dark/Core/Timestep.h"
+
 // ----------Renderer---------------
 #include "Dark/Renderer/Renderer.h"
 #include "Dark/Renderer/RenderCommand.h"

@@ -7,6 +7,7 @@ Description:Layer abstract base class
 #pragma once
 
 #include "Dark/Core.h"
+#include "Dark/Core/Timestep.h"
 #include "Dark/Events/Event.h"
 
 namespace Dark {
@@ -19,7 +20,7 @@ namespace Dark {
 
 	virtual void OnAttach() {}
 	virtual void OnDetach() {}
-	virtual void OnUpdate() {}
+	virtual void OnUpdate(Timestep timestep) {}
 	virtual void OnImGuiRender() {}
 	virtual void OnEvent(Event& event) {}
 

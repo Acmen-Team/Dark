@@ -37,6 +37,8 @@ namespace Dark {
 	ImGuiLayer* m_ImGuiLayer;
 	bool m_Running = true;
 	LayerStack m_LayerStack;
+
+	float m_LastFramTime = 0.0f;
   private:
 	static Application* m_Instance;
   };

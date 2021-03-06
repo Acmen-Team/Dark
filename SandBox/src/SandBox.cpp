@@ -66,16 +66,18 @@ public:
 	m_Shader.reset(new Dark::Shader(vertexShaderSource, fragmentShaderSource));
   }
 
-  void OnUpdate() override
+  void OnUpdate(Dark::Timestep timestep) override
   {
+	DK_TRACE("Delta Time: {0}s  {1}ms", timestep.GetSeconds(), timestep.GetMilliseconds());
+
 	if (Dark::Input::IsKeyPressed(DK_KEY_LEFT))
-	  m_CameraPosition.x -= m_CameaSpeed;
+	  m_CameraPosition.x -= m_CameaSpeed * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_RIGHT))
-	  m_CameraPosition.x += m_CameaSpeed;
+	  m_CameraPosition.x += m_CameaSpeed * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_DOWN))
-	  m_CameraPosition.y -= m_CameaSpeed;
+	  m_CameraPosition.y -= m_CameaSpeed * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_UP))
-	  m_CameraPosition.y += m_CameaSpeed;
+	  m_CameraPosition.y += m_CameaSpeed * timestep.GetSeconds();
 
 	Dark::RenderCommand::SetClearColor({ 0.1f, 0.2f, 0.2f, 1.0f });
 	Dark::RenderCommand::Clear();
@@ -102,7 +104,7 @@ public:
   }
 private:
   glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
-  float m_CameaSpeed = 0.1f;
+  float m_CameaSpeed = 0.8f;
 
   std::shared_ptr<Dark::VertexArray> m_VertexArray;
   std::shared_ptr<Dark::Shader> m_Shader;

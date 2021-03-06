@@ -5,6 +5,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "Core/Timestep.h"
+
 #include "Renderer/RenderCommand.h"
 #include "Renderer/Renderer.h"
 
@@ -38,8 +40,12 @@ namespace Dark {
 	{
 	  while (m_Running)
 	  {
+		float time = (float)glfwGetTime();
+		Timestep timestep = time - m_LastFramTime;
+		m_LastFramTime = time;
+
 		for (Layer* layer : m_LayerStack)
-		  layer->OnUpdate();
+		  layer->OnUpdate(timestep);
 
 		m_ImGuiLayer->Begin();
 		for (Layer* layer : m_LayerStack)
