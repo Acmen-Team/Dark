@@ -15,7 +15,6 @@ namespace Dark {
   Application* Application::m_Instance = nullptr;
 
   Application::Application()
-	: m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
   {
 	DK_CORE_ASSERT(!m_Instance, "Application already exists!");
 	Application::m_Instance = this;
@@ -25,64 +24,6 @@ namespace Dark {
 
 	m_ImGuiLayer = new ImGuiLayer();
 	PushOverlay(m_ImGuiLayer);
-
-	//矩形顶点数据
-	float vertices[] = {
-		 0.5f, 0.5f, 0.0f, 0.8f, 0.2f, 0.3f, 1.0f,  // 右上角
-		0.5f, -0.5f, 0.0f, 0.3f, 0.4f, 0.7f, 1.0f,  // 右下角
-		-0.5f, -0.5f, 0.0f, 0.5f, 0.8f, 0.2f, 1.0f, // 左下角
-		-0.5f, 0.5f, 0.0f, 0.2f, 0.5f, 0.3f, 1.0f   // 左上角
-	};
-	//索引绘制
-	uint32_t indices[] = { // 注意索引从0开始! 
-		0, 1, 3, // 第一个三角形
-		1, 2, 3  // 第二个三角形
-	};
-
-	m_VertexArray.reset(VertexArray::Create());
-
-	std::shared_ptr<VertexBuffer> m_VertexBuffer;
-	m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-	BufferLayout layout = {
-	  { ShaderDataType::Float3, "a_Pos" },
-	  { ShaderDataType::Float4, "a_Color" }
-	};
-	m_VertexBuffer->SetLayout(layout); 
-	m_VertexArray->AddVertexBuffer(m_VertexBuffer);
-
-	std::shared_ptr<IndexBuffer> m_IndexBuffer;
-	m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
-	m_VertexArray->SetIndexBuffer(m_IndexBuffer);
-
-	std::string vertexShaderSource = R"(
-	  #version 330 core
-	  layout(location = 0) in vec3 a_Pos;
-	  layout(location = 1) in vec4 a_Color;
-
-	  uniform mat4 u_ViewProjection;
-
-	  out vec4 v_Color;
-
-	  void main() 
-	  {
-		gl_Position = u_ViewProjection * vec4(a_Pos, 1.0);
-		v_Color = a_Color;
-	  }
-	)";
-
-	std::string fragmentShaderSource = R"(
-	  #version 330 core
-	  
-	  in  vec4 v_Color;
-	  out vec4 FragColor;
-
-	  void main() 
-	  {
-		FragColor = v_Color;
-	  }
-	)";
-
-	m_Shader.reset(new Shader(vertexShaderSource, fragmentShaderSource));
   }
   
   Application::~Application()
@@ -97,19 +38,6 @@ namespace Dark {
 	{
 	  while (m_Running)
 	  {
-		RenderCommand::SetClearColor({ 0.1f, 0.2f, 0.2f, 1.0f });
-		RenderCommand::Clear();
-
-		m_Camera.SetPosition({ 0.5f, 0.5f, 0.0f });
-		m_Camera.SetRotation(45.0f);
-
-		// Begin Rendering
-		{
-		  Renderer::BeginScene(m_Camera);
-		  Renderer::Submit(m_Shader, m_VertexArray);
-		  Renderer::EndScene();
-		}
-
 		for (Layer* layer : m_LayerStack)
 		  layer->OnUpdate();
 
