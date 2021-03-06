@@ -2,6 +2,8 @@
 
 #include <Dark.h>
 
+#include <glm/gtc/matrix_transform.hpp>
+
 class ExampleLayer : public Dark::Layer
 {
 public:
@@ -41,12 +43,13 @@ public:
 	  layout(location = 1) in vec4 a_Color;
 
 	  uniform mat4 u_ViewProjection;
+	  uniform mat4 u_Transform;
 
 	  out vec4 v_Color;
 
 	  void main() 
 	  {
-		gl_Position = u_ViewProjection * vec4(a_Pos, 1.0);
+		gl_Position = u_ViewProjection * u_Transform * vec4(a_Pos, 1.0);
 		v_Color = a_Color;
 	  }
 	)";
@@ -79,15 +82,27 @@ public:
 	if (Dark::Input::IsKeyPressed(DK_KEY_UP))
 	  m_CameraPosition.y += m_CameaSpeed * timestep.GetSeconds();
 
+	if (Dark::Input::IsKeyPressed(DK_KEY_A))
+	  m_SquarPosition.x -= m_CameaSpeed * timestep.GetSeconds();
+	if (Dark::Input::IsKeyPressed(DK_KEY_D))
+	  m_SquarPosition.x += m_CameaSpeed * timestep.GetSeconds();
+	if (Dark::Input::IsKeyPressed(DK_KEY_S))
+	  m_SquarPosition.y -= m_CameaSpeed * timestep.GetSeconds();
+	if (Dark::Input::IsKeyPressed(DK_KEY_W))
+	  m_SquarPosition.y += m_CameaSpeed * timestep.GetSeconds();
+
 	Dark::RenderCommand::SetClearColor({ 0.1f, 0.2f, 0.2f, 1.0f });
 	Dark::RenderCommand::Clear();
 
 	m_Camera.SetPosition(m_CameraPosition);
 	m_Camera.SetRotation(0.0f);
 
+	glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_SquarPosition);
+
 	// Begin Rendering
 	{
 	  Dark::Renderer::BeginScene(m_Camera);
+	  Dark::Renderer::Submit(m_Shader, m_VertexArray, transform);
 	  Dark::Renderer::Submit(m_Shader, m_VertexArray);
 	  Dark::Renderer::EndScene();
 	}
@@ -105,6 +120,8 @@ public:
 private:
   glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
   float m_CameaSpeed = 0.8f;
+
+  glm::vec3 m_SquarPosition = { 0.0f, 0.0f, 0.0f };
 
   std::shared_ptr<Dark::VertexArray> m_VertexArray;
   std::shared_ptr<Dark::Shader> m_Shader;
