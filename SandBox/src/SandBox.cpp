@@ -2,7 +2,12 @@
 
 #include <Dark.h>
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
+#include <imgui.h>
+
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public Dark::Layer
 {
@@ -56,22 +61,24 @@ public:
 
 	std::string fragmentShaderSource = R"(
 	  #version 330 core
-	  
+
+	  uniform vec3 u_Color;	  
+
 	  in  vec4 v_Color;
 	  out vec4 FragColor;
 
 	  void main() 
 	  {
-		FragColor = v_Color;
+		FragColor = vec4(u_Color, 1.0f);
 	  }
 	)";
 
-	m_Shader.reset(new Dark::Shader(vertexShaderSource, fragmentShaderSource));
+	m_Shader.reset(Dark::Shader::Create(vertexShaderSource, fragmentShaderSource));
   }
 
   void OnUpdate(Dark::Timestep timestep) override
   {
-	DK_TRACE("Delta Time: {0}s  {1}ms", timestep.GetSeconds(), timestep.GetMilliseconds());
+	//DK_TRACE("Delta Time: {0}s  {1}ms", timestep.GetSeconds(), timestep.GetMilliseconds());
 
 	if (Dark::Input::IsKeyPressed(DK_KEY_LEFT))
 	  m_CameraPosition.x -= m_CameaSpeed * timestep.GetSeconds();
@@ -97,6 +104,9 @@ public:
 	m_Camera.SetPosition(m_CameraPosition);
 	m_Camera.SetRotation(0.0f);
 
+	std::dynamic_pointer_cast<Dark::OpenGLShader>(m_Shader)->use();
+	std::dynamic_pointer_cast<Dark::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", m_SquareColor);
+
 	glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_SquarPosition);
 
 	// Begin Rendering
@@ -110,12 +120,13 @@ public:
 
   void OnImGuiRender() override
   {
-
+	ImGui::Begin("Setting");
+	ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+	ImGui::End();
   }
 
   void OnEvent(Dark::Event& event) override
   {
-
   }
 private:
   glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
@@ -127,6 +138,8 @@ private:
   std::shared_ptr<Dark::Shader> m_Shader;
 
   Dark::OrthographicCamera m_Camera;
+
+  glm::vec3 m_SquareColor = { 0.1f, 0.5f, 0.3f };
 };
 
 class SandBox :public Dark::Application

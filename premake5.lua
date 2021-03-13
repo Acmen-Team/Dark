@@ -110,6 +110,7 @@ project "Sandbox"
 	{
 		"Dark/vendor/spdlog/include",
 		"Dark/src",
+		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}"
 	}
 
