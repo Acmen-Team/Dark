@@ -29,7 +29,7 @@ public:
 
 	m_VertexArray.reset(Dark::VertexArray::Create());
 
-	std::shared_ptr<Dark::VertexBuffer> m_VertexBuffer;
+	Dark::Ref<Dark::VertexBuffer> m_VertexBuffer;
 	m_VertexBuffer.reset(Dark::VertexBuffer::Create(vertices, sizeof(vertices)));
 	Dark::BufferLayout layout = {
 	  { Dark::ShaderDataType::Float3, "a_Pos" },
@@ -38,7 +38,7 @@ public:
 	m_VertexBuffer->SetLayout(layout);
 	m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
-	std::shared_ptr<Dark::IndexBuffer> m_IndexBuffer;
+	Dark::Ref<Dark::IndexBuffer> m_IndexBuffer;
 	m_IndexBuffer.reset(Dark::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 	m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
@@ -134,8 +134,8 @@ private:
 
   glm::vec3 m_SquarPosition = { 0.0f, 0.0f, 0.0f };
 
-  std::shared_ptr<Dark::VertexArray> m_VertexArray;
-  std::shared_ptr<Dark::Shader> m_Shader;
+  Dark::Ref<Dark::VertexArray> m_VertexArray;
+  Dark::Ref<Dark::Shader> m_Shader;
 
   Dark::OrthographicCamera m_Camera;
 
