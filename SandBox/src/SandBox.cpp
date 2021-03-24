@@ -16,10 +16,10 @@ public:
   {
 	//矩形顶点数据
 	float vertices[] = {
-		 0.5f,  0.5f, 0.0f, 0.8f, 0.2f, 0.3f, 1.0f, 1.0f, 1.0f, // 右上角
-		 0.5f, -0.5f, 0.0f, 0.3f, 0.4f, 0.7f, 1.0f, 1.0f, 0.0f, // 右下角
-		-0.5f, -0.5f, 0.0f, 0.5f, 0.8f, 0.2f, 1.0f, 0.0f, 0.0f, // 左下角
-		-0.5f,  0.5f, 0.0f, 0.2f, 0.5f, 0.3f, 1.0f, 0.0f, 1.0f   // 左上角
+		 0.5f,  0.5f, 0.0f, 1.0f, 1.0f, // 右上角
+		 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // 右下角
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // 左下角
+		-0.5f,  0.5f, 0.0f, 0.0f, 1.0f   // 左上角
 	};
 	//索引绘制
 	uint32_t indices[] = { // 注意索引从0开始! 
@@ -33,7 +33,6 @@ public:
 	m_VertexBuffer.reset(Dark::VertexBuffer::Create(vertices, sizeof(vertices)));
 	Dark::BufferLayout layout = {
 	  { Dark::ShaderDataType::Float3, "a_Pos" },
-	  { Dark::ShaderDataType::Float4, "a_Color" },
 	  { Dark::ShaderDataType::Float2, "a_TexCoord" }
 	};
 	m_VertexBuffer->SetLayout(layout);
@@ -46,19 +45,16 @@ public:
 	std::string vertexShaderSource = R"(
 	  #version 330 core
 	  layout(location = 0) in vec3 a_Pos;
-	  layout(location = 1) in vec4 a_Color;
-	  layout(location = 2) in vec2 a_TexCoord;
+	  layout(location = 1) in vec2 a_TexCoord;
 
 	  uniform mat4 u_ViewProjection;
 	  uniform mat4 u_Transform;
 
-	  out vec4 v_Color;
 	  out vec2 v_TexCoord;
 
 	  void main() 
 	  {
 		gl_Position = u_ViewProjection * u_Transform * vec4(a_Pos, 1.0);
-		v_Color = a_Color;
 		v_TexCoord = a_TexCoord;
 	  }
 	)";
@@ -66,22 +62,36 @@ public:
 	std::string fragmentShaderSource = R"(
 	  #version 330 core
 
-	  uniform vec3 u_Color;
 	  uniform sampler2D u_Texture;
 
-	  in vec4 v_Color;
 	  in vec2 v_TexCoord;
 	  out vec4 FragColor;
 
 	  void main() 
 	  {
-		FragColor = mix(texture(u_Texture, v_TexCoord), vec4(u_Color, 1.0), 0.3);
+		FragColor = texture(u_Texture, v_TexCoord);
+	  }
+	)";
+
+	std::string ColorfragmentShaderSource = R"(
+	  #version 330 core
+
+	  uniform vec4 u_Color;
+
+	  in vec2 v_TexCoord;
+	  out vec4 FragColor;
+
+	  void main() 
+	  {
+		FragColor = u_Color;
 	  }
 	)";
 
 	m_Shader.reset(Dark::Shader::Create(vertexShaderSource, fragmentShaderSource));
+	m_ColorShader.reset(Dark::Shader::Create(vertexShaderSource, ColorfragmentShaderSource));
 	
-	m_Texture = Dark::Texture2D::Create("assets/textures/face.png");
+	m_Texture = Dark::Texture2D::Create("assets/textures/container.jpg");
+	m_TextureBlend = Dark::Texture2D::Create("assets/textures/face.png");
 
 	std::dynamic_pointer_cast<Dark::OpenGLShader>(m_Shader)->use();
 	std::dynamic_pointer_cast<Dark::OpenGLShader>(m_Shader)->UploadUniformInt("u_Texture", 0);
@@ -101,13 +111,22 @@ public:
 	  m_CameraPosition.y += m_CameaSpeed * timestep.GetSeconds();
 
 	if (Dark::Input::IsKeyPressed(DK_KEY_A))
-	  m_SquarPosition.x -= m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition1.x -= m_CameaSpeed * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_D))
-	  m_SquarPosition.x += m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition1.x += m_CameaSpeed * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_S))
-	  m_SquarPosition.y -= m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition1.y -= m_CameaSpeed * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_W))
-	  m_SquarPosition.y += m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition1.y += m_CameaSpeed * timestep.GetSeconds();
+
+	if (Dark::Input::IsKeyPressed(DK_KEY_I))
+	  m_SquarPosition2.y += m_CameaSpeed * timestep.GetSeconds();
+	if (Dark::Input::IsKeyPressed(DK_KEY_J))
+	  m_SquarPosition2.x -= m_CameaSpeed * timestep.GetSeconds();
+	if (Dark::Input::IsKeyPressed(DK_KEY_K))
+	  m_SquarPosition2.y -= m_CameaSpeed * timestep.GetSeconds();
+	if (Dark::Input::IsKeyPressed(DK_KEY_L))
+	  m_SquarPosition2.x += m_CameaSpeed * timestep.GetSeconds();
 
 	Dark::RenderCommand::SetClearColor({ 0.1f, 0.2f, 0.2f, 1.0f });
 	Dark::RenderCommand::Clear();
@@ -115,17 +134,22 @@ public:
 	m_Camera.SetPosition(m_CameraPosition);
 	m_Camera.SetRotation(0.0f);
 
-	std::dynamic_pointer_cast<Dark::OpenGLShader>(m_Shader)->use();
-	std::dynamic_pointer_cast<Dark::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", m_SquareColor);
+	std::dynamic_pointer_cast<Dark::OpenGLShader>(m_ColorShader)->use();
+	std::dynamic_pointer_cast<Dark::OpenGLShader>(m_ColorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
 
-	glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_SquarPosition);
+	glm::mat4 transform1 = glm::translate(glm::mat4(1.0f), m_SquarPosition1);
+	glm::mat4 transform2 = glm::translate(glm::mat4(1.0f), m_SquarPosition2) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 
 	// Begin Rendering
 	{
 	  Dark::Renderer::BeginScene(m_Camera);
+
 	  m_Texture->Bind();
-	  Dark::Renderer::Submit(m_Shader, m_VertexArray, transform);
+	  Dark::Renderer::Submit(m_Shader, m_VertexArray, transform1);
+	  m_TextureBlend->Bind();
 	  Dark::Renderer::Submit(m_Shader, m_VertexArray);
+	  Dark::Renderer::Submit(m_ColorShader, m_VertexArray, transform2);
+	  Dark::Renderer::Submit(m_ColorShader, m_VertexArray, glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 1.0f)));
 	  Dark::Renderer::EndScene();
 	}
   }
@@ -133,7 +157,7 @@ public:
   void OnImGuiRender() override
   {
 	ImGui::Begin("Setting");
-	ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 	ImGui::End();
   }
 
@@ -144,15 +168,18 @@ private:
   glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
   float m_CameaSpeed = 0.8f;
 
-  glm::vec3 m_SquarPosition = { 0.0f, 0.0f, 0.0f };
+  glm::vec3 m_SquarPosition1 = { 0.0f, 0.0f, 0.0f };
+  glm::vec3 m_SquarPosition2 = { 0.0f, 0.0f, 0.0f };
 
   Dark::Ref<Dark::VertexArray> m_VertexArray;
+  Dark::Ref<Dark::Shader> m_ColorShader;
   Dark::Ref<Dark::Shader> m_Shader;
   Dark::Ref<Dark::Texture2D> m_Texture;
+  Dark::Ref<Dark::Texture2D> m_TextureBlend;
 
   Dark::OrthographicCamera m_Camera;
 
-  glm::vec3 m_SquareColor = { 0.1f, 0.5f, 0.3f };
+  glm::vec4 m_SquareColor = { 0.7f, 0.1f, 0.1f, 0.7f };
 };
 
 class SandBox :public Dark::Application

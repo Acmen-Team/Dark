@@ -9,11 +9,6 @@
 
 #include "Dark/ImGui/ImGuiLayer.h"
 
-#include "Dark/Renderer/Shader.h"
-#include "Dark/Renderer/Buffer.h"
-#include "Dark/Renderer/VertexArray.h"
-#include "Dark/Renderer/OrthographicCamera.h"
-
 namespace Dark {
   
   class DARK_API Application
