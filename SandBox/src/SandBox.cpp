@@ -87,7 +87,7 @@ public:
 	  }
 	)";
 
-	m_Shader.reset(Dark::Shader::Create(vertexShaderSource, fragmentShaderSource));
+	m_Shader.reset(Dark::Shader::Create("assets/shaders/Texture.glsl"));
 	m_ColorShader.reset(Dark::Shader::Create(vertexShaderSource, ColorfragmentShaderSource));
 	
 	m_Texture = Dark::Texture2D::Create("assets/textures/container.jpg");
