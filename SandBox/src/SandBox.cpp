@@ -87,14 +87,14 @@ public:
 	  }
 	)";
 
-	m_Shader.reset(Dark::Shader::Create("assets/shaders/Texture.glsl"));
-	m_ColorShader.reset(Dark::Shader::Create(vertexShaderSource, ColorfragmentShaderSource));
+	auto& texShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
+	m_ShaderLibrary.Add(Dark::Shader::Create("ColorShader", vertexShaderSource, ColorfragmentShaderSource));
 	
 	m_Texture = Dark::Texture2D::Create("assets/textures/container.jpg");
 	m_TextureBlend = Dark::Texture2D::Create("assets/textures/face.png");
 
-	std::dynamic_pointer_cast<Dark::OpenGLShader>(m_Shader)->use();
-	std::dynamic_pointer_cast<Dark::OpenGLShader>(m_Shader)->UploadUniformInt("u_Texture", 0);
+	std::dynamic_pointer_cast<Dark::OpenGLShader>(texShader)->use();
+	std::dynamic_pointer_cast<Dark::OpenGLShader>(texShader)->UploadUniformInt("u_Texture", 0);
   }
 
   void OnUpdate(Dark::Timestep timestep) override
@@ -134,22 +134,25 @@ public:
 	m_Camera.SetPosition(m_CameraPosition);
 	m_Camera.SetRotation(0.0f);
 
-	std::dynamic_pointer_cast<Dark::OpenGLShader>(m_ColorShader)->use();
-	std::dynamic_pointer_cast<Dark::OpenGLShader>(m_ColorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
+	auto texShader = m_ShaderLibrary.Get("Texture");
+	auto colorShader = m_ShaderLibrary.Get("ColorShader");
+	std::dynamic_pointer_cast<Dark::OpenGLShader>(colorShader)->use();
+	std::dynamic_pointer_cast<Dark::OpenGLShader>(colorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
 
 	glm::mat4 transform1 = glm::translate(glm::mat4(1.0f), m_SquarPosition1);
 	glm::mat4 transform2 = glm::translate(glm::mat4(1.0f), m_SquarPosition2) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 
+	
 	// Begin Rendering
 	{
 	  Dark::Renderer::BeginScene(m_Camera);
 
 	  m_Texture->Bind();
-	  Dark::Renderer::Submit(m_Shader, m_VertexArray, transform1);
+	  Dark::Renderer::Submit(texShader, m_VertexArray, transform1);
 	  m_TextureBlend->Bind();
-	  Dark::Renderer::Submit(m_Shader, m_VertexArray);
-	  Dark::Renderer::Submit(m_ColorShader, m_VertexArray, transform2);
-	  Dark::Renderer::Submit(m_ColorShader, m_VertexArray, glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 1.0f)));
+	  Dark::Renderer::Submit(texShader, m_VertexArray);
+	  Dark::Renderer::Submit(colorShader, m_VertexArray, transform2);
+	  Dark::Renderer::Submit(colorShader, m_VertexArray, glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 1.0f)));
 	  Dark::Renderer::EndScene();
 	}
   }
@@ -172,8 +175,8 @@ private:
   glm::vec3 m_SquarPosition2 = { 0.0f, 0.0f, 0.0f };
 
   Dark::Ref<Dark::VertexArray> m_VertexArray;
-  Dark::Ref<Dark::Shader> m_ColorShader;
-  Dark::Ref<Dark::Shader> m_Shader;
+
+  Dark::ShaderLibrary m_ShaderLibrary;
   Dark::Ref<Dark::Texture2D> m_Texture;
   Dark::Ref<Dark::Texture2D> m_TextureBlend;
 
