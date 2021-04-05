@@ -15,7 +15,7 @@ Start by cloning the repository with `git clone --recursive https://github.com/A
 If the repository was cloned non-recursively previously, use `git submodule update --init` to clone the necessary submodules.
 
 ## The Plan
-The plan for Dark is two-fold: to create a powerful 3D engine, but also to serve as an education tool for teaching game engine design and architecture. Because of this the development inside this repository is rather slow.
+The plan for Dark is two-fold: to create a powerful 3D engine, explore a new generation of game engines.
 
 ### Main features to come:
 - Fast 2D rendering (UI, particles, sprites, etc.)
@@ -31,7 +31,6 @@ The plan for Dark is two-fold: to create a powerful 3D engine, but also to serve
 
 
 ## Short term goals :
-*Note: this is subject to change at any time! Follow the trello over at [https://trello.com/b/zXOH1nTv/dark-game-engine](https://trello.com/b/zXOH1nTv/dark-game-engine).*
 
 We want to make a game using the Dark game engine.By using the proper tools that would be required to make a game with Dark:
 
