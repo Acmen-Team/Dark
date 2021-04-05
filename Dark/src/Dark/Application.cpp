@@ -32,7 +32,6 @@ namespace Dark {
 	return 0;
   }
 
-  Application::Application()
   Application::Application(const std::string& name)
   {
 	DK_CORE_ASSERT(!m_Instance, "Application already exists!");
