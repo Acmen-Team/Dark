@@ -17,23 +17,11 @@ namespace Dark {
 
   void EditorLayer::OnEvent(Event& event)
   {
-	DK_TRACE("{0}", event);
+	//DK_TRACE("{0}", event);
   }
 
   void EditorLayer::OnImGuiRender()
   {
-	// In 99% case you should be able to just call DockSpaceOverViewport() and ignore all the code below!
-	// In this specific demo, we are not using DockSpaceOverViewport() because:
-	// - we allow the host window to be floating/moveable instead of filling the viewport (when opt_fullscreen == false)
-	// - we allow the host window to have padding (when opt_padding == true)
-	// - we have a local menu bar in the host window (vs. you could use BeginMainMenuBar() + DockSpaceOverViewport() in your code!)
-	// TL;DR; this demo is more complicated than what you would normally use.
-	// If we removed all the options we are showcasing, this demo would become:
-	//     void ShowExampleAppDockSpace()
-	//     {
-	//         ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-	//     }
-
 	static bool opt_fullscreen = true;
 	static bool opt_padding = false;
 	static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
