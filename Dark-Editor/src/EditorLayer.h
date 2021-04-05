@@ -8,7 +8,7 @@ namespace Dark {
   public:
 	EditorLayer();
 
-	void OnUpdate() override;
+	void OnUpdate(Timestep timestep) override;
 	void OnEvent(Event& event) override;
 	void OnImGuiRender() override;
 

@@ -7,7 +7,7 @@ namespace Dark {
   {
   }
 
-  void EditorLayer::OnUpdate()
+  void EditorLayer::OnUpdate(Dark::Timestep timestep)
   {
 	if (Input::IsKeyPressed(DK_KEY_W))
 	  DK_TRACE("W keyboard is Pressed!");

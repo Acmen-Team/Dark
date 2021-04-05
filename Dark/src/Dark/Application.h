@@ -9,9 +9,6 @@
 
 #include "Dark/ImGui/ImGuiLayer.h"
 
-#include "Dark/Renderer/Shader.h"
-#include "Dark/Renderer/Buffer.h"
-
 namespace Dark {
   
   class DARK_API Application
@@ -37,9 +34,8 @@ namespace Dark {
 	ImGuiLayer* m_ImGuiLayer;
 	bool m_Running = true;
 	LayerStack m_LayerStack;
-	std::unique_ptr<Shader> m_Shader;
-	std::unique_ptr<VertexBuffer> m_VertexBuffer;
-	std::unique_ptr<IndexBuffer> m_IndexBuffer;
+
+	float m_LastFramTime = 0.0f;
   private:
 	static Application* m_Instance;
   };
