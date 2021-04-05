@@ -1,20 +1,19 @@
-#include "dkpch.h"
-
-#include <Dark.h>
-#include <Dark/EntryPoint.h>
+#include "EditorLayer.h"
 #include "ImGui/imgui.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
 
-#include <imgui.h>
-
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-class ExampleLayer : public Dark::Layer
-{
-public:
-  ExampleLayer() :Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+namespace Dark {
+
+  EditorLayer::EditorLayer() :Layer("EditorLayer"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+  {
+	
+  }
+
+  void EditorLayer::OnAttach()
   {
 	//矩形顶点数据
 	float vertices[] = {
@@ -90,21 +89,27 @@ public:
 	)";
 
 	auto& texShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
-	m_ShaderLibrary.Add(Dark::Shader::Create("ColorShader", vertexShaderSource, ColorfragmentShaderSource));
-	
-	m_Texture = Dark::Texture2D::Create("assets/textures/container.jpg");
-	m_TextureBlend = Dark::Texture2D::Create("assets/textures/face.png");
+	m_ShaderLibrary.Add(Shader::Create("ColorShader", vertexShaderSource, ColorfragmentShaderSource));
+
+	m_Texture = Texture2D::Create("assets/textures/container.jpg");
+	m_TextureBlend = Texture2D::Create("assets/textures/face.png");
+	m_DfaultTex = Texture2D::Create("assets/textures/Checkerboard.png");
 
 	Dark::FramebufferSpecification fbSpec;
 	fbSpec.width = 1280;
 	fbSpec.Height = 720;
 	m_Framebuffer = Dark::Framebuffer::Create(fbSpec);
 
-	std::dynamic_pointer_cast<Dark::OpenGLShader>(texShader)->use();
-	std::dynamic_pointer_cast<Dark::OpenGLShader>(texShader)->UploadUniformInt("u_Texture", 0);
+	std::dynamic_pointer_cast<OpenGLShader>(texShader)->use();
+	std::dynamic_pointer_cast<OpenGLShader>(texShader)->UploadUniformInt("u_Texture", 0);
   }
 
-  void OnUpdate(Dark::Timestep timestep) override
+  void EditorLayer::OnDetach()
+  {
+
+  }
+
+  void EditorLayer::OnUpdate(Dark::Timestep timestep)
   {
 	//DK_TRACE("Delta Time: {0}s  {1}ms", timestep.GetSeconds(), timestep.GetMilliseconds());
 
@@ -135,6 +140,8 @@ public:
 	if (Dark::Input::IsKeyPressed(DK_KEY_L))
 	  m_SquarPosition2.x += m_CameaSpeed * timestep.GetSeconds();
 
+	m_Framebuffer->Bind();
+
 	Dark::RenderCommand::SetClearColor({ 0.1f, 0.2f, 0.2f, 1.0f });
 	Dark::RenderCommand::Clear();
 
@@ -143,13 +150,13 @@ public:
 
 	auto texShader = m_ShaderLibrary.Get("Texture");
 	auto colorShader = m_ShaderLibrary.Get("ColorShader");
-	std::dynamic_pointer_cast<Dark::OpenGLShader>(colorShader)->use();
-	std::dynamic_pointer_cast<Dark::OpenGLShader>(colorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
+	std::dynamic_pointer_cast<OpenGLShader>(colorShader)->use();
+	std::dynamic_pointer_cast<OpenGLShader>(colorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
 
 	glm::mat4 transform1 = glm::translate(glm::mat4(1.0f), m_SquarPosition1);
 	glm::mat4 transform2 = glm::translate(glm::mat4(1.0f), m_SquarPosition2) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 
-	
+
 	// Begin Rendering
 	{
 	  Dark::Renderer::BeginScene(m_Camera);
@@ -162,52 +169,105 @@ public:
 	  Dark::Renderer::Submit(colorShader, m_VertexArray, glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 1.0f)));
 	  Dark::Renderer::EndScene();
 	}
+	m_Framebuffer->UnBind();
   }
 
-  void OnImGuiRender() override
+  void EditorLayer::OnEvent(Event& event)
   {
-	ImGui::Begin("Setting");
+	//DK_TRACE("{0}", event);
+  }
+
+  void EditorLayer::OnImGuiRender()
+  {
+	static bool opt_fullscreen = true;
+	static bool opt_padding = false;
+	static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+	static bool *p_open;
+
+	// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
+	// because it would be confusing to have two docking targets within each others.
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+	if (opt_fullscreen)
+	{
+	  ImGuiViewport* viewport = ImGui::GetMainViewport();
+	  ImGui::SetNextWindowPos(viewport->GetWorkPos());
+	  ImGui::SetNextWindowSize(viewport->GetWorkSize());
+	  ImGui::SetNextWindowViewport(viewport->ID);
+	  ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+	  ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+	  window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+	  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+	}
+	else
+	{
+	  dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
+	}
+
+	// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
+	// and handle the pass-thru hole, so we ask Begin() to not render a background.
+	if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+	  window_flags |= ImGuiWindowFlags_NoBackground;
+
+	// Important: note that we proceed even if Begin() returns false (aka window is collapsed).
+	// This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
+	// all active windows docked into it will lose their parent and become undocked.
+	// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
+	// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
+	if (!opt_padding)
+	  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	ImGui::Begin("DockSpace Demo", p_open, window_flags);
+	if (!opt_padding)
+	  ImGui::PopStyleVar();
+
+	if (opt_fullscreen)
+	  ImGui::PopStyleVar(2);
+
+	// DockSpace
+	ImGuiIO& io = ImGui::GetIO();
+	if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+	{
+	  ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+	  ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+	}
+
+	if (ImGui::BeginMenuBar())
+	{
+	  if (ImGui::BeginMenu("File"))
+	  {
+		// Disabling fullscreen would allow the window to be moved to the front of other windows,
+		// which we can't undo at the moment without finer window depth/z control.
+		if (ImGui::MenuItem("Exit"))
+		  Dark::Application::Get().Exit();
+
+		ImGui::EndMenu();
+	  }
+
+	  ImGui::EndMenuBar();
+	}
+
+	// Scene
+	ImGui::Begin("Scene");
+	ImGui::Image((void*)m_Framebuffer->GetColorAttachmentRendererID(), ImVec2{ 1280.0f, 720.0f }, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
+	ImGui::End();
+
+	// Detail
+	ImGui::Begin("Detail");
 	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+	ImGui::End();
+
+	// Texture
+	ImGui::Begin("Texture");
+	ImGui::Text("Default Texture");
+	ImGui::ImageButton((void*)m_DfaultTex->GetRendererID(), ImVec2{ 64.0f, 64.0f });
+	ImGui::End();
+
+	//Setting
+	ImGui::Begin("Setting");
+	//Camera Rotation
+	//ImGui::DragFloat3("Camera Rotation", glm::value_ptr(m_CameraRotation), 0.03f);
+	ImGui::End();
+
 	ImGui::End();
   }
 
-  void OnEvent(Dark::Event& event) override
-  {
-  }
-private:
-  glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
-  float m_CameaSpeed = 0.8f;
-
-  glm::vec3 m_SquarPosition1 = { 0.0f, 0.0f, 0.0f };
-  glm::vec3 m_SquarPosition2 = { 0.0f, 0.0f, 0.0f };
-
-  Dark::Ref<Dark::VertexArray> m_VertexArray;
-
-  Dark::ShaderLibrary m_ShaderLibrary;
-  Dark::Ref<Dark::Texture2D> m_Texture;
-  Dark::Ref<Dark::Texture2D> m_TextureBlend;
-
-  Dark::OrthographicCamera m_Camera;
-
-  glm::vec4 m_SquareColor = { 0.7f, 0.1f, 0.1f, 0.7f };
-
-  Dark::Ref<Dark::Framebuffer> m_Framebuffer;
-};
-
-class SandBox :public Dark::Application
-{
-public:
-  SandBox() :Application("SandBox")
-  {
-	PushLayer(new ExampleLayer());
-  }
-  ~SandBox()
-  {
-	
-  }
-};
-
-Dark::Application* Dark::CreateApplication()
-{
-  return new SandBox();
 }

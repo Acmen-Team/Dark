@@ -2,6 +2,10 @@
 #include "Application.h"
 #include "Log.h"
 
+#include "Core/Timestep.h"
+#include "Renderer/Renderer.h"
+
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace Dark {
@@ -10,13 +14,15 @@ namespace Dark {
 
   Application* Application::m_Instance = nullptr;
 
-  Application::Application()
+  Application::Application(const std::string& name)
   {
 	DK_CORE_ASSERT(!m_Instance, "Application already exists!");
 	Application::m_Instance = this;
 
-    m_Window = std::unique_ptr<Window>(Window::Create());
+	m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name)));
 	m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+	Renderer::Init();
 
 	m_ImGuiLayer = new ImGuiLayer();
 	PushOverlay(m_ImGuiLayer);
@@ -34,11 +40,12 @@ namespace Dark {
 	{
 	  while (m_Running)
 	  {
-		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		float time = (float)glfwGetTime();
+		Timestep timestep = time - m_LastFramTime;
+		m_LastFramTime = time;
 
 		for (Layer* layer : m_LayerStack)
-		  layer->OnUpdate();
+		  layer->OnUpdate(timestep);
 
 		m_ImGuiLayer->Begin();
 		for (Layer* layer : m_LayerStack)
@@ -56,7 +63,7 @@ namespace Dark {
 	EventDispatcher dispatcher(e);
 	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 
-	DK_CORE_TRACE("{0}", e);
+	//DK_CORE_TRACE("{0}", e);
 
 	for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 	{
@@ -76,6 +83,11 @@ namespace Dark {
   {
 	m_LayerStack.PushOverlay(layer);
 	layer->OnAttach();
+  }
+
+  void Application::Exit()
+  {
+	m_Running = false;
   }
 
   bool Application::OnWindowClose(WindowCloseEvent & e)
