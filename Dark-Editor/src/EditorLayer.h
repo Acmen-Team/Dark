@@ -14,7 +14,7 @@ namespace Dark {
 
 	virtual ~EditorLayer() = default;
   private:
-
+	Dark::Ref<Dark::Texture2D> m_Texture;
   };
 
 }

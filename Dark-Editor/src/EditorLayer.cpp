@@ -5,6 +5,7 @@ namespace Dark {
 
   EditorLayer::EditorLayer() :Layer("EditorLayer")
   {
+	m_Texture = Dark::Texture2D::Create("assets/textures/Checkerboard.png");
   }
 
   void EditorLayer::OnUpdate(Dark::Timestep timestep)
@@ -108,7 +109,9 @@ namespace Dark {
 	ImGui::Text("counter = %d", counter);
 
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::Image((void*)m_Texture->GetRendererID(), ImVec2{ 64.0f, 64.0f });
 	ImGui::End();
+
 
 	ImGui::End();
   }
