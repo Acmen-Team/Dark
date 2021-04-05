@@ -95,6 +95,11 @@ public:
 	m_Texture = Dark::Texture2D::Create("assets/textures/container.jpg");
 	m_TextureBlend = Dark::Texture2D::Create("assets/textures/face.png");
 
+	Dark::FramebufferSpecification fbSpec;
+	fbSpec.width = 1280;
+	fbSpec.Height = 720;
+	m_Framebuffer = Dark::Framebuffer::Create(fbSpec);
+
 	std::dynamic_pointer_cast<Dark::OpenGLShader>(texShader)->use();
 	std::dynamic_pointer_cast<Dark::OpenGLShader>(texShader)->UploadUniformInt("u_Texture", 0);
   }
@@ -185,6 +190,8 @@ private:
   Dark::OrthographicCamera m_Camera;
 
   glm::vec4 m_SquareColor = { 0.7f, 0.1f, 0.1f, 0.7f };
+
+  Dark::Ref<Dark::Framebuffer> m_Framebuffer;
 };
 
 class SandBox :public Dark::Application

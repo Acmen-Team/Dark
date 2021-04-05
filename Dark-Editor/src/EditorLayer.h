@@ -7,14 +7,33 @@ namespace Dark {
   {
   public:
 	EditorLayer();
-
-	void OnUpdate(Timestep timestep) override;
-	void OnEvent(Event& event) override;
-	void OnImGuiRender() override;
-
 	virtual ~EditorLayer() = default;
+
+	virtual void OnAttach() override;
+	virtual void OnDetach() override;
+	virtual void OnUpdate(Timestep timestep) override;
+	virtual void OnEvent(Event& event) override;
+
+	virtual void OnImGuiRender() override;
   private:
-	Dark::Ref<Dark::Texture2D> m_Texture;
+	glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
+	float m_CameaSpeed = 0.8f;
+
+	glm::vec3 m_SquarPosition1 = { 0.0f, 0.0f, 0.0f };
+	glm::vec3 m_SquarPosition2 = { 0.0f, 0.0f, 0.0f };
+
+	Ref<VertexArray> m_VertexArray;
+
+	ShaderLibrary m_ShaderLibrary;
+	Ref<Texture2D> m_Texture;
+	Ref<Texture2D> m_TextureBlend;
+	Ref<Texture2D> m_DfaultTex;
+
+	OrthographicCamera m_Camera;
+
+	glm::vec4 m_SquareColor = { 0.7f, 0.1f, 0.1f, 0.7f };
+
+	Ref<Framebuffer> m_Framebuffer;
   };
 
 }

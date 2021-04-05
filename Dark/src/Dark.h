@@ -21,6 +21,7 @@
 #include "Dark/Renderer/Texture.h"
 #include "Dark/Renderer/VertexArray.h"
 #include "Dark/Renderer/OrthographicCamera.h"
+#include "Dark/Renderer/Framebuffer.h"
 // -----------------------------------
 
 // ----------EntryPoint---------------
