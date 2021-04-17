@@ -13,6 +13,8 @@ namespace Dark {
   public:
 	static void Init();
 
+	static void WindowResize(float width, float height);
+
 	static void BeginScene(OrthographicCamera& camera);
 	static void EndScene();
 
