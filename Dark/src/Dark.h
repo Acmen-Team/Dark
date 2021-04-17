@@ -11,6 +11,7 @@
 #include "Dark/ImGui/ImGuiLayer.h"
 
 #include "Dark/Core/Timestep.h"
+#include "Dark/OrthographicCameraController.h"
 
 // ----------Renderer---------------
 #include "Dark/Renderer/Renderer.h"

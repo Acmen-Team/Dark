@@ -16,9 +16,6 @@ namespace Dark {
 
 	virtual void OnImGuiRender() override;
   private:
-	glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
-	float m_CameaSpeed = 0.8f;
-
 	glm::vec3 m_SquarPosition1 = { 0.0f, 0.0f, 0.0f };
 	glm::vec3 m_SquarPosition2 = { 0.0f, 0.0f, 0.0f };
 
@@ -29,11 +26,13 @@ namespace Dark {
 	Ref<Texture2D> m_TextureBlend;
 	Ref<Texture2D> m_DfaultTex;
 
-	OrthographicCamera m_Camera;
+	OrthographicCameraController m_CameraController;
 
 	glm::vec4 m_SquareColor = { 0.7f, 0.1f, 0.1f, 0.7f };
 
 	Ref<Framebuffer> m_Framebuffer;
+
+	glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
   };
 
 }

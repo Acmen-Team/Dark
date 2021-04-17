@@ -8,7 +8,7 @@
 
 namespace Dark {
 
-  EditorLayer::EditorLayer() :Layer("EditorLayer"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+  EditorLayer::EditorLayer() :Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f)
   {
 	
   }
@@ -96,7 +96,7 @@ namespace Dark {
 	m_DfaultTex = Texture2D::Create("assets/textures/Checkerboard.png");
 
 	Dark::FramebufferSpecification fbSpec;
-	fbSpec.width = 1280;
+	fbSpec.Width = 1280;
 	fbSpec.Height = 720;
 	m_Framebuffer = Dark::Framebuffer::Create(fbSpec);
 
@@ -112,41 +112,30 @@ namespace Dark {
   void EditorLayer::OnUpdate(Dark::Timestep timestep)
   {
 	//DK_TRACE("Delta Time: {0}s  {1}ms", timestep.GetSeconds(), timestep.GetMilliseconds());
+	m_CameraController.OnUpdate(timestep);
 
 	if (Dark::Input::IsKeyPressed(DK_KEY_LEFT))
-	  m_CameraPosition.x -= m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition1.x -= 0.7f * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_RIGHT))
-	  m_CameraPosition.x += m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition1.x += 0.7f * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_DOWN))
-	  m_CameraPosition.y -= m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition1.y -= 0.7f * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_UP))
-	  m_CameraPosition.y += m_CameaSpeed * timestep.GetSeconds();
-
-	if (Dark::Input::IsKeyPressed(DK_KEY_A))
-	  m_SquarPosition1.x -= m_CameaSpeed * timestep.GetSeconds();
-	if (Dark::Input::IsKeyPressed(DK_KEY_D))
-	  m_SquarPosition1.x += m_CameaSpeed * timestep.GetSeconds();
-	if (Dark::Input::IsKeyPressed(DK_KEY_S))
-	  m_SquarPosition1.y -= m_CameaSpeed * timestep.GetSeconds();
-	if (Dark::Input::IsKeyPressed(DK_KEY_W))
-	  m_SquarPosition1.y += m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition1.y += 0.7f * timestep.GetSeconds();
 
 	if (Dark::Input::IsKeyPressed(DK_KEY_I))
-	  m_SquarPosition2.y += m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition2.y += 0.7f * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_J))
-	  m_SquarPosition2.x -= m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition2.x -= 0.7f * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_K))
-	  m_SquarPosition2.y -= m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition2.y -= 0.7f * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_L))
-	  m_SquarPosition2.x += m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition2.x += 0.7f * timestep.GetSeconds();
 
 	m_Framebuffer->Bind();
 
 	Dark::RenderCommand::SetClearColor({ 0.1f, 0.2f, 0.2f, 1.0f });
 	Dark::RenderCommand::Clear();
-
-	m_Camera.SetPosition(m_CameraPosition);
-	m_Camera.SetRotation(0.0f);
 
 	auto texShader = m_ShaderLibrary.Get("Texture");
 	auto colorShader = m_ShaderLibrary.Get("ColorShader");
@@ -159,7 +148,7 @@ namespace Dark {
 
 	// Begin Rendering
 	{
-	  Dark::Renderer::BeginScene(m_Camera);
+	  Dark::Renderer::BeginScene(m_CameraController.GetCamera());
 
 	  m_Texture->Bind();
 	  Dark::Renderer::Submit(texShader, m_VertexArray, transform1);
@@ -175,6 +164,7 @@ namespace Dark {
   void EditorLayer::OnEvent(Event& event)
   {
 	//DK_TRACE("{0}", event);
+	m_CameraController.OnEvent(event);
   }
 
   void EditorLayer::OnImGuiRender()
@@ -246,9 +236,17 @@ namespace Dark {
 	}
 
 	// Scene
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0, 0.0 });
 	ImGui::Begin("Scene");
-	ImGui::Image((void*)m_Framebuffer->GetColorAttachmentRendererID(), ImVec2{ 1280.0f, 720.0f }, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
+	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+	if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize))
+	{
+	  m_Framebuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
+	  m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+	}
+	ImGui::Image((void*)m_Framebuffer->GetColorAttachmentRendererID(), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
 	ImGui::End();
+	ImGui::PopStyleVar();
 
 	// Detail
 	ImGui::Begin("Detail");

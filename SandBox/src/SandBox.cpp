@@ -14,7 +14,7 @@
 class ExampleLayer : public Dark::Layer
 {
 public:
-  ExampleLayer() :Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+  ExampleLayer() :Layer("Example"), m_CameraController(1280.0f / 720.0f)
   {
 	//矩形顶点数据
 	float vertices[] = {
@@ -95,51 +95,37 @@ public:
 	m_Texture = Dark::Texture2D::Create("assets/textures/container.jpg");
 	m_TextureBlend = Dark::Texture2D::Create("assets/textures/face.png");
 
-	Dark::FramebufferSpecification fbSpec;
-	fbSpec.width = 1280;
-	fbSpec.Height = 720;
-	m_Framebuffer = Dark::Framebuffer::Create(fbSpec);
-
 	std::dynamic_pointer_cast<Dark::OpenGLShader>(texShader)->use();
 	std::dynamic_pointer_cast<Dark::OpenGLShader>(texShader)->UploadUniformInt("u_Texture", 0);
   }
 
   void OnUpdate(Dark::Timestep timestep) override
   {
+	//Update
+	m_CameraController.OnUpdate(timestep);
+
 	//DK_TRACE("Delta Time: {0}s  {1}ms", timestep.GetSeconds(), timestep.GetMilliseconds());
 
 	if (Dark::Input::IsKeyPressed(DK_KEY_LEFT))
-	  m_CameraPosition.x -= m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition1.x -= 0.7f * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_RIGHT))
-	  m_CameraPosition.x += m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition1.x += 0.7f * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_DOWN))
-	  m_CameraPosition.y -= m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition1.y -= 0.7f * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_UP))
-	  m_CameraPosition.y += m_CameaSpeed * timestep.GetSeconds();
-
-	if (Dark::Input::IsKeyPressed(DK_KEY_A))
-	  m_SquarPosition1.x -= m_CameaSpeed * timestep.GetSeconds();
-	if (Dark::Input::IsKeyPressed(DK_KEY_D))
-	  m_SquarPosition1.x += m_CameaSpeed * timestep.GetSeconds();
-	if (Dark::Input::IsKeyPressed(DK_KEY_S))
-	  m_SquarPosition1.y -= m_CameaSpeed * timestep.GetSeconds();
-	if (Dark::Input::IsKeyPressed(DK_KEY_W))
-	  m_SquarPosition1.y += m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition1.y += 0.7f * timestep.GetSeconds();
 
 	if (Dark::Input::IsKeyPressed(DK_KEY_I))
-	  m_SquarPosition2.y += m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition2.y += 0.7f * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_J))
-	  m_SquarPosition2.x -= m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition2.x -= 0.7f * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_K))
-	  m_SquarPosition2.y -= m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition2.y -= 0.7f * timestep.GetSeconds();
 	if (Dark::Input::IsKeyPressed(DK_KEY_L))
-	  m_SquarPosition2.x += m_CameaSpeed * timestep.GetSeconds();
+	  m_SquarPosition2.x += 0.7f * timestep.GetSeconds();
 
 	Dark::RenderCommand::SetClearColor({ 0.1f, 0.2f, 0.2f, 1.0f });
 	Dark::RenderCommand::Clear();
-
-	m_Camera.SetPosition(m_CameraPosition);
-	m_Camera.SetRotation(0.0f);
 
 	auto texShader = m_ShaderLibrary.Get("Texture");
 	auto colorShader = m_ShaderLibrary.Get("ColorShader");
@@ -148,11 +134,10 @@ public:
 
 	glm::mat4 transform1 = glm::translate(glm::mat4(1.0f), m_SquarPosition1);
 	glm::mat4 transform2 = glm::translate(glm::mat4(1.0f), m_SquarPosition2) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 1.0f));
-
 	
 	// Begin Rendering
 	{
-	  Dark::Renderer::BeginScene(m_Camera);
+	  Dark::Renderer::BeginScene(m_CameraController.GetCamera());
 
 	  m_Texture->Bind();
 	  Dark::Renderer::Submit(texShader, m_VertexArray, transform1);
@@ -173,11 +158,9 @@ public:
 
   void OnEvent(Dark::Event& event) override
   {
+	m_CameraController.OnEvent(event);
   }
 private:
-  glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
-  float m_CameaSpeed = 0.8f;
-
   glm::vec3 m_SquarPosition1 = { 0.0f, 0.0f, 0.0f };
   glm::vec3 m_SquarPosition2 = { 0.0f, 0.0f, 0.0f };
 
@@ -187,11 +170,9 @@ private:
   Dark::Ref<Dark::Texture2D> m_Texture;
   Dark::Ref<Dark::Texture2D> m_TextureBlend;
 
-  Dark::OrthographicCamera m_Camera;
+  Dark::OrthographicCameraController m_CameraController;
 
   glm::vec4 m_SquareColor = { 0.7f, 0.1f, 0.1f, 0.7f };
-
-  Dark::Ref<Dark::Framebuffer> m_Framebuffer;
 };
 
 class SandBox :public Dark::Application
