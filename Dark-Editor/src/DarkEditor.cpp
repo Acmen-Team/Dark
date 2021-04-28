@@ -1,5 +1,5 @@
 #include <Dark.h>
-#include <Dark/EntryPoint.h>
+#include <Dark/Core/EntryPoint.h>
 
 #include "EditorLayer.h"
 

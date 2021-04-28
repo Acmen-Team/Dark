@@ -1,12 +1,11 @@
 #pragma once
 
 #include "Core.h"
-
 #include "Window.h"
-#include "Dark/LayerStack.h"
+#include "LayerStack.h"
+
 #include "Dark/Events/Event.h"
 #include "Dark/Events/ApplicationEvent.h"
-
 #include "Dark/ImGui/ImGuiLayer.h"
 
 namespace Dark {

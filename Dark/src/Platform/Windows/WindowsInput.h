@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Dark/Input.h"
+#include "Dark/Core/Input.h"
 
 namespace Dark {
 

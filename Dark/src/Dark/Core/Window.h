@@ -8,7 +8,8 @@ Description:Window base class
 
 #include "dkpch.h"
 
-#include "Dark/Core.h"
+#include "Core.h"
+
 #include "Dark/Events/Event.h"
 
 namespace Dark {

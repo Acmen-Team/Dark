@@ -1,9 +1,10 @@
 #include "dkpch.h"
+
 #include "Application.h"
 #include "Log.h"
+#include "Timestep.h"
 
-#include "Core/Timestep.h"
-#include "Renderer/Renderer.h"
+#include "Dark/Renderer/Renderer.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

@@ -1,7 +1,7 @@
 #include "dkpch.h"
 
 #include <Dark.h>
-#include <Dark/EntryPoint.h>
+#include <Dark/Core/EntryPoint.h>
 #include "ImGui/imgui.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"

@@ -2,9 +2,9 @@
 
 #include "OrthographicCameraController.h"
 
-#include "Dark/Input.h"
-#include "Dark/KeyCodes.h"
-#include "Dark/MouseButtonCodes.h"
+#include "Dark/Core/Input.h"
+#include "Dark/Core/KeyCodes.h"
+#include "Dark/Core/MouseButtonCodes.h"
 
 namespace Dark {
 

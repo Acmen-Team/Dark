@@ -7,9 +7,9 @@ Description:Windows platform Input
 
 #include "dkpch.h"
 #include "WindowsInput.h"
+#include "Dark/Core/Application.h"
 
 #include <GLFW/glfw3.h>
-#include "Dark/Application.h"
 
 namespace Dark {
 

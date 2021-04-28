@@ -1,12 +1,12 @@
 #pragma once
 
 // For use Application
-#include "Dark/Application.h"
-#include "Dark/Input.h"
-#include "Dark/KeyCodes.h"
-#include "Dark/Layer.h"
-#include "Dark/Log.h"
-#include "Dark/MouseButtonCodes.h"
+#include "Dark/Core/Application.h"
+#include "Dark/Core/Input.h"
+#include "Dark/Core/KeyCodes.h"
+#include "Dark/Core/Layer.h"
+#include "Dark/Core/Log.h"
+#include "Dark/Core/MouseButtonCodes.h"
 
 #include "Dark/ImGui/ImGuiLayer.h"
 

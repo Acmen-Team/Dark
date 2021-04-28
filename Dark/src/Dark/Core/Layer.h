@@ -6,8 +6,9 @@ Description:Layer abstract base class
 **************************************************/
 #pragma once
 
-#include "Dark/Core.h"
-#include "Dark/Core/Timestep.h"
+#include "Core.h"
+#include "Timestep.h"
+
 #include "Dark/Events/Event.h"
 
 namespace Dark {
