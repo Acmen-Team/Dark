@@ -39,3 +39,6 @@ We want to make a game using the Dark game engine.By using the proper tools that
 - Load and play the game inside Sandbox.
 
 We want everyone to be able to play the game on all desktop platforms (Windows, Mac and Linux). When this is implemented, attempt at the "Creating a game in one hour using Dark" will be made to see how far the engine has become.
+
+## Proposed a new engine architecture :
+ ![Architecture](./docs/images/Engine_Architecture.png)
