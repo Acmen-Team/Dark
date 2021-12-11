@@ -1,13 +1,15 @@
 #pragma once
 #include <Dark.h>
 
+typedef void*(*DLLFUNC)(void*);
+
 namespace Dark {
 
   class EditorLayer : public Layer
   {
   public:
 	EditorLayer();
-	virtual ~EditorLayer() = default;
+	virtual ~EditorLayer();
 
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;
@@ -15,6 +17,20 @@ namespace Dark {
 	virtual void OnEvent(Event& event) override;
 
 	virtual void OnImGuiRender() override;
+  protected:
+	HINSTANCE HDll;
+
+	DLLFUNC dllfunc = nullptr;
+
+	void* m_ContextData = nullptr;
+
+	size_t ctxSize;
+
+	void SelectEngineModule();
+	void DarkEngine();
+	void EngineModules();
+
+	float alpha{ 0.1f };
   private:
 	glm::vec3 m_SquarPosition1 = { 0.0f, 0.0f, 0.0f };
 	glm::vec3 m_SquarPosition2 = { 0.0f, 0.0f, 0.0f };
@@ -25,6 +41,7 @@ namespace Dark {
 	Ref<Texture2D> m_Texture;
 	Ref<Texture2D> m_TextureBlend;
 	Ref<Texture2D> m_DfaultTex;
+	Ref<Texture2D> m_DarkLogo;
 
 	OrthographicCameraController m_CameraController;
 

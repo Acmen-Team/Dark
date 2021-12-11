@@ -1,5 +1,6 @@
 #include "EditorLayer.h"
 #include "ImGui/imgui.h"
+#include "ImGui/imgui_internal.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
 
@@ -10,7 +11,34 @@ namespace Dark {
 
   EditorLayer::EditorLayer() :Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f)
   {
-	
+	ctxSize = sizeof(ImGuiContext);
+
+	m_ContextData = malloc(ctxSize);
+
+	if (m_ContextData != nullptr)
+	  memset(m_ContextData, 0, ctxSize);
+
+	//HDll = LoadLibrary(L"Dark-DLL.dll");
+	HDll = LoadLibrary(L"Dark-Render.dll");
+
+	if (HDll)
+	{
+	  dllfunc = (DLLFUNC)GetProcAddress(HDll, "RenderTest");
+
+	  if (dllfunc)
+	  {
+		std::cout << "DLL" << std::endl;
+	  }
+
+	}
+
+  }
+
+  EditorLayer::~EditorLayer()
+  {
+	FreeLibrary(HDll);
+
+	free(m_ContextData);
   }
 
   void EditorLayer::OnAttach()
@@ -94,6 +122,7 @@ namespace Dark {
 	m_Texture = Texture2D::Create("assets/textures/container.jpg");
 	m_TextureBlend = Texture2D::Create("assets/textures/face.png");
 	m_DfaultTex = Texture2D::Create("assets/textures/Checkerboard.png");
+	m_DarkLogo = Texture2D::Create("assets/textures/DarkLogo.png");
 
 	Dark::FramebufferSpecification fbSpec;
 	fbSpec.Width = 1280;
@@ -176,7 +205,8 @@ namespace Dark {
 
 	// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
 	// because it would be confusing to have two docking targets within each others.
-	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+	//ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking;
 	if (opt_fullscreen)
 	{
 	  ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -220,52 +250,163 @@ namespace Dark {
 	  ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 	}
 
-	if (ImGui::BeginMenuBar())
-	{
-	  if (ImGui::BeginMenu("File"))
-	  {
-		// Disabling fullscreen would allow the window to be moved to the front of other windows,
-		// which we can't undo at the moment without finer window depth/z control.
-		if (ImGui::MenuItem("Exit"))
-		  Dark::Application::Get().Exit();
+	//ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0, 0.0 });
 
-		ImGui::EndMenu();
+	SelectEngineModule();
+
+	memcpy(m_ContextData, ImGui::GetCurrentContext(), ctxSize);
+
+	ImGui::SetCurrentContext((ImGuiContext*)dllfunc(m_ContextData));
+
+	ImGui::End();
+  }
+
+  void EditorLayer::SelectEngineModule()
+  {
+	ImGui::Begin("Start Menu");
+
+	ImGuiDockNode* node = ImGui::GetWindowDockNode();
+	node->LocalFlags |= ImGuiDockNodeFlags_NoTabBar;
+
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.768f, 0.768f, 0.768f, 0.4f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 0.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.9f, 0.2f, 0.2f, 0.0f });
+
+	DarkEngine();
+
+	EngineModules();
+
+	//uint32_t id[2] = { m_DarkLogo->GetRendererID(), m_Texture->GetRendererID() };
+
+
+	//for (int i = 0; i < 2; i++)
+	//{
+	//  ImGui::PushID(id[i]);
+
+	//  ImGui::ImageButton((void*)id[i], ImVec2{ 128.0f, 128.0f }, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
+
+	//  ImGui::SameLine();
+
+	//  if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	//  {
+	//	ImGui::SetDragDropPayload("DND_DEMO_CELL", &id, sizeof(uint32_t));
+
+	//	ImGui::Text("Add");
+
+	//	ImGui::EndDragDropSource();
+	//  }
+	//  if (ImGui::BeginDragDropTarget())
+	//  {
+	//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
+	//	{
+	//	  IM_ASSERT(payload->DataSize == sizeof(int));
+	//	  int payload_n = *(const int*)payload->Data;
+
+
+	//	}
+	//	ImGui::EndDragDropTarget();
+	//  }
+
+	//  ImGui::PopID();
+	//}
+
+	ImGui::PopStyleColor(3);
+	//ImGui::SameLine();
+	//ImGui::ImageButton((void*)m_Texture->GetRendererID(), ImVec2{ 128.0f, 128.0f }, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
+
+	//ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+	//const ImVec2 p = ImGui::GetCursorScreenPos();
+
+	//drawList->AddTriangle()
+
+
+	ImGui::End();
+  }
+
+  void EditorLayer::DarkEngine()
+  {
+	uint32_t id = m_DarkLogo->GetRendererID();
+
+	ImGui::PushID(id);
+
+	ImGuiWindow* window = ImGui::GetCurrentWindow();
+
+	ImVec2 windowSize = ImGui::GetWindowSize();
+
+	//DK_CORE_INFO("{0}, {1}", windowSize.x, windowSize.y);
+
+	ImGui::SetCursorPos(ImVec2{ windowSize.x / 2 - 102.0f, windowSize.y / 2 - 142.5f });
+
+
+	//ImGui::ImageButton((void*)id, ImVec2{ 204.0f, 285.0f }, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f }, 0.0f, ImVec4(0.0f, 0.0f, 0.0f, 0.5f), ImVec4(1.0f, 1.0f, 1.0f, alpha));
+	ImGui::ImageButton((void*)id, ImVec2{ 204.0f, 285.0f }, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
+
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+	  ImGui::SetDragDropPayload("DND_DEMO_CELL", &id, sizeof(uint32_t));
+
+	  ImGui::Text("Add");
+
+	  ImGui::EndDragDropSource();
+	}
+	if (ImGui::BeginDragDropTarget())
+	{
+	  if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
+	  {
+		IM_ASSERT(payload->DataSize == sizeof(int));
+		int payload_n = *(const int*)payload->Data;
+
+		alpha += 0.1;
+	  }
+	  ImGui::EndDragDropTarget();
+	}
+
+	ImGui::PopID();
+  }
+
+  void EditorLayer::EngineModules()
+  {
+	ImVec2 pos = ImGui::GetCursorPos();
+	//DK_CORE_INFO("{0}, {1}", pos.x, pos.y);
+	ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
+
+	ImVec2 windowSize = ImGui::GetWindowSize();
+
+	ImGui::SetCursorPos(ImVec2{ windowSize.x / 2 - 163 , windowSize.y / 6 - 70.0f });
+
+	uint32_t ids[3] = { m_DarkLogo->GetRendererID() + 1, m_DarkLogo->GetRendererID() + 2, m_DarkLogo->GetRendererID() + 3 };
+
+	for (int i = 0; i < 3; i++)
+	{
+	  ImGui::PushID(ids[i]);
+
+	  ImGui::ImageButton((void*)(ids[i] - (i + 1)), ImVec2{ 102.0f, 142.5f }, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
+
+	  ImGui::SameLine();
+
+	  if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	  {
+		ImGui::SetDragDropPayload("DND_DEMO_CELL", &ids[i], sizeof(uint32_t));
+
+		ImGui::Text("Add");
+
+		ImGui::EndDragDropSource();
+	  }
+	  if (ImGui::BeginDragDropTarget())
+	  {
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
+		{
+		  IM_ASSERT(payload->DataSize == sizeof(int));
+		  int payload_n = *(const int*)payload->Data;
+
+
+		}
+		ImGui::EndDragDropTarget();
 	  }
 
-	  ImGui::EndMenuBar();
+	  ImGui::PopID();
 	}
-
-	// Scene
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0, 0.0 });
-	ImGui::Begin("Scene");
-	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-	if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize))
-	{
-	  m_Framebuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
-	  m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-	}
-	ImGui::Image((void*)m_Framebuffer->GetColorAttachmentRendererID(), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
-	ImGui::End();
-	ImGui::PopStyleVar();
-
-	// Detail
-	ImGui::Begin("Detail");
-	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
-	ImGui::End();
-
-	// Texture
-	ImGui::Begin("Texture");
-	ImGui::Text("Default Texture");
-	ImGui::ImageButton((void*)m_DfaultTex->GetRendererID(), ImVec2{ 64.0f, 64.0f });
-	ImGui::End();
-
-	//Setting
-	ImGui::Begin("Setting");
-	//Camera Rotation
-	//ImGui::DragFloat3("Camera Rotation", glm::value_ptr(m_CameraRotation), 0.03f);
-	ImGui::End();
-
-	ImGui::End();
   }
 
 }

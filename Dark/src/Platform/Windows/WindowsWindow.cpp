@@ -12,6 +12,8 @@ Description:Windows Platform Window class
 #include "Dark/Events/MouseEvent.h"
 #include "Platform/OpenGL/OpenGLContext.h"
 
+#include <stb_image.h>
+
 namespace Dark {
 
   static bool s_GLFWInitialized = false;
@@ -54,6 +56,17 @@ namespace Dark {
 	}
 
 	m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+
+	GLFWimage images;
+	int width, height, comp;
+	stbi_set_flip_vertically_on_load(true);
+
+	stbi_uc* data = stbi_load("assets/textures/Dark Engine1.png", &width, &height, &comp, 0);
+	images.height = height;
+	images.width = width;
+	images.pixels = data;
+
+	glfwSetWindowIcon(m_Window, 1, &images);
 	
 	m_Context = new OpenGLContext(m_Window);
 	m_Context->Init();

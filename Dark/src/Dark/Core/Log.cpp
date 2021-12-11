@@ -29,8 +29,8 @@ Description:Log System
 
 namespace Dark {
 
-  std::shared_ptr<spdlog::logger> Log::s_CoreLogger;
-  std::shared_ptr<spdlog::logger> Log::s_ClientLogger;
+  std::shared_ptr<spdlog::logger> Log::s_CoreLogger = nullptr;
+  std::shared_ptr<spdlog::logger> Log::s_ClientLogger = nullptr;
   
   void Log::Init()
   {
