@@ -70,7 +70,8 @@ project "Dark"
 		"GLFW",
 		"Glad",
 		"ImGui",
-		"opengl32.lib"
+		"opengl32.lib",
+		"XInput.lib"
 	}
 
 	filter "system:windows"
