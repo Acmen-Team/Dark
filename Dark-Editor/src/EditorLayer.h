@@ -1,4 +1,6 @@
 #pragma once
+#include "Panel/ContentBrowserPanel.h"
+
 #include <Dark.h>
 
 namespace Dark {
@@ -33,6 +35,8 @@ namespace Dark {
 	Ref<Framebuffer> m_Framebuffer;
 
 	glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+
+	ContentBrowserPanel m_Content;
   };
 
 }

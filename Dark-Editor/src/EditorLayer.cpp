@@ -1,8 +1,8 @@
 #include "EditorLayer.h"
-#include "ImGui/imgui.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
 
+#include <imgui/imgui.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -10,7 +10,7 @@ namespace Dark {
 
   EditorLayer::EditorLayer() :Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f)
   {
-	
+    DK_INFO("------Dark Editor Created!------");
   }
 
   void EditorLayer::OnAttach()
@@ -134,7 +134,7 @@ namespace Dark {
 
 	m_Framebuffer->Bind();
 
-	Dark::RenderCommand::SetClearColor({ 0.1f, 0.2f, 0.2f, 1.0f });
+	Dark::RenderCommand::SetClearColor({ 0.0f, 0.0f, 0.0f, 1.0f });
 	Dark::RenderCommand::Clear();
 
 	auto texShader = m_ShaderLibrary.Get("Texture");
@@ -180,8 +180,8 @@ namespace Dark {
 	if (opt_fullscreen)
 	{
 	  ImGuiViewport* viewport = ImGui::GetMainViewport();
-	  ImGui::SetNextWindowPos(viewport->GetWorkPos());
-	  ImGui::SetNextWindowSize(viewport->GetWorkSize());
+	  ImGui::SetNextWindowPos(viewport->WorkPos);
+	  ImGui::SetNextWindowSize(viewport->WorkSize);
 	  ImGui::SetNextWindowViewport(viewport->ID);
 	  ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 	  ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
@@ -264,6 +264,8 @@ namespace Dark {
 	//Camera Rotation
 	//ImGui::DragFloat3("Camera Rotation", glm::value_ptr(m_CameraRotation), 0.03f);
 	ImGui::End();
+
+	m_Content.OnImGuiRender();
 
 	ImGui::End();
   }

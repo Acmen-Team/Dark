@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Dark/Renderer/OrthographicCamera.h"
+#include "OrthographicCamera.h"
 #include "Dark/Core/Timestep.h"
 
 #include "Dark/Events/ApplicationEvent.h"

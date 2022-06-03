@@ -2,7 +2,7 @@
 
 #include "RenderCommand.h"
 #include "OrthographicCamera.h"
-#include "Shader.h"
+#include "Dark/Resource/Shader.h"
 
 #include <glm/glm.hpp>
 

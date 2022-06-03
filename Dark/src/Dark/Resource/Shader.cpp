@@ -1,7 +1,7 @@
 #include "dkpch.h"
 
 #include "Shader.h"
-#include "Renderer.h"
+#include "Dark/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Dark {

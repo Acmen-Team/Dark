@@ -97,14 +97,15 @@ namespace Dark {
 
   void ImGuiLayer::OnImGuiRender()
   {
-	ImGui::Begin("Renderer Info");
-	ImGui::Text("  Vendor: %s", glGetString(GL_VENDOR));
-	ImGui::Text("Renderer: %s", glGetString(GL_RENDERER));
-	ImGui::Text(" Version: %s", glGetString(GL_VERSION));
+	//ImGui::Begin("Renderer Info");
+	//ImGui::Text("  Vendor: %s", glGetString(GL_VENDOR));
+	//ImGui::Text("Renderer: %s", glGetString(GL_RENDERER));
+	//ImGui::Text(" Version: %s", glGetString(GL_VERSION));
 
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	//ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-	ImGui::End();
+	//ImGui::End();
+	// 
 	//static bool show_demo_window = true;
 	//static bool show_another_window = true;
 	//ImGui::ShowDemoWindow(&show_demo_window);

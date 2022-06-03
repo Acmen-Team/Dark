@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Dark/Renderer/Texture.h"
+#include "Dark/Resource/Texture.h"
 
 namespace Dark {
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "Dark/Renderer/Shader.h"
+#include "Dark/Resource/Shader.h"
 
 #include <glm/glm.hpp>
 

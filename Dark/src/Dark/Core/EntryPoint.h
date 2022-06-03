@@ -6,19 +6,19 @@ extern Dark::Application* Dark::CreateApplication();
 
 #ifdef DK_RELEASE
   #pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" )
-#endif // DK_DEBUG
+#endif // DK_RELEASE
 
 int main()
 {
-  int mainVer = 0;
-  int minVer = 3;
+  int majorVer = 0;
+  int minorVer = 1;
+  int patchVer = 0;
 
   Dark::Log::Init();
 
   DK_CORE_TRACE("------Initialized Log!------");
   DK_CORE_INFO("------Dark Engine StartUp!------");
-  DK_CORE_INFO("------Version(Alpha):{0}.{1}-------", mainVer, minVer);
-  DK_INFO("------SandBox Application Created!------");
+  DK_CORE_INFO("------Version(Alpha):{0}.{1}.{2}-------", majorVer, minorVer, patchVer);
 
   auto app = Dark::CreateApplication();
   app->StartUp();
