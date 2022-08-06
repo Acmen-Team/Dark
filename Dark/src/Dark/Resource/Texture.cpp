@@ -14,7 +14,22 @@ Ref<Texture2D> Texture2D::Create(const std::string &path)
       DK_CORE_ASSERT(false, "RendererAPI::None is not supported!");
       return nullptr;
     case RendererAPI::API::OpenGL:
-      return std::make_shared<OpenGLTexture2D>(path);
+      return CreateRef<OpenGLTexture2D>(path);
+  }
+
+  DK_CORE_ASSERT(false, "Unkonw RendererAPI!");
+  return nullptr;
+}
+
+Ref<Texture2D> Texture2D::LoadFromFile(const std::string& path)
+{
+  switch (Renderer::GetAPI())
+  {
+  case RendererAPI::API::None:
+    DK_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+    return nullptr;
+  case RendererAPI::API::OpenGL:
+    return CreateRef<OpenGLTexture2D>(path);
   }
 
   DK_CORE_ASSERT(false, "Unkonw RendererAPI!");

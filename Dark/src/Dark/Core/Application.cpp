@@ -67,7 +67,7 @@ namespace Dark {
 	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 	dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 
-	//DK_CORE_TRACE("{0}", e);
+	//DK_CORE_TRACE("{0}", e.ToString());
 
 	for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 	{

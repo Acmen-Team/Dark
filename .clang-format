@@ -1,37 +1,36 @@
-Language: Cpp
 BasedOnStyle: Microsoft
-
-AccessModifierOffset: -2
 IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+
+Language: Cpp
+
+IndentExternBlock: Indent
+
+AlignConsecutiveAssignments: Consecutive
+# AlignConsecutiveDeclarations: Consecutive
 AlignConsecutiveMacros: Consecutive
 AlignTrailingComments: true
+
 AllowShortBlocksOnASingleLine: Empty
-AllowShortIfStatementsOnASingleLine: Never
-AllowShortLambdasOnASingleLine: None
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortLambdasOnASingleLine: Empty
+
 BreakBeforeBraces: Custom
 BraceWrapping:
-  AfterCaseLabel: true
-  AfterClass: false
-  AfterEnum: true
-  AfterFunction: false
-  AfterNamespace: false
-  AfterStruct: true
-  AfterUnion: true
-  AfterExternBlock: false
-  BeforeCatch: true
-  BeforeElse: true
-  BeforeLambdaBody: false
-  BeforeWhile: true
-  IndentBraces: true
-  SplitEmptyFunction: false
-  SplitEmptyRecord: true
-  SplitEmptyNamespace: true
-BreakBeforeBraces: Mozilla
-BreakBeforeConceptDeclarations: true
-BreakConstructorInitializers: BeforeColon
-CompactNamespaces: true
-Cpp11BracedListStyle: false
-EmptyLineBeforeAccessModifier: LogicalBlock
-IndentCaseLabels: true
-IndentPPDirectives: AfterHash
-IndentRequires: false
+    AfterClass: true
+    AfterFunction: true
+    AfterNamespace: false
+    AfterNamespace: false
+    AfterStruct: true
+    AfterExternBlock: false
+    SplitEmptyFunction: true
+    SplitEmptyRecord: true
+    SplitEmptyNamespace: true
+NamespaceIndentation: All
+
+PointerAlignment: Left
+IndentCaseLabels: false
+ColumnLimit: 0
+
+SortIncludes: false

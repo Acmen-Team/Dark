@@ -7,6 +7,7 @@ Description:pch file
 #pragma once
 
 #include <iostream>
+
 #include <memory>
 #include <utility>
 #include <algorithm>
@@ -15,12 +16,16 @@ Description:pch file
 #include <string>
 #include <sstream>
 #include <vector>
+#include <map>
 #include <unordered_map>
 #include <unordered_set>
+
 #include <fstream>
+
+#include <filesystem>
 
 #include "Dark/Core/Log.h"
 
 #ifdef DK_PLATFORM_WINDOWS
-  #include <Windows.h>
+#include <Windows.h>
 #endif

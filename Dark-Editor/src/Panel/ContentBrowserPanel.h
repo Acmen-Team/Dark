@@ -2,8 +2,6 @@
 
 #include <Dark.h>
 
-#include <filesystem>
-
 namespace Dark {
 
   class ContentBrowserPanel
@@ -19,4 +17,4 @@ namespace Dark {
     Ref<Texture> m_DirectoryIcon;
   };
 
-}
+} // namespace Dark

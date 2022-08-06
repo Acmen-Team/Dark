@@ -24,6 +24,7 @@
 // ----------Resource-----------------
 #include "Dark/Resource/Texture.h"
 #include "Dark/Resource/Shader.h"
+#include "Dark/Resource/ResourceManager.h"
 
 // ----------EntryPoint---------------
 //#include "Dark/EntryPoint.h"
