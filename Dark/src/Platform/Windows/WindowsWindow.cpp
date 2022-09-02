@@ -56,7 +56,35 @@ namespace Dark {
       s_GLFWInitialized = true;
     }
 
+    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
+    glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR, GLFW_RELEASE_BEHAVIOR_FLUSH);
+
     m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+
+    glfwMakeContextCurrent(m_Window);
+    gladLoadGL();
+
+    GLFWimage images;
+    int imageWidth, imageHeight, imageComp;
+    stbi_set_flip_vertically_on_load(true);
+
+    stbi_uc* data = stbi_load("assets/Resource/DarkIcon.png", &imageWidth, &imageHeight, &imageComp, 0);
+    images.width  = imageWidth;
+    images.height = imageHeight;
+    images.pixels = data;
+
+    glfwSetWindowIcon(m_Window, 1, &images);
+
+    static int xpos, ypos, height, width;
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    glfwGetMonitorWorkarea(monitor, &xpos, &ypos, &width, &height);
+
+    m_Data.PosX = width / 2 - m_Data.Width / 2;
+    m_Data.PosY = height / 2 - m_Data.Height / 2;
+
+    glfwSetWindowPos(m_Window, m_Data.PosX, m_Data.PosY);
+    //glfwMaximizeWindow(m_Window);
 
     m_Context = new OpenGLContext(m_Window);
     m_Context->Init();
@@ -174,6 +202,15 @@ namespace Dark {
   bool WindowsWindow::IsVSync() const
   {
     return m_Data.VSync;
+  }
+
+  void WindowsWindow::SetWindowAttrib()
+  {
+    glfwSetWindowAttrib(m_Window, GLFW_DECORATED, GLFW_TRUE);
+    //glfwSetWindowAttrib(m_Window, GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_FALSE);
+    glfwMaximizeWindow(m_Window);
+    //glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
+    //glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_FALSE);
   }
 
 } // namespace Dark

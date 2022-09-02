@@ -14,40 +14,44 @@ Description:Windows PlatForm Window class
 
 namespace Dark {
 
-  class WindowsWindow :public Window
+  class WindowsWindow : public Window
   {
   public:
-	WindowsWindow(const WindowProps& props);
-	virtual ~WindowsWindow();
+    WindowsWindow(const WindowProps& props);
+    virtual ~WindowsWindow();
 
-	void OnUpdate() override;
-	
-	virtual void* GetNativeWindow() const override { return m_Window; }
-	inline unsigned int GetWidth() const override { return m_Data.Width; }
-	inline unsigned int GetHeight() const override { return m_Data.Height; }
+    virtual void OnUpdate() override;
 
-	// Window attribute
-	inline void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
-	void SetVSync(bool enabled) override;
-	bool IsVSync() const override;
+    virtual void* GetNativeWindow() const override { return m_Window; }
+    virtual inline float GetPosX() const override { return m_Data.PosX; }
+    virtual inline float GetPosY() const override { return m_Data.PosY; }
+    virtual inline unsigned int GetWidth() const override { return m_Data.Width; }
+    virtual inline unsigned int GetHeight() const override { return m_Data.Height; }
+
+    // Window attribute
+    inline void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
+    void SetVSync(bool enabled) override;
+    bool IsVSync() const override;
+    virtual void SetWindowAttrib() override;
   private:
-	virtual void Init(const WindowProps& props);
-	virtual void Shutdown();
+    virtual void Init(const WindowProps& props);
+    virtual void Shutdown();
+
   private:
-	GLFWwindow* m_Window;
-	RenderContext *m_Context;
+    GLFWwindow* m_Window;
+    RenderContext* m_Context;
 
-	struct WindowData
-	{
-	  std::string Title;
-	  unsigned int Width, Height;
-	  bool VSync;
+    struct WindowData
+    {
+      std::string Title;
+      unsigned int Width, Height;
+      float PosX, PosY;
+      bool VSync;
 
-	  EventCallbackFn EventCallback;
-	};
+      EventCallbackFn EventCallback;
+    };
 
-	WindowData m_Data;
+    WindowData m_Data;
   };
 
-
-}
+} // namespace Dark

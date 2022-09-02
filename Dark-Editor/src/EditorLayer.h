@@ -39,6 +39,8 @@ namespace Dark {
 
     glm::vec2 m_ViewportSize = {0.0f, 0.0f};
 
+    bool m_ViewPanelFocused;
+    bool m_ViewPanelHovered;
     ContentBrowserPanel m_Content;
   };
 

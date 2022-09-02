@@ -10,7 +10,7 @@ namespace Dark {
   ContentBrowserPanel::ContentBrowserPanel()
       : m_CurrentDirectory(g_AssetPath)
   {
-    m_DirectoryIcon = Texture2D::Create("assets/Resource/DirectoryIcon.png");
+    m_DirectoryIcon = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/Resource/DirectoryIcon.png");
   }
 
   void ContentBrowserPanel::OnImGuiRender()
@@ -42,11 +42,14 @@ namespace Dark {
       auto relativePath          = std::filesystem::relative(path, g_AssetPath);
       std::string filenameString = relativePath.filename().string();
 
+      Ref<Texture> icon = m_DirectoryIcon;
+
       ImGui::PushID(filenameString.c_str());
 
+      std::string strPath = path.string();
+      std::replace(strPath.begin(), strPath.end(), '\\', '/');
       if (std::string::npos != filenameString.find(".jpg") || std::string::npos != filenameString.find(".png"))
-        ResourceManager::Get().GetTextureAllocator()->AddRes(path.string());
-      Ref<Texture> icon = directoryEntry.is_directory() ? m_DirectoryIcon : ResourceManager::Get().GetTextureAllocator()->GetRes(path.string());
+        icon = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>(strPath);
 
       ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
       ImGui::ImageButton((ImTextureID)icon->GetRendererID(), {thumbnailSize, thumbnailSize}, {0, 1}, {1, 0});

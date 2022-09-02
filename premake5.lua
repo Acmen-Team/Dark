@@ -17,6 +17,7 @@ IncludeDir["GLFW"] = "Dark/vendor/GLFW/include"
 IncludeDir["Glad"] = "Dark/vendor/Glad/include"
 IncludeDir["ImGui"] = "Dark/vendor/imgui"
 IncludeDir["glm"] = "Dark/vendor/glm"
+IncludeDir["stduuid"] = "Dark/vendor/stduuid"
 IncludeDir["stb_image"] = "Dark/vendor/stb_image"
 
 group "Dependencies"
@@ -29,7 +30,7 @@ project "Dark"
 	location "Dark"
 	kind "StaticLib"
 	language "C++"
-	cppdialect "C++17"
+	cppdialect "C++20"
 	staticruntime "On"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
@@ -44,6 +45,7 @@ project "Dark"
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl",
+		"%{prj.name}/vendor/stduuid/**.h",
 		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/stb_image/**.cpp"
 	}
@@ -61,7 +63,8 @@ project "Dark"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stduuid}",
+		"%{IncludeDir.stb_image}",
 
 	}
 
@@ -99,10 +102,10 @@ project "Dark"
 		runtime "Release"
 		optimize "On"
 
-project "Sandbox"
-	location "Sandbox"
+project "Dark-Editor"
+	location "Dark-Editor"
 	language "C++"
-	cppdialect "C++17"
+	cppdialect "C++20"
 	staticruntime "On"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
@@ -118,9 +121,9 @@ project "Sandbox"
 	{
 		"Dark/vendor/spdlog/include",
 		"Dark/src",
-		"%{IncludeDir.ImGui}",
 		"Dark/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stduuid}"
 	}
 
 	links
@@ -154,15 +157,15 @@ project "Sandbox"
 		kind "WindowedApp"
 		optimize "On"
 
-project "Dark-Editor"
-	location "Dark-Editor"
+project "Sandbox"
+	location "Sandbox"
 	language "C++"
-	cppdialect "C++17"
+	cppdialect "C++20"
 	staticruntime "On"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
+	
 	files
 	{
 		"%{prj.name}/src/**.h",
@@ -173,8 +176,10 @@ project "Dark-Editor"
 	{
 		"Dark/vendor/spdlog/include",
 		"Dark/src",
+		"%{IncludeDir.ImGui}",
 		"Dark/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stduuid}"
 	}
 
 	links

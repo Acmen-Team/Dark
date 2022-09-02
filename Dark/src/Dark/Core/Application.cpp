@@ -11,107 +11,111 @@
 
 namespace Dark {
 
-  #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
   Application* Application::m_Instance = nullptr;
 
   Application::Application(const std::string& name)
   {
-	DK_CORE_ASSERT(!m_Instance, "Application already exists!");
-	Application::m_Instance = this;
+    DK_CORE_ASSERT(!m_Instance, "Application already exists!");
+    Application::m_Instance = this;
 
-	m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name)));
-	m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+    m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name)));
+    m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
-	Renderer::Init();
+    Renderer::Init();
 
-	m_ImGuiLayer = new ImGuiLayer();
-	PushOverlay(m_ImGuiLayer);
+    m_ImGuiLayer = new ImGuiLayer();
+    PushOverlay(m_ImGuiLayer);
   }
-  
+
   Application::~Application()
   {
-  
   }
-  
+
   void Application::StartUp()
   {
-	WindowResizeEvent e(1280, 720);
-	if (e.IsInCategory(EventCategoryApplication))
-	{
-	  while (m_Running)
-	  {
-		float time = (float)glfwGetTime();
-		Timestep timestep = time - m_LastFramTime;
-		m_LastFramTime = time;
+    WindowResizeEvent e(1280, 720);
+    if (e.IsInCategory(EventCategoryApplication))
+    {
+      while (m_Running)
+      {
+        float time        = (float)glfwGetTime();
+        Timestep timestep = time - m_LastFramTime;
+        m_LastFramTime    = time;
 
-		if (!m_Minimized)
-		{
-		  for (Layer* layer : m_LayerStack)
-			layer->OnUpdate(timestep);
+        if (!m_Minimized)
+        {
+          for (Layer* layer : m_LayerStack)
+            layer->OnUpdate(timestep);
 
-		  m_ImGuiLayer->Begin();
-		  for (Layer* layer : m_LayerStack)
-			layer->OnImGuiRender();
-		  m_ImGuiLayer->End();
-		}
+          m_ImGuiLayer->Begin();
+          for (Layer* layer : m_LayerStack)
+            layer->OnImGuiRender();
+          m_ImGuiLayer->End();
+        }
 
-		m_Window->OnUpdate();
-	  }
-	}
+        m_Window->OnUpdate();
+      }
+    }
   }
 
-  void Application::OnEvent(Event & e)
+  void Application::OnEvent(Event& e)
   {
-	EventDispatcher dispatcher(e);
-	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-	dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+    EventDispatcher dispatcher(e);
+    dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+    dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 
-	//DK_CORE_TRACE("{0}", e.ToString());
+    //DK_CORE_TRACE("{0}", e.ToString());
 
-	for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
-	{
-	  (*--it)->OnEvent(e);
-	  if(e.Handled)
-		break;
-	}
+    for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+    {
+      (*--it)->OnEvent(e);
+      if (e.Handled)
+        break;
+    }
   }
 
   void Application::PushLayer(Layer* layer)
   {
-	m_LayerStack.PushLayer(layer);
-	layer->OnAttach();
+    m_LayerStack.PushLayer(layer);
+    layer->OnAttach();
   }
 
   void Application::PushOverlay(Layer* layer)
   {
-	m_LayerStack.PushOverlay(layer);
-	layer->OnAttach();
+    m_LayerStack.PushOverlay(layer);
+    layer->OnAttach();
+  }
+
+  void Application::PopBottomLayer()
+  {
+    m_LayerStack.PopBottomLayer();
   }
 
   void Application::Exit()
   {
-	m_Running = false;
+    m_Running = false;
   }
 
-  bool Application::OnWindowClose(WindowCloseEvent & e)
+  bool Application::OnWindowClose(WindowCloseEvent& e)
   {
-	m_Running = false;
+    m_Running = false;
     return true;
   }
 
   bool Application::OnWindowResize(WindowResizeEvent& e)
   {
-	if (e.GetHeight() == 0 || e.GetWidth() == 0)
-	{ 
-	  m_Minimized = true;
-	  return false;
-	}
-	Renderer::WindowResize(e.GetWidth(), e.GetHeight());
+    if (e.GetHeight() == 0 || e.GetWidth() == 0)
+    {
+      m_Minimized = true;
+      return false;
+    }
+    Renderer::WindowResize(e.GetWidth(), e.GetHeight());
 
-	m_Minimized = false;
+    m_Minimized = false;
 
-	return false;
+    return false;
   }
 
-}
+} // namespace Dark
