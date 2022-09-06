@@ -19,6 +19,7 @@ IncludeDir["ImGui"] = "Dark/vendor/imgui"
 IncludeDir["glm"] = "Dark/vendor/glm"
 IncludeDir["stduuid"] = "Dark/vendor/stduuid"
 IncludeDir["stb_image"] = "Dark/vendor/stb_image"
+IncludeDir["Vulkan"] = "Dark/vendor/Vulkan/include"
 
 group "Dependencies"
 	include "Dark/vendor/GLFW"
@@ -47,7 +48,9 @@ project "Dark"
 		"%{prj.name}/vendor/glm/glm/**.inl",
 		"%{prj.name}/vendor/stduuid/**.h",
 		"%{prj.name}/vendor/stb_image/**.h",
-		"%{prj.name}/vendor/stb_image/**.cpp"
+		"%{prj.name}/vendor/stb_image/**.cpp",
+		"%{prj.name}/vendor/Vulkan/include/vulkan/**.h",
+		"%{prj.name}/vendor/Vulkan/include/vulkan/**.cpp"
 	}
 
 	defines
@@ -65,7 +68,7 @@ project "Dark"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stduuid}",
 		"%{IncludeDir.stb_image}",
-
+		"%{IncludeDir.Vulkan}",
 	}
 
 	links
@@ -74,7 +77,8 @@ project "Dark"
 		"Glad",
 		"ImGui",
 		"opengl32.lib",
-		"XInput.lib"
+		"XInput.lib",
+		"vulkan-1.lib"
 	}
 
 	filter "system:windows"
