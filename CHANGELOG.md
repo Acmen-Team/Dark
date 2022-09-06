@@ -5,6 +5,7 @@
 - add clang-format file
 
 ### Chore
+- add vulkan vendor
 - icon resource& ini file
 - adjust file directory& update imgui submodule
 - add Xinput lib
@@ -12,6 +13,7 @@
 - maintenance code
 
 ### Docs
+- add CHANGELOG
 - update Dark Engine execution diagram
 - update dark docs
 - An early idea
