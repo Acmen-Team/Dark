@@ -71,6 +71,8 @@ project "Dark"
 		"%{IncludeDir.Vulkan}",
 	}
 
+	libdirs { "Dark/vendor/Vulkan/Lib" }
+
 	links
 	{
 		"GLFW",
