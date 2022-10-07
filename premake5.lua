@@ -20,6 +20,9 @@ IncludeDir["glm"] = "Dark/vendor/glm"
 IncludeDir["stduuid"] = "Dark/vendor/stduuid"
 IncludeDir["stb_image"] = "Dark/vendor/stb_image"
 IncludeDir["Vulkan"] = "Dark/vendor/Vulkan/include"
+IncludeDir["entt"] = "Dark/vendor/entt/include"
+IncludeDir["ImGuizmo"] = "Dark/vendor/ImGuizmo"
+IncludeDir["IconFont"] = "Dark/vendor/IconFontCppHeaders"
 
 group "Dependencies"
 	include "Dark/vendor/GLFW"
@@ -49,6 +52,10 @@ project "Dark"
 		"%{prj.name}/vendor/stduuid/**.h",
 		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/stb_image/**.cpp",
+		"%{prj.name}/vendor/entt/include/entt.hpp",
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.h",
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp",
+		"%{prj.name}/vendor/IconFontCppHeaders/**.h",
 		"%{prj.name}/vendor/Vulkan/include/vulkan/**.h",
 		"%{prj.name}/vendor/Vulkan/include/vulkan/**.cpp"
 	}
@@ -69,6 +76,9 @@ project "Dark"
 		"%{IncludeDir.stduuid}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.Vulkan}",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.IconFont}",
 	}
 
 	libdirs { "Dark/vendor/Vulkan/Lib" }
@@ -83,14 +93,18 @@ project "Dark"
 		"vulkan-1.lib"
 	}
 
+	filter "files:Dark/vendor/ImGuizmo/**.cpp"
+	flags { "NoPCH" }
+
 	filter "system:windows"
 		systemversion "latest"
 
 		defines
 		{
 			"DK_PLATFORM_WINDOWS",
-			"DK_BUILD_DLL",
-			"DK_ENABLE_ASSERTS"
+			-- "DK_BUILD_DLL",
+			"DK_ENABLE_ASSERTS",
+			-- "DK_RENDER_VULKAN"
 		}
 
 	filter "configurations:Debug"
@@ -129,7 +143,8 @@ project "Dark-Editor"
 		"Dark/src",
 		"Dark/vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stduuid}"
+		"%{IncludeDir.stduuid}",
+		"%{IncludeDir.IconFont}",
 	}
 
 	links
@@ -161,6 +176,7 @@ project "Dark-Editor"
 		defines "DK_Dist"
 		runtime "Release"
 		kind "WindowedApp"
+		entrypoint "mainCRTStartup"
 		optimize "On"
 
 project "Sandbox"
@@ -217,4 +233,5 @@ project "Sandbox"
 		defines "DK_Dist"
 		runtime "Release"
 		kind "WindowedApp"
+		entrypoint "mainCRTStartup"
 		optimize "On"
