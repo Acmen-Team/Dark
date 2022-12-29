@@ -12,7 +12,8 @@ namespace Dark {
     DarkEditor()
         : Application("Dark Editor")
     {
-      PushLayer(new EditorLayer());
+      //PushLayer(new EditorLayer());
+      PushLayer(new StartLayer());
     }
     ~DarkEditor()
     {

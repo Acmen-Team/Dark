@@ -1,7 +1,12 @@
 #pragma once
 #include "Panel/ContentBrowserPanel.h"
+#include "Panel/SceneHierarchyPanel.h"
+#include "Panel/ToolBarPanel.h"
+#include "Panel/ECSPanel.h"
 
 #include <Dark.h>
+
+#include "EditorCameraController.h"
 
 namespace Dark {
 
@@ -18,30 +23,35 @@ namespace Dark {
 
     virtual void OnImGuiRender() override;
 
-  protected:
-    
   private:
-    glm::vec3 m_SquarPosition1 = {0.0f, 0.0f, 0.0f};
-    glm::vec3 m_SquarPosition2 = {0.0f, 0.0f, 0.0f};
+    // Editor Panel
+    ECSPanel m_ECSPanel;
+    ToolBarPanel m_ToolBar;
+    ContentBrowserPanel m_Content;
+    SceneHierarchyPanel m_SceneHierarchy;
+  private:
+    EditorCameraController m_CameraController;
 
-    Ref<VertexArray> m_VertexArray;
+    Entity m_SelectedEntity;
+    // Scene
+    Ref<Scene> m_Scene;
+    Ref<Serialize> m_Serialize;
 
-    ShaderLibrary m_ShaderLibrary;
-    Ref<Texture2D> m_Texture;
-    Ref<Texture2D> m_TextureBlend;
-    Ref<Texture2D> m_DfaultTex;
-
-    OrthographicCameraController m_CameraController;
+    Ref<Texture2D> m_EngineLogo;
+    Ref<Texture2D> m_Minimize;
+    Ref<Texture2D> m_Restore;
+    Ref<Texture2D> m_Close;
 
     glm::vec4 m_SquareColor = {0.7f, 0.1f, 0.1f, 0.7f};
 
-    Ref<Framebuffer> m_Framebuffer;
+    Ref<Camera> m_MainCamera;
+    Ref<Framebuffer> m_EditorViewFrameBuffer;
+    Ref<Framebuffer> m_MainCameraFrameBuffer;
 
     glm::vec2 m_ViewportSize = {0.0f, 0.0f};
 
     bool m_ViewPanelFocused;
     bool m_ViewPanelHovered;
-    ContentBrowserPanel m_Content;
   };
 
 } // namespace Dark

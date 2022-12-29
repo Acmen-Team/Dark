@@ -8,6 +8,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <ImGuizmo.h>
+
+#include <IconsFontAwesome6.h>
+
 namespace Dark {
 
   EditorLayer::EditorLayer()
@@ -19,176 +23,120 @@ namespace Dark {
 
   void EditorLayer::OnAttach()
   {
-    //矩形顶点数据
-    float vertices[] = {
-        0.5f, 0.5f, 0.0f, 1.0f, 1.0f,   // 右上角
-        0.5f, -0.5f, 0.0f, 1.0f, 0.0f,  // 右下角
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // 左下角
-        -0.5f, 0.5f, 0.0f, 0.0f, 1.0f   // 左上角
-    };
-    //索引绘制
-    uint32_t indices[] = {
-        // 注意索引从0开始!
-        0, 1, 3, // 第一个三角形
-        1, 2, 3  // 第二个三角形
-    };
+    m_EngineLogo   = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/resource/DarkIcon.png");
+    //m_Texture      = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/textures/Sprites/Tilesets/Fences.png");
+    //m_TextureBlend = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/textures/Sprites/Tilesets/Grass.png");
 
-    m_VertexArray.reset(Dark::VertexArray::Create());
 
-    Dark::Ref<Dark::VertexBuffer> m_VertexBuffer;
-    m_VertexBuffer.reset(Dark::VertexBuffer::Create(vertices, sizeof(vertices)));
-    Dark::BufferLayout layout = {
-        {Dark::ShaderDataType::Float3, "a_Pos"},
-        {Dark::ShaderDataType::Float2, "a_TexCoord"}};
-    m_VertexBuffer->SetLayout(layout);
-    m_VertexArray->AddVertexBuffer(m_VertexBuffer);
+    m_Minimize = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/resource/subtract20.png");
+    m_Restore  = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/resource/restore20.png");
+    m_Close    = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/resource/close20.png");
 
-    Dark::Ref<Dark::IndexBuffer> m_IndexBuffer;
-    m_IndexBuffer.reset(Dark::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
-    m_VertexArray->SetIndexBuffer(m_IndexBuffer);
+    //m_MainCamera->SetOrthographic(3.0f, 0.1f, 100.0f);
+    //m_MainCamera->SetViewMatrix(m_CameraController.GetCamera().GetViewMatrix());
 
-    std::string vertexShaderSource = R"(
-	  #version 330 core
-	  layout(location = 0) in vec3 a_Pos;
-	  layout(location = 1) in vec2 a_TexCoord;
-
-	  uniform mat4 u_ViewProjection;
-	  uniform mat4 u_Transform;
-
-	  out vec2 v_TexCoord;
-
-	  void main() 
-	  {
-		gl_Position = u_ViewProjection * u_Transform * vec4(a_Pos, 1.0);
-		v_TexCoord = a_TexCoord;
-	  }
-	)";
-
-    std::string fragmentShaderSource = R"(
-	  #version 330 core
-
-	  uniform sampler2D u_Texture;
-
-	  in vec2 v_TexCoord;
-	  out vec4 FragColor;
-
-	  void main() 
-	  {
-		FragColor = texture(u_Texture, v_TexCoord);
-	  }
-	)";
-
-    std::string ColorfragmentShaderSource = R"(
-	  #version 330 core
-
-	  uniform vec4 u_Color;
-
-	  in vec2 v_TexCoord;
-	  out vec4 FragColor;
-
-	  void main() 
-	  {
-		FragColor = u_Color;
-	  }
-	)";
-
-    auto texShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
-    m_ShaderLibrary.Add(Shader::Create("ColorShader", vertexShaderSource, ColorfragmentShaderSource));
-
-    m_Texture = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/textures/container.jpg");
-    m_TextureBlend = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/textures/face.png");
-    m_DfaultTex    = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/textures/Checkerboard.png");
 
     Dark::FramebufferSpecification fbSpec;
     fbSpec.Width  = 1280;
     fbSpec.Height = 720;
-    m_Framebuffer = Dark::Framebuffer::Create(fbSpec);
+    m_EditorViewFrameBuffer = Dark::Framebuffer::Create(fbSpec);
+    m_MainCameraFrameBuffer = Dark::Framebuffer::Create(fbSpec);
 
-    std::dynamic_pointer_cast<OpenGLShader>(texShader)->use();
-    std::dynamic_pointer_cast<OpenGLShader>(texShader)->UploadUniformInt("u_Texture", 0);
+    m_Serialize = CreateRef<Serialize>();
+    //m_Scene     = CreateRef<Scene>("SimpleScene1");
+    m_Scene     = m_Serialize->DeserializeRuntime("assets/scenes/SimpleScene.ds");
+    m_Serialize->SetSerializeScene(m_Scene);
+    m_SceneHierarchy.SetContext(m_Scene);
+    //m_Serialize->SerializeRuntime("assets/scenes/SimpleScene1.ds");
   }
 
   void EditorLayer::OnDetach()
   {
+    DK_CORE_INFO("EditorLayer OnDetach");
   }
 
   void EditorLayer::OnUpdate(Dark::Timestep timestep)
   {
     //PROFILE_SCOPE("EditorLayer::OnUpdate");
 
-    if (FramebufferSpecification spec = m_Framebuffer->GetSpecification();
+    if (FramebufferSpecification spec = m_EditorViewFrameBuffer->GetSpecification();
         m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // zero sized framebuffer is invalid
         (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
     {
-      m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+      m_EditorViewFrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 
-      //m_CameraController.OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+      m_CameraController.OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+
+      //m_MainCameraFrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+      //m_MainCamera->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
     }
     //DK_TRACE("Delta Time: {0}s  {1}ms", timestep.GetSeconds(), timestep.GetMilliseconds());
-    if (m_ViewPanelFocused)
-      m_CameraController.OnUpdate(timestep);
 
-    if (Dark::Input::IsKeyPressed(DK_KEY_LEFT))
-      m_SquarPosition1.x -= 0.7f * timestep.GetSeconds();
-    if (Dark::Input::IsKeyPressed(DK_KEY_RIGHT))
-      m_SquarPosition1.x += 0.7f * timestep.GetSeconds();
-    if (Dark::Input::IsKeyPressed(DK_KEY_DOWN))
-      m_SquarPosition1.y -= 0.7f * timestep.GetSeconds();
-    if (Dark::Input::IsKeyPressed(DK_KEY_UP))
-      m_SquarPosition1.y += 0.7f * timestep.GetSeconds();
+    m_EditorViewFrameBuffer->Bind();
 
-    if (Dark::Input::IsKeyPressed(DK_KEY_I))
-      m_SquarPosition2.y += 0.7f * timestep.GetSeconds();
-    if (Dark::Input::IsKeyPressed(DK_KEY_J))
-      m_SquarPosition2.x -= 0.7f * timestep.GetSeconds();
-    if (Dark::Input::IsKeyPressed(DK_KEY_K))
-      m_SquarPosition2.y -= 0.7f * timestep.GetSeconds();
-    if (Dark::Input::IsKeyPressed(DK_KEY_L))
-      m_SquarPosition2.x += 0.7f * timestep.GetSeconds();
-
-    m_Framebuffer->Bind();
-
-    Dark::RenderCommand::SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
-    Dark::RenderCommand::Clear();
-
-    auto texShader   = m_ShaderLibrary.Get("Texture");
-    auto colorShader = m_ShaderLibrary.Get("ColorShader");
-    std::dynamic_pointer_cast<OpenGLShader>(colorShader)->use();
-    std::dynamic_pointer_cast<OpenGLShader>(colorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
-
-    glm::mat4 transform1 = glm::translate(glm::mat4(1.0f), m_SquarPosition1);
-    glm::mat4 transform2 = glm::translate(glm::mat4(1.0f), m_SquarPosition2) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 1.0f));
-
-    // Begin Rendering
+    if (m_ToolBar.GetIsRuntime())
     {
-      Dark::Renderer::BeginScene(m_CameraController.GetCamera());
-
-      m_Texture->Bind();
-      Dark::Renderer::Submit(texShader, m_VertexArray, transform1);
-      m_TextureBlend->Bind();
-      Dark::Renderer::Submit(texShader, m_VertexArray);
-      Dark::Renderer::Submit(colorShader, m_VertexArray, transform2);
-      Dark::Renderer::Submit(colorShader, m_VertexArray, glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 1.0f)));
-      Dark::Renderer::EndScene();
+      m_Scene->OnUpdateRunTime(timestep);
     }
-    m_Framebuffer->UnBind();
+    else
+    {
+      if (m_ViewPanelFocused)
+        m_CameraController.OnUpdate(timestep);
+
+      m_Scene->OnUpdateEditor(m_CameraController.GetCamera(), timestep);
+    }
+
+    m_EditorViewFrameBuffer->UnBind();
+
+    if (m_SelectedEntity && m_SelectedEntity.HasComponent<CameraComponent>())
+    {
+      m_MainCameraFrameBuffer->Bind();
+      m_Scene->OnUpdateRunTime(timestep);
+      m_MainCameraFrameBuffer->UnBind();
+    }
   }
 
   void EditorLayer::OnEvent(Event& event)
   {
     //DK_TRACE("{0}", event);
-    m_CameraController.OnEvent(event);
+    if (m_ViewPanelHovered && !m_ToolBar.GetIsRuntime())
+      m_CameraController.OnEvent(event);
+  }
+
+  template <typename UIFunction>
+  static void SceneToolbar(ImGuiDockNode* node, const float DISTANCE, int* corner, UIFunction uiFunc)
+  {
+    ImGuiIO& io                   = ImGui::GetIO();
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+
+    ImVec2 work_area_pos  = node->Pos;
+    ImVec2 work_area_size = node->Size;
+
+    if (*corner != -1)
+    {
+      window_flags |= ImGuiWindowFlags_NoMove;
+      ImGuiViewport* viewport = ImGui::GetMainViewport();
+
+      ImVec2 window_pos       = ImVec2((*corner & 1) ? (work_area_pos.x + work_area_size.x - DISTANCE) : (work_area_pos.x + DISTANCE), (*corner & 2) ? (work_area_pos.y + work_area_size.y - DISTANCE) : (work_area_pos.y + DISTANCE));
+      ImVec2 window_pos_pivot = ImVec2((*corner & 1) ? 1.0f : 0.0f, (*corner & 2) ? 1.0f : 0.0f);
+      ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+      ImGui::SetNextWindowViewport(viewport->ID);
+    }
+    ImGui::SetNextWindowBgAlpha(0.3f); // Transparent background
+
+    uiFunc(corner, work_area_size, window_flags);
   }
 
   void EditorLayer::OnImGuiRender()
   {
     static bool opt_fullscreen                = true;
     static bool opt_padding                   = false;
-    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_NoWindowMenuButton;
     static bool* p_open;
 
     // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
     // because it would be confusing to have two docking targets within each others.
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 7));
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
     if (opt_fullscreen)
     {
@@ -225,6 +173,76 @@ namespace Dark {
     if (opt_fullscreen)
       ImGui::PopStyleVar(2);
 
+    ImVec2 availSize = ImGui::GetContentRegionAvail();
+
+    if (ImGui::BeginMenuBar())
+    {
+      ImGui::Image((ImTextureID)m_EngineLogo->GetRendererID(), ImVec2(m_EngineLogo->GetHeight(), m_EngineLogo->GetWidth()));
+
+      if (ImGui::BeginMenu("File"))
+      {
+        // Disabling fullscreen would allow the window to be moved to the front of other windows,
+        // which we can't undo at the moment without finer window depth/z control.
+        if (ImGui::MenuItem("Save"))
+          m_Serialize->SerializeRuntime("assets/scenes/SimpleScene.ds");
+        if (ImGui::MenuItem("Exit"))
+          Dark::Application::Get().Exit();
+
+        ImGui::EndMenu();
+      }
+
+      if (ImGui::BeginMenu("Edit"))
+      {
+        ImGui::EndMenu();
+      }
+
+      if (ImGui::BeginMenu("Windows"))
+      {
+        ImGui::EndMenu();
+      }
+
+      if (ImGui::BeginMenu("Help"))
+      {
+        ImGui::EndMenu();
+      }
+
+      //ImGui::SameLine(ImGui::GetContentRegionAvailWidth() / 2, 0.0f);
+
+      //ImGui::SetCursorPosY(curCursorPos.y + off);
+      ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+      //ImVec2 p0 = ImGui::GetCursorScreenPos();
+
+      drawList->AddRectFilled(ImVec2(availSize.x / 1.3, 2), ImVec2(availSize.x / 1.3 + ImGui::CalcTextSize("SandBox").x + 20, 30), ImGui::GetColorU32(IM_COL32(10, 5, 10, 255)));
+      drawList->AddText(ImGui::GetFont(), 18, ImVec2(availSize.x / 1.3 + 5, 6), ImGui::GetColorU32(IM_COL32(255, 255, 255, 255)), "SandBox");
+
+      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.205f, 0.21f, 1.0f});
+      ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.3f, 0.305f, 0.31f, 1.0f});
+      ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.15f, 0.1505f, 0.151f, 1.0f});
+      ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12, 7));
+      //ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 8.0f);
+      ImGui::SameLine(availSize.x - (44 * 3));
+      if (ImGui::ImageButton((void*)m_Minimize->GetRendererID(), ImVec2(m_Minimize->GetWidth(), m_Minimize->GetHeight()), ImVec2(0, 1), ImVec2(1, 0), -1.0f, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.7f)))
+      {
+        Dark::Application::Get().GetWindow().SetMinimize();
+      }
+      ImGui::SameLine(0, 0);
+      if (ImGui::ImageButton((void*)m_Restore->GetRendererID(), ImVec2(m_Restore->GetWidth(), m_Restore->GetHeight()), ImVec2(0, 1), ImVec2(1, 0), -1.0f, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.7f)))
+      {
+        Dark::Application::Get().GetWindow().SetMaximizeOrRestore();
+      }
+      ImGui::SameLine(0, 0);
+      if (ImGui::ImageButton((void*)m_Close->GetRendererID(), ImVec2(m_Close->GetWidth(), m_Close->GetHeight()), ImVec2(0, 1), ImVec2(1, 0), -1.0f, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.7f)))
+      {
+        Dark::Application::Get().Exit();
+      }
+      ImGui::PopStyleVar();
+      ImGui::PopStyleColor(3);
+
+      ImGui::EndMenuBar();
+    }
+    ImGui::PopStyleVar(1);
+
     // DockSpace
     ImGuiIO& io = ImGui::GetIO();
     if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
@@ -233,20 +251,7 @@ namespace Dark {
       ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
     }
 
-    if (ImGui::BeginMenuBar())
-    {
-      if (ImGui::BeginMenu("File"))
-      {
-        // Disabling fullscreen would allow the window to be moved to the front of other windows,
-        // which we can't undo at the moment without finer window depth/z control.
-        if (ImGui::MenuItem("Exit"))
-          Dark::Application::Get().Exit();
-
-        ImGui::EndMenu();
-      }
-
-      ImGui::EndMenuBar();
-    }
+    //m_ToolBar.OnImGuiRender();
 
     // Scene
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0.0, 0.0});
@@ -260,20 +265,104 @@ namespace Dark {
     ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
     m_ViewportSize           = {viewportPanelSize.x, viewportPanelSize.y};
 
-    ImGui::Image((void*)m_Framebuffer->GetColorAttachmentRendererID(), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0.0f, 1.0f}, ImVec2{1.0f, 0.0f});
+    ImGui::Image((void*)m_EditorViewFrameBuffer->GetColorAttachmentRendererID(), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0.0f, 1.0f}, ImVec2{1.0f, 0.0f});
+
+    // ImGuizmo
+    m_SelectedEntity = m_SceneHierarchy.GetSelectEntity();
+    if (m_SelectedEntity)
+    {
+      ImGuizmo::SetOrthographic(false);
+      ImGuizmo::SetDrawlist();
+
+      float windowWidth  = (float)ImGui::GetWindowWidth();
+      float windowHeight = (float)ImGui::GetWindowHeight();
+
+      ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+      glm::mat4 cameraProjection;
+      glm::mat4 cameraView;
+      //glm::mat4 cameraView = glm::inverse(m_CameraController.GetCamera().GetTransform());
+      if (m_ToolBar.GetIsRuntime())
+      {
+        //cameraProjection = m_MainCamera->GetProjectionMatrix();
+        //cameraView       = m_MainCamera->GetViewMatrix();
+      }
+      else
+      {
+        cameraProjection = m_CameraController.GetCamera().GetProjectionMatrix();
+        cameraView       = m_CameraController.GetCamera().GetViewMatrix();
+      }
+
+      auto& tc = m_SelectedEntity.GetComponent<TransformComponent>();
+
+      glm::mat4 transformation = tc.GetTransform();
+
+      ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection), (ImGuizmo::OPERATION)0, ImGuizmo::LOCAL, glm::value_ptr(transformation));
+
+      if (ImGuizmo::IsUsing())
+      {
+        glm::vec3 translation, rotation, scale;
+        Math::DecomposeTransform(transformation, translation, rotation, scale);
+
+        tc.Translation          = translation;
+        glm::vec3 deltaRotation = rotation - tc.Rotation;
+        tc.Rotation += deltaRotation;
+        tc.Scale = scale;
+      }
+    }
+
+    static int settingCorner = 3;
+
+    SceneToolbar(node, 10.0f, &settingCorner, [&](int* corner, const ImVec2& work_area_size, const ImGuiWindowFlags m_window_flags) {
+      ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
+      float buttonSize = 25.0f;
+      if (ImGui::Begin("Setting Toolbar", p_open, m_window_flags))
+      {
+        if (work_area_size.x < 100)
+        {
+          buttonSize = work_area_size.x / 4;
+        }
+
+        if (m_SelectedEntity && m_SelectedEntity.HasComponent<CameraComponent>())
+        {
+          // MainCamera preview
+          ImGui::Text("MainCamera");
+          ImGui::Separator();
+          ImGui::Image((void*)m_MainCameraFrameBuffer->GetColorAttachmentRendererID(), ImVec2{m_ViewportSize.x / 4, m_ViewportSize.y / 4}, ImVec2{0.0f, 1.0f}, ImVec2{1.0f, 0.0f});
+        }
+
+        /*
+		  ImGui::Text("Simple overlay\n" "in the corner of the screen.\n" "(right-click to change position)");
+		  ImGui::Separator();
+		  if (ImGui::IsMousePosValid())
+			ImGui::Text("Mouse Position: (%.1f,%.1f)", io.MousePos.x, io.MousePos.y);
+		  else
+			ImGui::Text("Mouse Position: <invalid>");
+		  if (ImGui::BeginPopupContextWindow())
+		  {
+			if (ImGui::MenuItem("Custom", NULL, *corner == -1)) *corner = -1;
+			if (ImGui::MenuItem("Top-left", NULL, *corner == 0)) *corner = 0;
+			if (ImGui::MenuItem("Top-right", NULL, *corner == 1)) *corner = 1;
+			if (ImGui::MenuItem("Bottom-left", NULL, *corner == 2)) *corner = 2;
+			if (ImGui::MenuItem("Bottom-right", NULL, *corner == 3)) *corner = 3;
+			if (p_open && ImGui::MenuItem("Close")) *p_open = false;
+			ImGui::EndPopup();
+		  }
+		  */
+      }
+
+      ImGui::End();
+      ImGui::PopStyleVar();
+    });
 
     ImGui::End();
     ImGui::PopStyleVar();
 
+    static bool detail_open = false;
     // Detail
-    ImGui::Begin("Detail");
+    ImGui::Begin("Detail", &detail_open);
     ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
-    ImGui::End();
-
-    // Texture
-    ImGui::Begin("Texture");
-    ImGui::Text("Default Texture");
-    ImGui::ImageButton((void*)m_DfaultTex->GetRendererID(), ImVec2{64.0f, 64.0f});
     ImGui::End();
 
     //Setting
@@ -282,9 +371,88 @@ namespace Dark {
     //ImGui::DragFloat3("Camera Rotation", glm::value_ptr(m_CameraRotation), 0.03f);
     ImGui::End();
 
+    m_ECSPanel.OnImGuiRender();
     m_Content.OnImGuiRender();
+    m_SceneHierarchy.OnImGuiRender();
+    m_ToolBar.OnImGuiRender();
 
     ImGui::End();
+
+    /*
+    {
+      ImGuiWindowClass window_class2;
+      window_class2.ClassId                  = ImGui::GetID("XXX");
+      window_class2.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoDockingSplitOther | ImGuiDockNodeFlags_NoDockingSplitMe;
+      window_class2.DockingAllowUnclassed    = false;
+
+      //-----------------Window2------------------------------
+      ImGui::SetNextWindowClass(&window_class2);
+      ImGui::Begin("##Window2", nullptr, ImGuiWindowFlags_NoCollapse);
+
+      ImGuiID dockSpace2 = ImGui::GetID("dockSpace2");
+      ImGui::DockSpace(dockSpace2);
+
+      const ImGuiWindow* window = ImGui::GetCurrentWindow();
+      const ImRect titleBarRect = window->TitleBarRect();
+      ImGui::PushClipRect(titleBarRect.Min, titleBarRect.Max, false);
+      ImGui::SetCursorPos(ImVec2(80.0f, 0.0f));
+      // button works fine until the window is docked
+      ImGui::Button("Overlapping Button");
+      ImGui::PopClipRect();
+
+      ImGui::End();
+
+      ImGuiWindowClass window_class2_for_subwindow;
+      window_class2_for_subwindow.ClassId                  = ImGui::GetID("Window2");
+      window_class2_for_subwindow.DockNodeFlagsOverrideSet = 0;
+      window_class2_for_subwindow.DockingAllowUnclassed    = true;
+
+      //-----------------Window2_A------------------------------
+      ImGui::SetNextWindowClass(&window_class2_for_subwindow);
+      ImGui::Begin("Window2_A");
+      ImGui::End();
+
+      //-----------------Window2_B------------------------------
+      ImGui::SetNextWindowClass(&window_class2_for_subwindow);
+      ImGui::Begin("Window2_B");
+      ImGui::End();
+
+      //-----------------Window2_C------------------------------
+      ImGui::SetNextWindowClass(&window_class2_for_subwindow);
+      ImGui::Begin("Window2_C");
+      ImGui::End();
+    }
+
+    {
+      //-----------------window3------------------------------
+      ImGuiWindowClass window_class3;
+      window_class3.ClassId                  = ImGui::GetID("XXX");
+      window_class3.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoDockingSplitOther | ImGuiDockNodeFlags_NoDockingSplitMe;
+      window_class3.DockingAllowUnclassed    = false;
+      ImGui::SetNextWindowClass(&window_class3);
+      ImGui::Begin("Window3");
+
+      ImGuiID dockSpace3 = ImGui::GetID("dockSpace3");
+      ImGui::DockSpace(dockSpace3);
+
+      ImGui::End();
+
+      ImGuiWindowClass window_class3_for_subwindow;
+      window_class3_for_subwindow.ClassId                  = ImGui::GetID("Window3");
+      window_class3_for_subwindow.DockNodeFlagsOverrideSet = 0;
+      window_class3_for_subwindow.DockingAllowUnclassed    = true;
+
+      //-----------------Window3_A------------------------------
+      ImGui::SetNextWindowClass(&window_class3_for_subwindow);
+      ImGui::Begin("Window3_A");
+      ImGui::End();
+
+      //-----------------Window3_B------------------------------
+      ImGui::SetNextWindowClass(&window_class3_for_subwindow);
+      ImGui::Begin("Window3_B");
+      ImGui::End();
+    }
+    */
   }
 
 } // namespace Dark
