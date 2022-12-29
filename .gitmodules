@@ -15,4 +15,4 @@
 	url = https://github.com/Holy-YxY/yaml-cpp
 [submodule "Dark/vendor/OpenXR"]
 	path = Dark/vendor/OpenXR
-	url = https://github.com/KhronosGroup/OpenXR-SDK/
+url=https://github.com/Acmen-Team/OpenXR-SDK/
