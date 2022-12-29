@@ -19,23 +19,29 @@ IncludeDir["ImGui"] = "Dark/vendor/imgui"
 IncludeDir["glm"] = "Dark/vendor/glm"
 IncludeDir["stduuid"] = "Dark/vendor/stduuid"
 IncludeDir["stb_image"] = "Dark/vendor/stb_image"
+IncludeDir["tinyobjloader"] = "Dark/vendor/tinyobjloader"
 IncludeDir["Vulkan"] = "Dark/vendor/Vulkan/include"
 IncludeDir["entt"] = "Dark/vendor/entt/include"
 IncludeDir["ImGuizmo"] = "Dark/vendor/ImGuizmo"
 IncludeDir["IconFont"] = "Dark/vendor/IconFontCppHeaders"
+IncludeDir["GSL"] = "Dark/vendor/GSL/include/"
+IncludeDir["yaml_cpp"] = "Dark/vendor/yaml_cpp/include"
+IncludeDir["OpenXR"] = "Dark/vendor/OpenXR/include"
 
 group "Dependencies"
 	include "Dark/vendor/GLFW"
 	include "Dark/vendor/Glad"
 	include "Dark/vendor/imgui"
+	include "Dark/vendor/yaml_cpp"
+	include "Dark/vendor/OpenXR"
 group ""
 
 project "Dark"
 	location "Dark"
 	kind "StaticLib"
 	language "C++"
-	cppdialect "C++20"
-	staticruntime "On"
+	cppdialect "C++17"
+	staticruntime "Off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -52,12 +58,14 @@ project "Dark"
 		"%{prj.name}/vendor/stduuid/**.h",
 		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/stb_image/**.cpp",
+		"%{prj.name}/vendor/tinyobjloader/**.h",
 		"%{prj.name}/vendor/entt/include/entt.hpp",
 		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.h",
 		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp",
 		"%{prj.name}/vendor/IconFontCppHeaders/**.h",
 		"%{prj.name}/vendor/Vulkan/include/vulkan/**.h",
-		"%{prj.name}/vendor/Vulkan/include/vulkan/**.cpp"
+		"%{prj.name}/vendor/Vulkan/include/vulkan/**.cpp",
+		"%{prj.name}/vendor/GSL/include/gsl/**",
 	}
 
 	defines
@@ -71,14 +79,17 @@ project "Dark"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.OpenXR}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stduuid}",
 		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.tinyobjloader}",
 		"%{IncludeDir.Vulkan}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.IconFont}",
+		"%{IncludeDir.GSL}",
 	}
 
 	libdirs { "Dark/vendor/Vulkan/Lib" }
@@ -90,7 +101,9 @@ project "Dark"
 		"ImGui",
 		"opengl32.lib",
 		"XInput.lib",
-		"vulkan-1.lib"
+		"vulkan-1.lib",
+		"yaml-cpp",
+		"OpenXR-Loader",
 	}
 
 	filter "files:Dark/vendor/ImGuizmo/**.cpp"
@@ -125,8 +138,8 @@ project "Dark"
 project "Dark-Editor"
 	location "Dark-Editor"
 	language "C++"
-	cppdialect "C++20"
-	staticruntime "On"
+	cppdialect "C++17"
+	staticruntime "Off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -143,8 +156,11 @@ project "Dark-Editor"
 		"Dark/src",
 		"Dark/vendor",
 		"%{IncludeDir.glm}",
+		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.stduuid}",
 		"%{IncludeDir.IconFont}",
+		"%{IncludeDir.GSL}",
+		"%{IncludeDir.entt}",
 	}
 
 	links
@@ -182,8 +198,8 @@ project "Dark-Editor"
 project "Sandbox"
 	location "Sandbox"
 	language "C++"
-	cppdialect "C++20"
-	staticruntime "On"
+	cppdialect "C++17"
+	staticruntime "Off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -199,9 +215,11 @@ project "Sandbox"
 		"Dark/vendor/spdlog/include",
 		"Dark/src",
 		"%{IncludeDir.ImGui}",
-		"Dark/vendor",
+		-- "Dark/vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stduuid}"
+		"%{IncludeDir.stduuid}",
+		"%{IncludeDir.GSL}",
+		"%{IncludeDir.entt}",
 	}
 
 	links
