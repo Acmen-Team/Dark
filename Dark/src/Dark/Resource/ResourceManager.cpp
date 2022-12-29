@@ -24,7 +24,7 @@ namespace Dark {
       if (it->first->uuid == resUuid)
         return it->second;
     }
-    DK_CORE_ERROR("Get Ressource Fatal:{0}", resUuid->GetUUIDString());
+    DK_CORE_ERROR("Get Ressource Fatal:{0}", resUuid->ConvertUUIDToString());
     return nullptr;
   }
 
@@ -71,10 +71,10 @@ namespace Dark {
   {
     for (auto it = m_Resources.begin(); it != m_Resources.end(); it++)
     {
-      if (it->first->uuid == resUuid)
+      if (resUuid == it->first->uuid)
         return true;
     }
-    DK_CORE_ERROR("Has Ressource Fatal:{0}", resUuid.GetUUIDString());
+    DK_CORE_ERROR("Has Ressource Fatal:{0}", resUuid.ConvertUUIDToString());
     return false;
   }
 

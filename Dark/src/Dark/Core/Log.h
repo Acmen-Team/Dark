@@ -46,16 +46,46 @@ namespace Dark {
 
 }
 
+#if defined(DK_DEBUG)
 // Core log macros
-#define DK_CORE_TRACE(...)		::Dark::Log::GetCoreLogger()->trace(__VA_ARGS__);
-#define DK_CORE_INFO(...)		::Dark::Log::GetCoreLogger()->info(__VA_ARGS__);
-#define DK_CORE_WARN(...)		::Dark::Log::GetCoreLogger()->warn(__VA_ARGS__);
-#define DK_CORE_ERROR(...)		::Dark::Log::GetCoreLogger()->error(__VA_ARGS__);
-#define DK_CORE_FATAL(...)		::Dark::Log::GetCoreLogger()->fatal(__VA_ARGS__);
+#define DK_CORE_TRACE(...) ::Dark::Log::GetCoreLogger()->trace(__VA_ARGS__);
+#define DK_CORE_INFO(...)  ::Dark::Log::GetCoreLogger()->info(__VA_ARGS__);
+#define DK_CORE_WARN(...)  ::Dark::Log::GetCoreLogger()->warn(__VA_ARGS__);
+#define DK_CORE_ERROR(...) ::Dark::Log::GetCoreLogger()->error(__VA_ARGS__);
+#define DK_CORE_CRITICAL(...) ::Dark::Log::GetCoreLogger()->critical(__VA_ARGS__);
 
 // App log macros
-#define DK_TRACE(...)			::Dark::Log::GetClientLogger()->trace(__VA_ARGS__);
-#define DK_INFO(...)			::Dark::Log::GetClientLogger()->info(__VA_ARGS__);
-#define DK_WARN(...)			::Dark::Log::GetClientLogger()->warn(__VA_ARGS__);
-#define DK_ERROR(...)			::Dark::Log::GetClientLogger()->error(__VA_ARGS__);
-#define DK_FATAL(...)			::Dark::Log::GetClientLogger()->fatal(__VA_ARGS__);
+#define DK_TRACE(...) ::Dark::Log::GetClientLogger()->trace(__VA_ARGS__);
+#define DK_INFO(...)  ::Dark::Log::GetClientLogger()->info(__VA_ARGS__);
+#define DK_WARN(...)  ::Dark::Log::GetClientLogger()->warn(__VA_ARGS__);
+#define DK_ERROR(...) ::Dark::Log::GetClientLogger()->error(__VA_ARGS__);
+#define DK_CRITICAL(...) ::Dark::Log::GetClientLogger()->critical(__VA_ARGS__);
+#elif defined(DK_RELEASE)
+// Core log macros
+#define DK_CORE_TRACE(...)
+#define DK_CORE_INFO(...)
+#define DK_CORE_WARN(...)
+#define DK_CORE_ERROR(...)
+#define DK_CORE_FATAL(...)
+
+// App log macros
+#define DK_TRACE(...) ::Dark::Log::GetClientLogger()->trace(__VA_ARGS__);
+#define DK_INFO(...)  ::Dark::Log::GetClientLogger()->info(__VA_ARGS__);
+#define DK_WARN(...)  ::Dark::Log::GetClientLogger()->warn(__VA_ARGS__);
+#define DK_ERROR(...) ::Dark::Log::GetClientLogger()->error(__VA_ARGS__);
+#define DK_CRITICAL(...) ::Dark::Log::GetClientLogger()->critical(__VA_ARGS__);
+#else
+// Core log macros
+#define DK_CORE_TRACE(...)
+#define DK_CORE_INFO(...)
+#define DK_CORE_WARN(...)
+#define DK_CORE_ERROR(...)
+#define DK_CORE_FATAL(...)
+
+// App log macros
+#define DK_TRACE(...)
+#define DK_INFO(...)
+#define DK_WARN(...)
+#define DK_ERROR(...)
+#define DK_FATAL(...)
+#endif

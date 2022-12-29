@@ -16,9 +16,9 @@ int main()
 
   Dark::Log::Init();
 
-  DK_CORE_TRACE("------Initialized Log!------");
-  DK_CORE_INFO("------Dark Engine StartUp!------");
-  DK_CORE_INFO("------Version(Alpha):{0}.{1}.{2}-------", majorVer, minorVer, patchVer);
+  DK_CORE_TRACE("------------Initialized Log------------");
+  DK_CORE_TRACE("------------Dark Engine StartUp------------");
+  DK_CORE_INFO("------------Version(Alpha):{0}.{1}.{2}------------", majorVer, minorVer, patchVer);
 
   auto app = Dark::CreateApplication();
   app->StartUp();

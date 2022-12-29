@@ -10,7 +10,12 @@ Description:Windows PlatForm Window class
 #include "Dark/Renderer/RendererContext.h"
 
 #include "glad/glad.h"
+#define GLFW_INCLUDE_VULKAN
+#define GLFW_EXPOSE_NATIVE_WIN32
+#define GLFW_EXPOSE_NATIVE_WGL
+#define GLFW_NATIVE_INCLUDE_NONE
 #include <GLFW/glfw3.h>
+#include <GLFW/glfw3native.h>
 
 namespace Dark {
 
@@ -19,6 +24,10 @@ namespace Dark {
   public:
     WindowsWindow(const WindowProps& props);
     virtual ~WindowsWindow();
+
+    virtual void SetWindowAttrib() override;
+    virtual void SetMinimize() override;
+    virtual void SetMaximizeOrRestore() override;
 
     virtual void OnUpdate() override;
 
@@ -30,9 +39,8 @@ namespace Dark {
 
     // Window attribute
     inline void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
-    void SetVSync(bool enabled) override;
-    bool IsVSync() const override;
-    virtual void SetWindowAttrib() override;
+    virtual void SetVSync(bool enabled) override;
+    virtual bool IsVSync() const override;
   private:
     virtual void Init(const WindowProps& props);
     virtual void Shutdown();
@@ -40,6 +48,7 @@ namespace Dark {
   private:
     GLFWwindow* m_Window;
     RenderContext* m_Context;
+    VkInstance m_Instance;
 
     struct WindowData
     {

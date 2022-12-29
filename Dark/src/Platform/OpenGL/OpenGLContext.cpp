@@ -17,11 +17,10 @@ namespace Dark {
 	int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	DK_CORE_ASSERT(status, "Failed to initialize Glad!");
 
-	DK_CORE_INFO("------OpenGL Info------");
+	DK_CORE_TRACE("------------OpenGL Info------------");
 	DK_CORE_INFO("Vendor: {0}", glGetString(GL_VENDOR));
 	DK_CORE_INFO("Renderer: {0}", glGetString(GL_RENDERER));
 	DK_CORE_INFO("Version: {0}", glGetString(GL_VERSION));
-
   }
 
   void OpenGLContext::SwapBuffers()

@@ -59,17 +59,62 @@ namespace Dark {
     glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
     glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR, GLFW_RELEASE_BEHAVIOR_FLUSH);
+#ifdef DK_RENDER_VULKAN
+    VkApplicationInfo appInfo{};
+    appInfo.sType              = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+    appInfo.pApplicationName   = "Dark Vulkan";
+    appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+    appInfo.pEngineName        = "Dark Engine";
+    appInfo.engineVersion      = VK_MAKE_VERSION(0, 2, 0);
+    appInfo.apiVersion         = VK_API_VERSION_1_0;
 
+    VkInstanceCreateInfo createInfo{};
+    createInfo.sType            = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    createInfo.pApplicationInfo = &appInfo;
+
+    uint32_t glfwExtensionCount = 0;
+    const char** glfwExtensions;
+
+    glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+
+    createInfo.enabledExtensionCount   = glfwExtensionCount;
+    createInfo.ppEnabledExtensionNames = glfwExtensions;
+    createInfo.enabledLayerCount       = 0;
+
+    if (vkCreateInstance(&createInfo, nullptr, &m_Instance) != VK_SUCCESS)
+    {
+      DK_CORE_ERROR("failed to create vulkan instance!");
+    }
+
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+
+    uint32_t extensionCount = 0;
+    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+    DK_CORE_INFO("{0}:extensions supported", extensionCount);
+
+    std::vector<VkExtensionProperties> extensions(extensionCount);
+    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
+
+    for (const auto& extension : extensions)
+    {
+      DK_CORE_TRACE("{0}", extension.extensionName);
+    }
+#else
     m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 
     glfwMakeContextCurrent(m_Window);
     gladLoadGL();
+#endif // DK_RENDER_VULKAN
+
+    /*  HWND nativeWindow = glfwGetWin32Window(m_Window);
+    SetWindowLong(nativeWindow, GWL_STYLE, 0x0000);*/
 
     GLFWimage images;
     int imageWidth, imageHeight, imageComp;
     stbi_set_flip_vertically_on_load(true);
 
-    stbi_uc* data = stbi_load("assets/Resource/DarkIcon.png", &imageWidth, &imageHeight, &imageComp, 0);
+    stbi_uc* data = stbi_load("assets/resource/DarkIcon.png", &imageWidth, &imageHeight, &imageComp, 0);
     images.width  = imageWidth;
     images.height = imageHeight;
     images.pixels = data;
@@ -176,17 +221,30 @@ namespace Dark {
       DropFileEvent event(number, path);
       data.EventCallback(event);
     });
+
+    //glfwSetTitlebarHitTestCallback(m_Window, [](GLFWwindow* window, int xpos, int ypos, int* hit) {
+    //  DK_CORE_INFO("tEST");
+    //});
   }
 
   void WindowsWindow::OnUpdate()
   {
     glfwPollEvents();
+#ifdef DK_RENDER_VULKAN
+
+#else
     m_Context->SwapBuffers();
+#endif
   }
 
   void WindowsWindow::Shutdown()
   {
+#ifdef DK_RENDER_VULKAN
+    vkDestroyInstance(m_Instance, nullptr);
+#endif // DK_RENDER_VULKAN
+
     glfwDestroyWindow(m_Window);
+    glfwTerminate();
   }
 
   void WindowsWindow::SetVSync(bool enabled)
@@ -206,11 +264,25 @@ namespace Dark {
 
   void WindowsWindow::SetWindowAttrib()
   {
-    glfwSetWindowAttrib(m_Window, GLFW_DECORATED, GLFW_TRUE);
+
+    glfwSetWindowAttrib(m_Window, GLFW_DECORATED, GLFW_FALSE);
+    //glfwSetWindowAttrib(m_Window, GLFW_TITLEBAR, GLFW_FALSE);
+    //
     //glfwSetWindowAttrib(m_Window, GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_FALSE);
     glfwMaximizeWindow(m_Window);
     //glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
     //glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_FALSE);
+  }
+
+  void WindowsWindow::SetMinimize()
+  {
+    glfwIconifyWindow(m_Window);
+  }
+
+  void WindowsWindow::SetMaximizeOrRestore()
+  {
+    //glfwMaximizeWindow(m_Window);
+    glfwRestoreWindow(m_Window);
   }
 
 } // namespace Dark

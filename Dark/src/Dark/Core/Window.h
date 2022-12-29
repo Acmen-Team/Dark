@@ -47,6 +47,8 @@ namespace Dark {
     virtual void SetVSync(bool enabled)                            = 0;
     virtual bool IsVSync() const                                   = 0;
     virtual void SetWindowAttrib()                                 = 0;
+    virtual void SetMinimize()                                     = 0;
+    virtual void SetMaximizeOrRestore()                            = 0;
 
     static Window* Create(const WindowProps& props = WindowProps());
   };

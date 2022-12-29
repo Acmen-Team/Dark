@@ -8,6 +8,7 @@ namespace Dark {
   {
   public:
 	OpenGLTexture2D(const std::string& path);
+    OpenGLTexture2D(void* mem, size_t size);
 	virtual ~OpenGLTexture2D() override;
 
 	virtual uint32_t GetWidth() const override { return m_Width; }

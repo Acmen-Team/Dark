@@ -17,17 +17,21 @@ namespace Dark {
   class DARK_API ImGuiLayer : public Layer
   {
   public:
-	ImGuiLayer();
-	~ImGuiLayer();
+    ImGuiLayer();
+    ~ImGuiLayer();
 
-	virtual void OnAttach() override;
-	virtual void OnDetach() override;
-	virtual void OnImGuiRender() override;
+    virtual void OnAttach() override;
+    virtual void OnDetach() override;
+    virtual void OnImGuiRender() override;
 
-	void Begin();
-	void End();
+    void Begin();
+    void End();
+
+  protected:
+    void SetDarkThemeColors();
+
   private:
-	float m_Time = 0.0f;
+    float m_Time = 0.0f;
   };
 
-}
+} // namespace Dark

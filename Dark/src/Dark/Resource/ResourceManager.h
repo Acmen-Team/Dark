@@ -6,8 +6,12 @@ Description:ResourceManager
 **************************************************/
 #pragma once
 
+#include "Dark/Resource/Mesh.h"
 #include "Dark/Resource/Texture.h"
 #include "Dark/Core/IO/FileSystem.h"
+#include "Dark/Resource/Shader.h"
+
+#include "Dark/Tools/Profiler/Profiler.h"
 
 namespace Dark {
 
@@ -18,7 +22,7 @@ namespace Dark {
     ~ResourceAllocator() = default;
 
     template <typename ResourceType>
-    Ref<ResourceID> LoadFromFile(const std::string& filePath)
+    Ref<ResourceID> Load(const std::string& filePath)
     {
       for (auto it = m_Resources.begin(); it != m_Resources.end(); it++)
       {
@@ -26,7 +30,7 @@ namespace Dark {
           return it->first;
       }
 
-      Ref<Resource> resource = CreateRef<ResourceType>();
+      Ref<Resource> resource = CreateRef<ResourceType>(filePath);
 
       if (!resource)
       {
@@ -38,9 +42,25 @@ namespace Dark {
     }
 
     template <typename ResourceType>
-    Ref<std::future<Ref<ResourceID>>> LoadFromFileAsync(const std::string& filePath)
+    Ref<ResourceID> LoadAsync(const std::string& filePath)
     {
-      return CreateRef(std::async(std::launch::async, ResourceAllocator::LoadFromFile, this));
+      for (auto it = m_Resources.begin(); it != m_Resources.end(); it++)
+      {
+        if (it->first->path == filePath)
+          return it->first;
+      }
+
+      Ref<Resource> resource = CreateRef<ResourceType>(filePath);
+
+      if (!resource)
+      {
+        return nullptr;
+      }
+
+      std::pair<void*, size_t> result = FileSystem::ReadFile(filePath);
+
+      m_Resources.emplace(std::pair(resource->LoadFromMemory(result.first, result.second)));
+      return resource->GetResourceID();
     }
 
     Ref<ResourceID> GetResourceID(const Ref<Resource>& res);
@@ -69,6 +89,10 @@ namespace Dark {
 
     size_t GetResSize() { return m_Resources.size(); }
 
+    std::unordered_map<Ref<ResourceID>, Ref<Resource>>::iterator GetResourcesBegin()
+    {
+      return m_Resources.begin();
+    }
   private:
     // Resources
     std::unordered_map<Ref<ResourceID>, Ref<Resource>> m_Resources;
@@ -77,6 +101,9 @@ namespace Dark {
   class ResourceManager
   {
   public:
+    Ref<PanelMesh> s_PanelMesh;
+    Ref<ShaderLibrary> s_ShaderLibrary;
+
     static ResourceManager& Get()
     {
       if (m_Instance != nullptr)
@@ -93,23 +120,33 @@ namespace Dark {
   protected:
     ResourceManager()
     {
-      //m_Instance = this;
-      //while (true)
-      //{
-      //  DK_CORE_INFO("while");
-      //}
+      s_PanelMesh = CreateRef<PanelMesh>();
+      s_ShaderLibrary = CreateRef<ShaderLibrary>();
+      s_ShaderLibrary->Load("assets/shaders/Texture.glsl");
 
       //DK_CORE_INFO("ResourceManager()");
       m_ResourceAllocator = CreateRef<ResourceAllocator>();
 
+      DK_CORE_TRACE("------------Resource Manager Travers Files------------")
       FileSystem::TraverseFiles("assets", [this](const std::filesystem::path& path, std::filesystem::path extension) {
 #ifdef DK_PLATFORM_WINDOWS
         if (extension == ".jpg" || extension == ".png")
-          m_ResourceAllocator->LoadFromFile<Texture2D>(path.string());
-          //if (std::string::npos != filenameString.find(".obj"))
+        {
+          PROFILE_SCOPE(path.string().c_str());
+          //m_ResourceAllocator->Load<Texture2D>(path.string());
+          m_ResourceAllocator->LoadAsync<Texture2D>(path.string());
+        }
+        //if (std::string::npos != filenameString.find(".obj"))
+        //{
 
+        //}
+        printf("\n");
 #endif // DK_PLATFORM_WINDOWS
       });
+
+      // Tracing
+      //for (auto iter : m_ProfileResults)
+      //  DK_CORE_TRACE("Profiler : load -> {0}, {1}ms", iter.Name, iter.Time);
     }
 
     ~ResourceManager()

@@ -11,12 +11,14 @@ Description:Resource base class
 
 namespace Dark {
 
-  //enum ResourceType
-  //{
-  //  Mesh    = 0,
-  //  Texture = 1,
-  //  Shader  = 2,
-  //};
+  enum class ResourceType
+  {
+    eMesh    = 0,
+    eTexture = 1,
+    eShader  = 2,
+
+    eMax = -1
+  };
 
   enum ResourceFlag
   {
@@ -27,7 +29,8 @@ namespace Dark {
   {
     std::string name;
     std::string path;
-    const void* type{};
+    //const void* type{};
+    ResourceType type{-1};
     Ref<UUID> uuid;
     //std::list<ResourceID> dependcy{};
     //ResourceFlag flag{};
@@ -39,12 +42,14 @@ namespace Dark {
       auto relativePath = std::filesystem::relative(respath, "assets");
       name              = relativePath.filename().string();
       DK_CORE_INFO("Resource Name:{0}", name);
-      path              = respath.string();
+      path = respath.string();
       DK_CORE_INFO("Resource Path:{0}", path);
-      uuid              = CreateRef<UUID>(path);
-      DK_CORE_INFO("Resource UUID:{0}", uuid->GetUUIDString());
+      uuid = CreateRef<UUID>(path);
+      DK_CORE_INFO("Resource UUID:{0}", uuid->ConvertUUIDToString());
       time(&timep);
-      DK_CORE_INFO("Resource Create Time:{0}", ctime(&timep));
+      std::string str     = std::string(ctime(&timep));
+      str[str.size() - 1] = '/0';
+      DK_CORE_INFO("Resource Create Time:{0}", str.c_str());
     }
   };
 
@@ -53,22 +58,25 @@ namespace Dark {
   public:
     Resource()
     {
-      //DK_CORE_INFO("Resource()");
     }
+
     virtual ~Resource() = default;
 
-    Ref<Resource> GetResource()
-    {
-      return m_Res;
-    }
     Ref<ResourceID> GetResourceID()
     {
       return m_ResID;
     }
 
-    virtual std::pair<Ref<ResourceID>, Ref<Resource>> LoadFromFile(const std::string& path) = 0;
+    Ref<Resource> GetResource()
+    {
+      return m_Res;
+    }
+
+    virtual std::pair<Ref<ResourceID>, Ref<Resource>> LoadFromFile(const std::string& path)  = 0;
+    virtual std::pair<Ref<ResourceID>, Ref<Resource>> LoadFromMemory(void* mem, size_t size) = 0;
 
   protected:
+    // TODO: 存在循环，m_Res->m_ResID为空，真正的ID在this->m_ResID
     Ref<Resource> m_Res{nullptr};
     Ref<ResourceID> m_ResID{nullptr};
   };

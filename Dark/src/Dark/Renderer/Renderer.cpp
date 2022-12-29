@@ -18,7 +18,7 @@ namespace Dark {
 	RenderCommand::SetViewport(width, height);
   }
 
-  void Renderer::BeginScene(OrthographicCamera& camera)
+  void Renderer::BeginScene(Camera& camera)
   {
 	m_SceneData->ViewProjectMatrix = camera.GetViewProjectionMatrix();
   }

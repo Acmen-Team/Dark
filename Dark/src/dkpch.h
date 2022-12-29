@@ -31,6 +31,7 @@ Description:pch file
 #include <filesystem>
 
 #include "Dark/Core/Log.h"
+#include "Dark/Core/Memory/MemoryManager.h"
 
 #ifdef DK_PLATFORM_WINDOWS
 #include <Windows.h>

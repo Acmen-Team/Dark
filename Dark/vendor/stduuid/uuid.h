@@ -15,7 +15,7 @@
 #include <chrono>
 #include <numeric>
 #include <atomic>
-#include <span>
+#include <gsl/span>
 
 #ifdef _WIN32
 

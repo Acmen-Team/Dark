@@ -10,6 +10,11 @@ Description:Uuid
 
 namespace Dark {
 
+  UUID::UUID()
+  {
+    m_Uuid = uuids::uuid_system_generator{}();
+  }
+
   UUID::UUID(const std::string& url)
   {
     uuids::uuid_name_generator gen(uuids::uuid::from_string("47183823-2574-4bfd-b411-99ed177d3e43").value());
@@ -19,6 +24,11 @@ namespace Dark {
     //DK_CORE_INFO("{0}", m_Uuid.version() == uuids::uuid_version::name_based_sha1);
     //DK_CORE_INFO("{0}", m_Uuid.variant() == uuids::uuid_variant::rfc);
     //DK_CORE_INFO("{0}", uuids::to_string(m_Uuid));
+  }
+
+  uuids::uuid UUID::ConvertStringToUUID(const std::string& uuidStr)
+  {
+    return uuids::uuid::from_string(uuidStr).value();
   }
 
 } // namespace Dark

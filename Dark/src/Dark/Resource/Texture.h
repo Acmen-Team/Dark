@@ -29,25 +29,24 @@ namespace Dark {
     {
       //DK_CORE_INFO("Texture2D()");
     }
+
+    Texture2D(const std::string& path)
+    {
+      this->m_ResID = CreateRef<ResourceID>(path);
+      this->m_ResID->type = ResourceType::eTexture;
+    }
+
     virtual ~Texture2D() = default;
     virtual std::pair<Ref<ResourceID>, Ref<Resource>> LoadFromFile(const std::string& path) override;
+    virtual std::pair<Ref<ResourceID>, Ref<Resource>> LoadFromMemory(void* mem, size_t size) override;
 
     std::string GetType() { return std::string("Texture2D"); }
 
-    virtual uint32_t GetWidth() const { return 0; }
-    virtual uint32_t GetHeight() const { return 0; }
-    virtual uint32_t GetRendererID() const { return 0; }
+    virtual uint32_t GetWidth() const override { return 0; }
+    virtual uint32_t GetHeight() const override { return 0; }
+    virtual uint32_t GetRendererID() const override { return 0; }
 
-    virtual void Bind(uint32_t unit = 0) const {};
+    virtual void Bind(uint32_t unit = 0) const override {};
   };
-  //{
-  //public:
-  //  virtual ~Texture2D() = default;
-  //  static Ref<Texture2D> Create(const std::string& path);
-
-  //  virtual std::tuple<ResourceID*, Resource*> LoadFromFile(const std::string& path);
-
-  //  //static Ref<Texture2D> LoadFromFile(const std::string& path);
-  //};
 
 } // namespace Dark

@@ -31,8 +31,21 @@ namespace Dark {
       DK_CORE_ASSERT(false, "RendererAPI::None is not supported!");
     }
     case RendererAPI::API::OpenGL: {
-      this->m_Res   = CreateRef<OpenGLTexture2D>(path);
-      this->m_ResID = CreateRef<ResourceID>(path);
+      this->m_Res =  CreateRef<OpenGLTexture2D>(path);
+    }
+    }
+    return std::pair<Ref<ResourceID>, Ref<Resource>>(this->m_ResID, this->m_Res);
+  }
+
+  std::pair<Ref<ResourceID>, Ref<Resource>> Texture2D::LoadFromMemory(void* mem, size_t size)
+  {
+    switch (Renderer::GetAPI())
+    {
+    case RendererAPI::API::None: {
+      DK_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+    }
+    case RendererAPI::API::OpenGL: {
+      this->m_Res =  CreateRef<OpenGLTexture2D>(mem, size);
     }
     }
     return std::pair<Ref<ResourceID>, Ref<Resource>>(this->m_ResID, this->m_Res);
