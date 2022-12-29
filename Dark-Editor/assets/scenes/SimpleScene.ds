@@ -1,0 +1,439 @@
+Scene: SampleScene
+Entities:
+  - Entity: 53d89fbd-5f18-480e-8e2f-7d0a1a476430
+    TagComponent:
+      Tag: heliu3
+    TransformComponent:
+      Translation: [5, -1, 0]
+      Rotation: [0, 0, -1.57079637]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/heliu.png
+        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
+  - Entity: 3869c279-8ea9-4a44-a48b-4955da94655d
+    TagComponent:
+      Tag: caodi5
+    TransformComponent:
+      Translation: [4, -2, 0]
+      Rotation: [0, 0, 3.14159274]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/caodi.png
+        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
+  - Entity: 99c166f6-613f-42c9-8230-d723790e1b12
+    TagComponent:
+      Tag: caodi4
+    TransformComponent:
+      Translation: [3, -2, 0]
+      Rotation: [0, 0, 3.14159274]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/caodi.png
+        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
+  - Entity: 8293035d-477a-475a-b37e-65f92e52fcdb
+    TagComponent:
+      Tag: caodi3
+    TransformComponent:
+      Translation: [2, -2, 0]
+      Rotation: [0, 0, 3.14159274]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/caodi.png
+        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
+  - Entity: 2adb852b-747e-4abb-b34e-4b13cd34ae3c
+    TagComponent:
+      Tag: MainCamera
+    TransformComponent:
+      Translation: [0, 0, 1.5]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectType: 1
+        PerspectiveFov: 45
+        PerspectiveNear: 0.100000001
+        PerspectiveFar: 100
+        OrthographicSize: 7
+        OrthographicNear: 0.100000001
+        OrthographicFar: 100
+      FixedAspectration: false
+  - Entity: 92a2f3b0-ea24-4040-85ac-8c9f98e6f68f
+    TagComponent:
+      Tag: caodi1
+    TransformComponent:
+      Translation: [-4, -2, 0]
+      Rotation: [0, 0, 3.14159274]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/caodi.png
+        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
+  - Entity: eec769ca-0144-4c03-a397-c9e6754b5d04
+    TagComponent:
+      Tag: heliu1
+    TransformComponent:
+      Translation: [-3, -2, 0]
+      Rotation: [0, 0, 3.14159274]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/heliu.png
+        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
+  - Entity: e91c0efd-e177-49b9-8067-895950356716
+    TagComponent:
+      Tag: shandi1
+    TransformComponent:
+      Translation: [-1, -2, 0]
+      Rotation: [0, 0, 3.14159274]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/shandi.png
+        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
+  - Entity: 8d50e928-f2fa-492e-a5c6-db74b6faae14
+    TagComponent:
+      Tag: shandi2
+    TransformComponent:
+      Translation: [0, -2, 0]
+      Rotation: [0, 0, 3.14159274]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/shandi.png
+        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
+  - Entity: e996f0e9-96c8-4110-b2e1-2f7136359f8b
+    TagComponent:
+      Tag: heliu2
+    TransformComponent:
+      Translation: [-2, -2, 0]
+      Rotation: [0, 0, 3.14159274]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/heliu.png
+        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
+  - Entity: acdb8a90-9177-45cc-a2eb-31555dab938c
+    TagComponent:
+      Tag: renwu1
+    TransformComponent:
+      Translation: [-5, -2, 1]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/renwu1.png
+        TextureUUID: b7501ed9-f264-50de-8c35-2d353806db27
+  - Entity: a33f55a9-c2b0-4325-b273-d748d2474a68
+    TagComponent:
+      Tag: caodi2
+    TransformComponent:
+      Translation: [1, -2, 0]
+      Rotation: [0, 0, 3.14159274]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/caodi.png
+        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
+  - Entity: f5f391e6-9805-4841-9289-a881298cad57
+    TagComponent:
+      Tag: caodi6
+    TransformComponent:
+      Translation: [5, -2, 0]
+      Rotation: [0, 0, -1.57079637]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/caodi.png
+        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
+  - Entity: d7264943-668f-47e4-98e4-d799ef1327f2
+    TagComponent:
+      Tag: heliu4
+    TransformComponent:
+      Translation: [5, 0, 0]
+      Rotation: [0, 0, -1.57079637]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/heliu.png
+        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
+  - Entity: fa992e20-1c35-494f-9dcc-45c2a47caf42
+    TagComponent:
+      Tag: heliu5
+    TransformComponent:
+      Translation: [5, 1, 0]
+      Rotation: [0, 0, -1.57079637]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/heliu.png
+        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
+  - Entity: c9365980-afc6-4a08-87a2-539c1d4ae9dc
+    TagComponent:
+      Tag: shandi3
+    TransformComponent:
+      Translation: [5, 2, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/shandi.png
+        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
+  - Entity: 21cf44b5-9bcb-4fd4-8fc0-5eed45c8f243
+    TagComponent:
+      Tag: shandi4
+    TransformComponent:
+      Translation: [4, 2, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/shandi.png
+        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
+  - Entity: 1f726857-5c20-487a-9d90-edd160b6f588
+    TagComponent:
+      Tag: shandi5
+    TransformComponent:
+      Translation: [3, 2, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/shandi.png
+        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
+  - Entity: 522afa3e-af35-4015-a892-9b638f3f3567
+    TagComponent:
+      Tag: heliu6
+    TransformComponent:
+      Translation: [2, 2, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/heliu.png
+        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
+  - Entity: 5d352cf0-55c0-424c-913b-c623d3265a51
+    TagComponent:
+      Tag: caodi7
+    TransformComponent:
+      Translation: [1, 2, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/caodi.png
+        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
+  - Entity: 7a82c7fb-4dce-4673-852f-2fb160221282
+    TagComponent:
+      Tag: caodi8
+    TransformComponent:
+      Translation: [0, 2, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/caodi.png
+        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
+  - Entity: 728d4566-078e-42a7-aa00-3a8528802100
+    TagComponent:
+      Tag: heliu7
+    TransformComponent:
+      Translation: [-1, 2, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/heliu.png
+        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
+  - Entity: a32a5a07-271d-45b2-84ae-ceb2c36df951
+    TagComponent:
+      Tag: heliu8
+    TransformComponent:
+      Translation: [-2, 2, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/heliu.png
+        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
+  - Entity: 3bc8a231-78cf-4796-a1cd-fc2797381216
+    TagComponent:
+      Tag: shandi6
+    TransformComponent:
+      Translation: [-3, 2, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/shandi.png
+        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
+  - Entity: 1c1b9aff-ff66-45fa-9013-f884763d5777
+    TagComponent:
+      Tag: caodi9
+    TransformComponent:
+      Translation: [-4, 2, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/caodi.png
+        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
+  - Entity: b1583d34-8889-4a29-898e-b883c521ada0
+    TagComponent:
+      Tag: caodi10
+    TransformComponent:
+      Translation: [-5, 2, 0]
+      Rotation: [0, 0, 1.57079637]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/caodi.png
+        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
+  - Entity: 9e7e9694-0c02-4909-9d26-9be30cb2fd4e
+    TagComponent:
+      Tag: shandi7
+    TransformComponent:
+      Translation: [-5, 1, 0]
+      Rotation: [0, 0, 1.57079637]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/shandi.png
+        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
+  - Entity: 68e3c6e4-cfcb-4684-8cf5-c493c75273dc
+    TagComponent:
+      Tag: shandi8
+    TransformComponent:
+      Translation: [-5, 0, 0]
+      Rotation: [0, 0, 1.57079637]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/shandi.png
+        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
+  - Entity: 3c5a17b4-3d81-47e4-9dbb-16479c9fd53a
+    TagComponent:
+      Tag: heliu9
+    TransformComponent:
+      Translation: [-5, -1, 0]
+      Rotation: [0, 0, 1.57079637]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/heliu.png
+        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
