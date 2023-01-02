@@ -29,6 +29,9 @@ namespace Dark {
 
   void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
   {
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+
 	glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
   }
 
