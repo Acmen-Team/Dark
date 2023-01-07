@@ -47,4 +47,7 @@
 #include "Dark/Scene/Serialize.h"
 // ----------------------------------------
 
+#include "Dark/Audio/Audio.h"
+
+#include "Dark/Tools/Steamworks/Steamworks.h"
 //#include <Dark/Core/EntryPoint.h>

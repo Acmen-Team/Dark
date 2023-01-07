@@ -19,12 +19,22 @@ public:
 
   virtual void OnAttach() override
   {
-    m_PlayButton  = Dark::ResourceManager::Get().GetResourceAllocator()->GetResource<Dark::Texture>("assets/textures/Play.png");
+    //m_PlayButton  = Dark::ResourceManager::Get().GetResourceAllocator()->GetResource<Dark::Texture>("assets/textures/Play.png");
+    m_EngineLogo  = Dark::ResourceManager::Get().GetResourceAllocator()->GetResource<Dark::Texture>("assets/Resource/DarkEngine.png");
     m_MouseCursor = Dark::ResourceManager::Get().GetResourceAllocator()->GetResource<Dark::Texture>("assets/textures/Mouse.png");
 
     m_Serialize = Dark::CreateRef<Dark::Serialize>();
 
     m_Scene = m_Serialize->DeserializeRuntime("assets/scenes/SimpleScene.ds");
+
+    m_Audio = Dark::CreateRef<Dark::Audio>();
+    m_Audio->InitDevice();
+    m_Audio->SetSound("assets/Audio/bgm.mp3");
+
+    m_Steamworks = Dark::CreateRef<Dark::Steamworks>();
+    m_Steamworks->InitSteamAPI();
+
+    m_Audio->PlaySound();
   }
 
   virtual void OnUpdate(Dark::Timestep timestep) override
@@ -50,22 +60,36 @@ public:
       ImGui::SetWindowPos(windowPos);
       ImGui::SetWindowSize(windowSize);
 
-      auto posMinX  = windowPos.x + ((windowSize.x - m_PlayButton->GetWidth()) / 2);
-      auto posMinY  = windowPos.y + ((windowSize.y - m_PlayButton->GetHeight()) / 2);
-      auto posMaxX  = windowPos.x + ((windowSize.x + m_PlayButton->GetWidth()) / 2);
-      auto posMaxY  = windowPos.y + ((windowSize.y + m_PlayButton->GetHeight()) / 2);
-      ImVec2 posMin = ImVec2(posMinX, posMinY);
-      ImVec2 posMax = ImVec2(posMaxX, posMaxY);
+      //auto posMinX  = windowPos.x + ((windowSize.x - m_PlayButton->GetWidth()) / 2);
+      //auto posMinY  = windowPos.y + ((windowSize.y - m_PlayButton->GetHeight()) / 2);
+      //auto posMaxX  = windowPos.x + ((windowSize.x + m_PlayButton->GetWidth()) / 2);
+      //auto posMaxY  = windowPos.y + ((windowSize.y + m_PlayButton->GetHeight()) / 2);
+      //ImVec2 posMin = ImVec2(posMinX, posMinY);
+      //ImVec2 posMax = ImVec2(posMaxX, posMaxY);
 
       //ImGui::ImageButton((ImTextureID)m_PlayButton->GetRendererID(), ImVec2(m_PlayButton->GetWidth(), m_PlayButton->GetHeight()), ImVec2(0.0f, 0.5f), ImVec2(0.5f, 0.0f));
       //ImGui::ImageButton((ImTextureID)m_PlayButton->GetRendererID(), posMin, posMax, ImVec2{0.0f, 0.5f}, ImVec2{0.5f, 0.0f});
 
-      ImGui::GetForegroundDrawList()->AddImage((ImTextureID)m_PlayButton->GetRendererID(), posMin, posMax, ImVec2{0.0f, 0.5f}, ImVec2{0.5f, 0.0f});
+      if (ImGui::Button("Exit"))
+      {
+        m_Audio->StopSound();
+        m_Steamworks->ShutdownSteamAPI();
+        Dark::Application::Get().Exit();
+      }
+
+      //ImGui::GetForegroundDrawList()->AddImage((ImTextureID)m_PlayButton->GetRendererID(), posMin, posMax, ImVec2{0.0f, 0.5f}, ImVec2{0.5f, 0.0f});
       ImGui::End();
     }
+    // Powered By Dark Engine
+    float EnginePosMinX = windowSize.x - 60;
+    float EnginePosMinY = windowSize.y - 80;
+
+    float EnginePosMaxX = windowSize.x - 10;
+    float EnginePosMaxY = windowSize.y - 80 + (m_EngineLogo->GetHeight() * (50.0f / m_EngineLogo->GetWidth()));
+
+    ImGui::GetForegroundDrawList()->AddImage((ImTextureID)m_EngineLogo->GetRendererID(), ImVec2(EnginePosMinX, EnginePosMinY), ImVec2(EnginePosMaxX, EnginePosMaxY), ImVec2{0.0f, 1.0f}, ImVec2{1.0f, 0.0f});
 
     ImGui::GetForegroundDrawList()->AddImage((ImTextureID)m_MouseCursor->GetRendererID(), pos, ImVec2(pos.x + 16, pos.y + 16), ImVec2{0.0f, 1.0f}, ImVec2{1.0f, 0.0f});
-    /*   ImGui::GetForegroundDrawList()->AddImage((ImTextureID)m_EngineLogo->GetRendererID(), ImVec2(100, 100), ImVec2(100 + m_EngineLogo->GetWidth(), 100 + m_EngineLogo->GetHeight()), ImVec2{0.0f, 1.0f}, ImVec2{1.0f, 0.0f});*/
   }
 
   virtual void OnEvent(Dark::Event& event) override
@@ -75,10 +99,13 @@ public:
 private:
   Dark::Ref<Dark::Texture> m_MouseCursor;
   Dark::Ref<Dark::Texture> m_EngineLogo;
-  Dark::Ref<Dark::Texture> m_PlayButton;
+  //Dark::Ref<Dark::Texture> m_PlayButton;
 
   Dark::Ref<Dark::Scene> m_Scene;
   Dark::Ref<Dark::Serialize> m_Serialize;
+
+  Dark::Ref<Dark::Audio> m_Audio;
+  Dark::Ref<Dark::Steamworks> m_Steamworks;
 };
 
 class SandBox : public Dark::Application

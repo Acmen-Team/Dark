@@ -18,6 +18,16 @@ Description:Component
 
 namespace Dark {
 
+  struct UUIDComponent
+  {
+    UUID Uuid{};
+
+    UUIDComponent()
+    {
+    }
+    UUIDComponent(const UUIDComponent&) = default;
+  };
+
   struct TagComponent
   {
     std::string Tag;
@@ -71,6 +81,7 @@ namespace Dark {
   {
     Ref<Shader> _Shader;
     Ref<Texture> _Texture;
+    bool IsOpaque;
     MaterialComponent() = default;
     MaterialComponent(const MaterialComponent&) = default;
     MaterialComponent(const Ref<Shader>& shader, const Ref<Texture>& texture)

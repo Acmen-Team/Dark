@@ -101,6 +101,7 @@ namespace Dark {
   class ResourceManager
   {
   public:
+    Ref<Mesh> s_CameraMesh;
     Ref<PanelMesh> s_PanelMesh;
     Ref<ShaderLibrary> s_ShaderLibrary;
 
@@ -120,7 +121,9 @@ namespace Dark {
   protected:
     ResourceManager()
     {
+      s_CameraMesh    = CreateRef<Mesh>();
       s_PanelMesh = CreateRef<PanelMesh>();
+      s_CameraMesh->LoadFromFile("assets/models/Camera.obj");
       s_ShaderLibrary = CreateRef<ShaderLibrary>();
       s_ShaderLibrary->Load("assets/shaders/Texture.glsl");
 

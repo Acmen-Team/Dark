@@ -94,7 +94,7 @@ namespace Dark {
   static void SerializeEntity(YAML::Emitter& out, Entity entity)
   {
     out << YAML::BeginMap;
-    out << YAML::Key << "Entity" << YAML::Value << entity.GetUUID().ConvertUUIDToString();
+    out << YAML::Key << "Entity" << YAML::Value << entity.GetComponent<UUIDComponent>().Uuid.ConvertUUIDToString();
 
     if (entity.HasComponent<TagComponent>())
     {
@@ -177,7 +177,7 @@ namespace Dark {
       out << YAML::Key << "TexturePath" << YAML::Value << ResourceManager::Get().GetResourceAllocator()->GetResourceID(material._Texture)->path;
       out << YAML::Key << "TextureUUID" << YAML::Value << ResourceManager::Get().GetResourceAllocator()->GetResourceID(material._Texture)->uuid->ConvertUUIDToString();
       out << YAML::EndMap;
-
+      out << YAML::Key << "IsOpaque" << material.IsOpaque;
       out << YAML::EndMap;
     }
 
@@ -229,16 +229,17 @@ namespace Dark {
     {
       for (auto entity : entities)
       {
-        std::string uuid = entity["Entity"].as<std::string>();
+        std::string uuidstr = entity["Entity"].as<std::string>();
 
         std::string name;
         auto tagComponent = entity["TagComponent"];
         if (tagComponent)
           name = tagComponent["Tag"].as<std::string>();
 
-        DK_CORE_TRACE("Deserialized entity with UUID = {0}, name = {1}", uuid, name);
+        DK_CORE_TRACE("Deserialized entity with UUID = {0}, name = {1}", uuidstr, name);
 
         Entity deserializedEntity = deserializedScene->CreatEntity<Entity>(name);
+        deserializedEntity.GetComponent<UUIDComponent>().Uuid = UUID(uuidstr);
 
         auto transformComponent = entity["TransformComponent"];
         if (transformComponent)
@@ -276,6 +277,8 @@ namespace Dark {
           std::string meshName = meshComponent["MeshName"].as<std::string>();
           if (meshName == "Panel")
             mesh._Mesh = ResourceManager::Get().s_PanelMesh;
+          if (meshName == "Camera")
+            mesh._Mesh = ResourceManager::Get().s_CameraMesh;
           // TODO: Get mesh resource from ResourceManager
         }
 
@@ -294,6 +297,7 @@ namespace Dark {
           material._Shader = m_ShaderLibrary.Get(shaderName);
           // TODO: Get Texture resource from ResourceManager
           material._Texture = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture>(texturePath);
+          material.IsOpaque = materialComponent["IsOpaque"].as<bool>();
         }
       }
     }

@@ -24,6 +24,7 @@ namespace Dark {
       auto& tag      = entity.AddComponent<TagComponent>();
       tag.Tag        = tagStr.empty() ? "Entity" : tagStr;
 
+      entity.AddComponent<UUIDComponent>();
       entity.AddComponent<TransformComponent>();
 
       return entity;
@@ -33,7 +34,7 @@ namespace Dark {
     // Temp
     void OnUpdateRunTime(Timestep timestep);
 
-    void OnUpdateEditor(Camera& camera, Timestep timestep);
+    void OnUpdateEditor(Camera& camera, Timestep timestep, float posX, float posY);
 
     std::string& GetSceneName() { return m_SceneName; }
 
@@ -52,7 +53,8 @@ namespace Dark {
 
     //Epoch::ShaderLibrary* m_ShaderLibrary;
     std::shared_ptr<Shader> m_shader;
-    std::shared_ptr<Shader> m_ColorShader;
+    //std::shared_ptr<Shader> m_ColorShader;
+    Ref<Shader> m_ColorShader;
 
     Ref<Camera> m_MainCamera = nullptr;
 

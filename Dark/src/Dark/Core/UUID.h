@@ -21,8 +21,9 @@ namespace Dark {
     
     UUID(const std::string& url);
 
-    uuids::uuid ConvertStringToUUID(const std::string& uuidStr);
     std::string ConvertUUIDToString() const { return uuids::to_string(m_Uuid); }
+
+    size_t ConvertUUIDToHash() const { return m_HashFunc(m_Uuid); }
 
     bool const operator==(const Ref<UUID>& uuid) const
     {
@@ -31,6 +32,7 @@ namespace Dark {
 
   private:
     uuids::uuid m_Uuid;
+    std::hash<uuids::uuid> m_HashFunc;
   };
 
 } // namespace Dark

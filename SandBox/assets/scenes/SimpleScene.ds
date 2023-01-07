@@ -1,130 +1,122 @@
 Scene: SampleScene
 Entities:
-  - Entity: 6787d5c7-70e9-4219-98f0-cda22b37e6da
+  - Entity: 9efdc252-cc2e-4240-a5e8-63505a55b06e
     TagComponent:
-      Tag: caodi11
+      Tag: qizi9
     TransformComponent:
-      Translation: [-5, -2, 0]
-      Rotation: [0, 0, 0]
-      Scale: [0.999975801, 0.999975801, 1]
+      Translation: [-0.280000001, 0.00999999978, -0.289999992]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.200000003, 0.19999674, 0.999986947]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/caodi.png
-        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
-  - Entity: 29d5b3bf-20ec-4a50-95ac-53f111c75db4
+        TexturePath: assets/textures/yitiaoxin/xqizi.png
+        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
+      IsOpaque: true
+  - Entity: f74c92c0-91e9-4d72-8a02-1966b8e27206
     TagComponent:
-      Tag: heliu9
+      Tag: qizi8
     TransformComponent:
-      Translation: [-5, -1, 0]
-      Rotation: [0, 0, 1.57079637]
-      Scale: [1, 1, 1]
+      Translation: [-0.00999999978, 0.00999999978, -0.289999992]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.200000003, 0.199992657, 0.999970615]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/heliu.png
-        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
-  - Entity: 9225fce4-3221-4929-990d-6f0459cd6adc
+        TexturePath: assets/textures/yitiaoxin/xqizi.png
+        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
+      IsOpaque: true
+  - Entity: b2fd5518-7746-43a3-8381-df5b8853a8fb
     TagComponent:
-      Tag: shandi8
+      Tag: qizi7
     TransformComponent:
-      Translation: [-5, 0, 0]
-      Rotation: [0, 0, 1.57079637]
-      Scale: [1, 1, 1]
+      Translation: [0.270000011, 0.00999999978, -0.289999992]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.200000003, 0.199997157, 0.999988616]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/shandi.png
-        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
-  - Entity: b8dd6461-8dba-4189-b4aa-0cc8c9c0efb1
+        TexturePath: assets/textures/yitiaoxin/xqizi.png
+        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
+      IsOpaque: true
+  - Entity: de703317-15f1-442d-8e0c-d0f46158a7a3
     TagComponent:
-      Tag: shandi7
+      Tag: qizi6
     TransformComponent:
-      Translation: [-5, 1, 0]
-      Rotation: [0, 0, 1.57079637]
-      Scale: [1, 1, 1]
+      Translation: [-0.280000001, 0.00999999978, -0.0199999996]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.200000003, 0.19999826, 0.999993026]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/shandi.png
-        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
-  - Entity: 73e98906-9ce1-48b4-8e75-218c4368ddbf
+        TexturePath: assets/textures/yitiaoxin/xqizi.png
+        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
+      IsOpaque: true
+  - Entity: de822e5a-0235-4b04-8310-447d5cdcb46f
     TagComponent:
-      Tag: caodi10
+      Tag: qizi5
     TransformComponent:
-      Translation: [-5, 2, 0]
-      Rotation: [0, 0, 1.57079637]
-      Scale: [1, 1, 1]
+      Translation: [-0.00999999978, 0.00999999978, -0.0199999996]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.200000003, 0.199991331, 0.99996531]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/caodi.png
-        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
-  - Entity: 7490ad8a-ac34-4bb6-8de0-5167852b51e5
+        TexturePath: assets/textures/yitiaoxin/xqizi.png
+        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
+      IsOpaque: true
+  - Entity: f1cd7a63-3ea2-44f3-9b5a-380bfa154ee1
     TagComponent:
-      Tag: caodi9
+      Tag: qizi4
     TransformComponent:
-      Translation: [-4, 2, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Translation: [0.270000011, 0.00999999978, -0.0204216763]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.200000003, 0.199978083, 0.999912322]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/caodi.png
-        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
-  - Entity: 93dfa678-961e-4ce3-87ee-fc06bc41ab5b
+        TexturePath: assets/textures/yitiaoxin/xqizi.png
+        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
+      IsOpaque: true
+  - Entity: 697b9834-e17e-44b2-9c2e-057cf5d6509b
     TagComponent:
-      Tag: shandi6
+      Tag: xingxing2
     TransformComponent:
-      Translation: [-3, 2, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Translation: [-0.549767375, 0.320234299, 0.0774899349]
+      Rotation: [0, 1.57079637, 0]
+      Scale: [0.999919891, 1, 0.999919891]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/shandi.png
-        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
-  - Entity: 5167f0ce-edf6-412a-87d8-9279b813f6a2
+        TexturePath: assets/textures/yitiaoxin/xingkong.png
+        TextureUUID: bd3fb26c-f4ba-595a-8178-92d77b6eb861
+      IsOpaque: true
+  - Entity: 9e513697-3485-416a-9ba7-5c73d191e59d
     TagComponent:
-      Tag: heliu8
+      Tag: xingxing
     TransformComponent:
-      Translation: [-2, 2, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/heliu.png
-        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
-  - Entity: d42f4b2f-cf10-42d3-b344-919e8d79d073
-    TagComponent:
-      Tag: heliu7
-    TransformComponent:
-      Translation: [-1, 2, 0]
+      Translation: [0, 0.404959768, -0.535530329]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     MeshComponent:
@@ -133,322 +125,304 @@ Entities:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/heliu.png
-        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
-  - Entity: 417483f1-dd04-4dfc-85ae-212d3808904e
+        TexturePath: assets/textures/yitiaoxin/xingkong.png
+        TextureUUID: bd3fb26c-f4ba-595a-8178-92d77b6eb861
+      IsOpaque: true
+  - Entity: ca9f3dfc-e2c0-4766-ac97-67752d4cfcf6
     TagComponent:
-      Tag: caodi8
+      Tag: ditaicemian
     TransformComponent:
-      Translation: [0, 2, 0]
+      Translation: [0, -0.0496205389, 0.5]
       Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Scale: [1, 0.100000001, 1]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/caodi.png
-        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
-  - Entity: a3f0cf1f-9306-4129-b463-08a495e9c0d0
+        TexturePath: assets/textures/yitiaoxin/bian1.png
+        TextureUUID: f665b465-bdf3-5f52-a24d-443d931b2bad
+      IsOpaque: true
+  - Entity: e261725d-4abb-4dd9-b6e6-622af9a26a7c
     TagComponent:
-      Tag: caodi7
+      Tag: ditaicemian2
     TransformComponent:
-      Translation: [1, 2, 0]
+      Translation: [0.5, -0.0500000007, 2.95427967e-08]
+      Rotation: [0, 1.57079637, 0]
+      Scale: [0.999986291, 0.100000001, 0.999986291]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/yitiaoxin/bian2.png
+        TextureUUID: fa70e60e-6fae-5aed-bb31-4d8168b5eb52
+      IsOpaque: true
+  - Entity: 1b849a89-8c76-4f00-8692-f24bcdd8e8c2
+    TagComponent:
+      Tag: shan
+    TransformComponent:
+      Translation: [0.0137156025, 0.379188657, -0.503908873]
       Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Scale: [1.04999995, 1.24114609, 1]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/caodi.png
-        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
-  - Entity: 93e62001-9ce3-487a-b813-24f8255c40ee
+        TexturePath: assets/textures/yitiaoxin/shan.png
+        TextureUUID: c09eba37-efe7-58b9-af1c-1d5adb27848b
+      IsOpaque: false
+  - Entity: 34c2ad9f-eda2-4032-928c-e62a7366dbc3
     TagComponent:
-      Tag: heliu6
+      Tag: shu
     TransformComponent:
-      Translation: [2, 2, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Translation: [-0.5, 0.221687958, -0.0191522092]
+      Rotation: [0, 1.57079637, 0]
+      Scale: [1.09958959, 1.34315288, 0.999651611]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/heliu.png
-        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
-  - Entity: 1ac6563e-7ffc-4cb8-8443-53df16903661
-    TagComponent:
-      Tag: shandi5
-    TransformComponent:
-      Translation: [3, 2, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/shandi.png
-        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
-  - Entity: 7b04d862-4f4c-46e5-934c-572a65244d46
-    TagComponent:
-      Tag: shandi4
-    TransformComponent:
-      Translation: [4, 2, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/shandi.png
-        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
-  - Entity: 50e6e2c3-bbf7-4693-a156-ab5883e7d676
-    TagComponent:
-      Tag: shandi3
-    TransformComponent:
-      Translation: [5, 2, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/shandi.png
-        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
-  - Entity: fdcb5e25-9681-4d98-8268-3856dd236d9d
-    TagComponent:
-      Tag: heliu5
-    TransformComponent:
-      Translation: [5, 1, 0]
-      Rotation: [0, 0, -1.57079637]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/heliu.png
-        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
-  - Entity: 56a2b9d9-3624-4b3c-b094-440805c71e66
-    TagComponent:
-      Tag: heliu4
-    TransformComponent:
-      Translation: [5, 0, 0]
-      Rotation: [0, 0, -1.57079637]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/heliu.png
-        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
-  - Entity: 895779ce-122e-4614-8246-31e27296e823
-    TagComponent:
-      Tag: caodi6
-    TransformComponent:
-      Translation: [5, -2, 0]
-      Rotation: [0, 0, -1.57079637]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/caodi.png
-        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
-  - Entity: 91127427-05fe-4761-8ed9-0038c4099723
-    TagComponent:
-      Tag: caodi2
-    TransformComponent:
-      Translation: [1, -2, 0]
-      Rotation: [0, 0, 3.14159274]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/caodi.png
-        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
-  - Entity: c333d94b-43df-494c-b90b-f748124f61d1
-    TagComponent:
-      Tag: renwu1
-    TransformComponent:
-      Translation: [-5, -2, 1]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/renwu1.png
-        TextureUUID: b7501ed9-f264-50de-8c35-2d353806db27
-  - Entity: 58e87673-a0a9-46ee-8e3a-f74828692022
-    TagComponent:
-      Tag: heliu2
-    TransformComponent:
-      Translation: [-2, -2, 0]
-      Rotation: [0, 0, 3.14159274]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/heliu.png
-        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
-  - Entity: 9ee0472b-167a-4151-b199-88e300c2eacf
-    TagComponent:
-      Tag: shandi2
-    TransformComponent:
-      Translation: [0, -2, 0]
-      Rotation: [0, 0, 3.14159274]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/shandi.png
-        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
-  - Entity: 224a89ce-4ad3-40ce-86b7-fd28489b0084
-    TagComponent:
-      Tag: shandi1
-    TransformComponent:
-      Translation: [-1, -2, 0]
-      Rotation: [0, 0, 3.14159274]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/shandi.png
-        TextureUUID: c393bfbd-5f7d-5876-9822-aba974162d07
-  - Entity: 514490f4-086b-473e-a955-460cfb9657bb
-    TagComponent:
-      Tag: heliu1
-    TransformComponent:
-      Translation: [-3, -2, 0]
-      Rotation: [0, 0, 3.14159274]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/heliu.png
-        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
-  - Entity: 0b50b54b-0177-451e-816d-17857ebae217
-    TagComponent:
-      Tag: caodi1
-    TransformComponent:
-      Translation: [-4, -2, 0]
-      Rotation: [0, 0, 3.14159274]
-      Scale: [1, 1, 1]
-    MeshComponent:
-      MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/caodi.png
-        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
-  - Entity: 30c5c2d4-658b-463e-bcb3-8912fb00bf7d
+        TexturePath: assets/textures/yitiaoxin/shu.png
+        TextureUUID: a45ffc40-287b-55a4-9a8f-5eb7a8496a76
+      IsOpaque: false
+  - Entity: 28fee732-2f4c-4859-8aae-c06adc7cf031
     TagComponent:
       Tag: MainCamera
     TransformComponent:
-      Translation: [0, 0, 1.5]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Translation: [4, 4, 4]
+      Rotation: [-0.7609635, 0.626573205, 0.502654791]
+      Scale: [0.0999997929, 0.0999881774, 0.0999884531]
     CameraComponent:
       Camera:
-        ProjectType: 1
-        PerspectiveFov: 45
-        PerspectiveNear: 0.100000001
-        PerspectiveFar: 100
+        ProjectType: 0
+        PerspectiveFov: 12
+        PerspectiveNear: 0.899999976
+        PerspectiveFar: 1000
         OrthographicSize: 7
         OrthographicNear: 0.100000001
         OrthographicFar: 100
       FixedAspectration: false
-  - Entity: b900ef54-fb5a-45b6-aa04-0ad096bec805
+    MeshComponent:
+      MeshName: Camera
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/yitiaoxin/ditaicemian.png
+        TextureUUID: 7e3337ee-1e30-5f2e-98f2-ce51e22d7442
+      IsOpaque: false
+  - Entity: c5f994ef-970a-408f-bb04-e79d604737ea
     TagComponent:
-      Tag: caodi3
+      Tag: qizi3
     TransformComponent:
-      Translation: [2, -2, 0]
-      Rotation: [0, 0, 3.14159274]
-      Scale: [1, 1, 1]
+      Translation: [-0.280000001, 0.00999999978, 0.25999999]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.200000003, 0.199991941, 0.999947965]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/caodi.png
-        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
-  - Entity: 2a570a2d-45a8-4d53-ad9e-3ed22982f9d5
+        TexturePath: assets/textures/yitiaoxin/yqizi.png
+        TextureUUID: b0b03a51-eeda-5a4d-ad73-ec2b43f81e05
+      IsOpaque: false
+  - Entity: 316b89da-1681-4763-8eb5-ee9396dcf970
     TagComponent:
-      Tag: caodi4
+      Tag: qizi2
     TransformComponent:
-      Translation: [3, -2, 0]
-      Rotation: [0, 0, 3.14159274]
-      Scale: [1, 1, 1]
+      Translation: [-0.00999999978, 0.00999999978, 0.25999999]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.200000003, 0.199986473, 0.999938011]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/caodi.png
-        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
-  - Entity: b92e6cc0-a836-4490-90c1-d9c930826162
+        TexturePath: assets/textures/yitiaoxin/yqizi.png
+        TextureUUID: b0b03a51-eeda-5a4d-ad73-ec2b43f81e05
+      IsOpaque: false
+  - Entity: 090b6cfb-037d-47a8-b95c-e5f6be6402f3
     TagComponent:
-      Tag: caodi5
+      Tag: qizi1
     TransformComponent:
-      Translation: [4, -2, 0]
-      Rotation: [0, 0, 3.14159274]
-      Scale: [1, 1, 1]
+      Translation: [0.270000011, 0.00999999978, 0.25999999]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.200000003, 0.199986383, 0.999874949]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/caodi.png
-        TextureUUID: ea7abf97-17ff-5b95-a324-876d8c6def2f
-  - Entity: fa7b422b-2165-40d1-ae21-9f1195d6ca05
+        TexturePath: assets/textures/yitiaoxin/xqizi.png
+        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
+      IsOpaque: false
+  - Entity: fad37774-e9e7-4501-986f-62ad39972f13
     TagComponent:
-      Tag: heliu3
+      Tag: qipan
     TransformComponent:
-      Translation: [5, -1, 0]
-      Rotation: [0, 0, -1.57079637]
-      Scale: [1, 1, 1]
+      Translation: [0, 1.07920926e-08, 0]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [1, 0.999979854, 0.999979854]
     MeshComponent:
       MeshName: Panel
     MaterialComponent:
       Shader:
         ShaderName: Texture
       Texture:
-        TexturePath: assets/textures/heliu.png
-        TextureUUID: 70ba31c3-7ff9-5e63-92aa-c85f3ea0eafb
+        TexturePath: assets/textures/yitiaoxin/qipan.png
+        TextureUUID: b1a2080e-1a36-509b-8ebe-c7ff160007e7
+      IsOpaque: true
+  - Entity: a44d65b5-1162-471b-808b-369907db6a38
+    TagComponent:
+      Tag: yun1
+    TransformComponent:
+      Translation: [-0.511707664, 0.388267428, -0.249397114]
+      Rotation: [-1.57079768, 0.876378536, -1.57079554]
+      Scale: [0.200000003, 0.200000003, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/yitiaoxin/yun1.png
+        TextureUUID: 10e19e37-17b9-50e4-a65a-c52069c3b033
+      IsOpaque: true
+  - Entity: 3970b27e-f426-4364-bc13-9d1bd07c5663
+    TagComponent:
+      Tag: yun2
+    TransformComponent:
+      Translation: [-0.499596864, 0.294056177, 0.497225195]
+      Rotation: [1.56790507, 1.18989193, 1.56383419]
+      Scale: [0.12000002, 0.120000005, 0.999930978]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/yitiaoxin/yun2.png
+        TextureUUID: 856d7da6-f373-5d2b-b5f1-8c95eceb8bfb
+      IsOpaque: false
+  - Entity: ce214362-ee14-4a65-b326-c196ddb92feb
+    TagComponent:
+      Tag: yun3
+    TransformComponent:
+      Translation: [0.118724152, 0.327100068, -0.510712981]
+      Rotation: [0, 0, 0.38419342]
+      Scale: [0.199999899, 0.128514394, 1]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/yitiaoxin/yun2.png
+        TextureUUID: 856d7da6-f373-5d2b-b5f1-8c95eceb8bfb
+      IsOpaque: true
+  - Entity: 5a315977-3787-42e5-92a9-83c603a2bbd3
+    TagComponent:
+      Tag: zhanshixingxing1
+    TransformComponent:
+      Translation: [0.300000012, 0, 0.649999976]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.0999987721, 0.0999935269, 0.999936521]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/yitiaoxin/xqizi.png
+        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
+      IsOpaque: true
+  - Entity: 25dd13f8-d496-4453-8dfb-b3f158bebcf6
+    TagComponent:
+      Tag: zhanshixingxing2
+    TransformComponent:
+      Translation: [0, 0, 0.649999976]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.100000001, 0.0999969095, 0.999975264]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/yitiaoxin/xqizi.png
+        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
+      IsOpaque: true
+  - Entity: 8a726cc1-9568-4fc1-a924-5e42a83177dc
+    TagComponent:
+      Tag: zhanshixingxing3
+    TransformComponent:
+      Translation: [-0.300000012, -3.96886541e-08, 0.649999976]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.100000001, 0.099994503, 0.999956012]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/yitiaoxin/xqizi.png
+        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
+      IsOpaque: true
+  - Entity: e45f51b2-6348-479f-976b-28defbaebd64
+    TagComponent:
+      Tag: zhanshiyueliang1
+    TransformComponent:
+      Translation: [0.649999976, -5.10474862e-09, 0.300000012]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.100000001, 0.0999976918, 0.999981523]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/yitiaoxin/yqizi.png
+        TextureUUID: b0b03a51-eeda-5a4d-ad73-ec2b43f81e05
+      IsOpaque: true
+  - Entity: 3bab804b-ac23-43f5-98d7-5f1026c4ca3a
+    TagComponent:
+      Tag: zhanshiyueliang2
+    TransformComponent:
+      Translation: [0.649999976, 0, 0]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.100000001, 0.0999978557, 0.999982834]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/yitiaoxin/yqizi.png
+        TextureUUID: b0b03a51-eeda-5a4d-ad73-ec2b43f81e05
+      IsOpaque: true
+  - Entity: 12ac870a-5ea7-4cd9-ac86-b351a9835fed
+    TagComponent:
+      Tag: zhanshiyueliang3
+    TransformComponent:
+      Translation: [0.649999976, 1.37670568e-08, -0.300000012]
+      Rotation: [-1.57079637, 0, 0]
+      Scale: [0.100000001, 0.0999970436, 0.999976337]
+    MeshComponent:
+      MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/yitiaoxin/yqizi.png
+        TextureUUID: b0b03a51-eeda-5a4d-ad73-ec2b43f81e05
+      IsOpaque: true

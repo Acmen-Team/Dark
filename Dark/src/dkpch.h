@@ -36,3 +36,6 @@ Description:pch file
 #ifdef DK_PLATFORM_WINDOWS
 #include <Windows.h>
 #endif
+
+#include <AL/al.h>
+#include <AL/alc.h>

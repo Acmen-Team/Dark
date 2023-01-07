@@ -23,6 +23,9 @@ namespace Dark {
 
     virtual void OnImGuiRender() override;
 
+  protected:
+    bool OnKeyPressed(KeyPressedEvent& e);
+    bool OnMouseButtonReleased(MouseButtonReleasedEvent& e);
   private:
     // Editor Panel
     ECSPanel m_ECSPanel;
@@ -30,6 +33,8 @@ namespace Dark {
     ContentBrowserPanel m_Content;
     SceneHierarchyPanel m_SceneHierarchy;
   private:
+    int m_GizmoType{0};
+
     EditorCameraController m_CameraController;
 
     Entity m_SelectedEntity;
@@ -42,9 +47,23 @@ namespace Dark {
     Ref<Texture2D> m_Restore;
     Ref<Texture2D> m_Close;
 
+    Ref<Mesh> m_Mesh;
+    Ref<Shader> m_Shader;
+    Ref<Texture> m_Texture;
+    Ref<Texture> m_renwuText;
+
+    float m_SceneWindowPosX{0.0f};
+    float m_SceneWindowPosY{0.0f};
+    float m_SceneWindowWidth{0.0f};
+    float m_SceneWindowHeight{0.0f};
+
+    float m_SceneMousePosX{-1.0f};
+    float m_SceneMousePosY{-1.0f};
+
+    Ref<Audio> m_Audio;
+
     glm::vec4 m_SquareColor = {0.7f, 0.1f, 0.1f, 0.7f};
 
-    Ref<Camera> m_MainCamera;
     Ref<Framebuffer> m_EditorViewFrameBuffer;
     Ref<Framebuffer> m_MainCameraFrameBuffer;
 

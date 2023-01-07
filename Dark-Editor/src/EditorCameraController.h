@@ -36,7 +36,7 @@ namespace Dark {
     void ProcessMouseMovement(float xOffset, float yOffset);
   private:
     float m_AspectRatio;
-    float m_CameraTransformationSpeed = 1.0;
+    float m_CameraTransformationSpeed = 2.0;
 
   private:
     Camera m_Camera;

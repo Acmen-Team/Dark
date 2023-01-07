@@ -249,12 +249,19 @@ namespace Dark {
       if (ImGui::MenuItem("Mesh"))
       {
         m_SelectionContext.AddComponent<MeshComponent>(ResourceManager::Get().s_PanelMesh);
+        //m_SelectionContext.AddComponent<MeshComponent>(ResourceManager::Get().s_CameraMesh);
         ImGui::CloseCurrentPopup();
       }
 
       if (ImGui::MenuItem("Material"))
       {
-        m_SelectionContext.AddComponent<MaterialComponent>(ResourceManager::Get().s_ShaderLibrary->Get("Texture"), ResourceManager::Get().GetResourceAllocator()->GetResource<Texture>("assets/textures/caodi.png"));
+        m_SelectionContext.AddComponent<MaterialComponent>(ResourceManager::Get().s_ShaderLibrary->Get("Texture"), ResourceManager::Get().GetResourceAllocator()->GetResource<Texture>("assets/textures/yitiaoxin/xqizi.png"));
+        ImGui::CloseCurrentPopup();
+      }
+
+      if (ImGui::MenuItem("UUID"))
+      {
+        m_SelectionContext.AddComponent<UUIDComponent>();
         ImGui::CloseCurrentPopup();
       }
 
@@ -392,6 +399,7 @@ namespace Dark {
 
     DrawComponent<MaterialComponent>("Material", entity, true, [](auto& component) {
       ImGui::Text("Shader Name:%s", component._Shader->GetName().c_str());
+
       if (ImGui::ImageButton((void*)component._Texture->GetRendererID(), ImVec2(component._Texture->GetWidth(), component._Texture->GetHeight()), ImVec2(0, 1), ImVec2(1, 0)))
       {
         // TODO: Show All Textures
@@ -425,6 +433,9 @@ namespace Dark {
         }
         ImGui::EndDragDropTarget();
       }
+
+      
+      ImGui::Checkbox("IsOpaque", &component.IsOpaque);
     });
   }
 

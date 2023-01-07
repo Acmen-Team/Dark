@@ -27,6 +27,9 @@ IncludeDir["IconFont"] = "Dark/vendor/IconFontCppHeaders"
 IncludeDir["GSL"] = "Dark/vendor/GSL/include/"
 IncludeDir["yaml_cpp"] = "Dark/vendor/yaml_cpp/include"
 IncludeDir["OpenXR"] = "Dark/vendor/OpenXR/include"
+IncludeDir["OpenAL"] = "Dark/vendor/OpenAL-Soft/include"
+IncludeDir["minimp3"] = "Dark/vendor/minimp3"
+IncludeDir["Steamworks"] = "Dark/vendor/Steamworks"
 
 group "Dependencies"
 	include "Dark/vendor/GLFW"
@@ -34,6 +37,7 @@ group "Dependencies"
 	include "Dark/vendor/imgui"
 	include "Dark/vendor/yaml_cpp"
 	include "Dark/vendor/OpenXR"
+	include "Dark/vendor/OpenAL-Soft"
 group ""
 
 project "Dark"
@@ -66,11 +70,13 @@ project "Dark"
 		"%{prj.name}/vendor/Vulkan/include/vulkan/**.h",
 		"%{prj.name}/vendor/Vulkan/include/vulkan/**.cpp",
 		"%{prj.name}/vendor/GSL/include/gsl/**",
+		"%{prj.name}/vendor/Steamworks/steam/**.h",
 	}
 
 	defines
 	{
-		"_CRT_SECURE_NO_WARNINGS"
+		"_CRT_SECURE_NO_WARNINGS",
+		"AL_LIBTYPE_STATIC"
 	}
 
 	includedirs
@@ -90,9 +96,12 @@ project "Dark"
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.IconFont}",
 		"%{IncludeDir.GSL}",
+		"%{IncludeDir.OpenAL}",
+		"%{IncludeDir.minimp3}",
+		"%{IncludeDir.Steamworks}",
 	}
 
-	libdirs { "Dark/vendor/Vulkan/Lib" }
+	libdirs { "Dark/vendor/Vulkan/Lib", "Dark/vendor/Steamworks/lib" }
 
 	links
 	{
@@ -104,6 +113,8 @@ project "Dark"
 		"vulkan-1.lib",
 		"yaml-cpp",
 		"OpenXR-Loader",
+		"OpenAL-Soft",
+		"steam_api64.lib"
 	}
 
 	filter "files:Dark/vendor/ImGuizmo/**.cpp"
@@ -161,6 +172,8 @@ project "Dark-Editor"
 		"%{IncludeDir.IconFont}",
 		"%{IncludeDir.GSL}",
 		"%{IncludeDir.entt}",
+		"%{IncludeDir.OpenAL}",
+		"%{IncludeDir.minimp3}",
 	}
 
 	links
@@ -174,6 +187,7 @@ project "Dark-Editor"
 		defines
 		{
 			"DK_PLATFORM_WINDOWS",	
+			"AL_LIBTYPE_STATIC",
 		}
 
 	filter "configurations:Debug"
@@ -220,6 +234,8 @@ project "Sandbox"
 		"%{IncludeDir.stduuid}",
 		"%{IncludeDir.GSL}",
 		"%{IncludeDir.entt}",
+		"%{IncludeDir.OpenAL}",
+		"%{IncludeDir.minimp3}",
 	}
 
 	links

@@ -23,10 +23,12 @@ namespace Dark {
 
   void EditorLayer::OnAttach()
   {
-    m_EngineLogo   = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/resource/DarkIcon.png");
+    m_EngineLogo = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/resource/DarkIcon.png");
     //m_Texture      = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/textures/Sprites/Tilesets/Fences.png");
     //m_TextureBlend = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/textures/Sprites/Tilesets/Grass.png");
 
+    //m_Mesh = CreateRef<Mesh>();
+    //m_Mesh->LoadFromFile("assets/models/cube.obj");
 
     m_Minimize = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/resource/subtract20.png");
     m_Restore  = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture2D>("assets/resource/restore20.png");
@@ -35,19 +37,37 @@ namespace Dark {
     //m_MainCamera->SetOrthographic(3.0f, 0.1f, 100.0f);
     //m_MainCamera->SetViewMatrix(m_CameraController.GetCamera().GetViewMatrix());
 
-
     Dark::FramebufferSpecification fbSpec;
-    fbSpec.Width  = 1280;
-    fbSpec.Height = 720;
+    fbSpec.Width            = 1280;
+    fbSpec.Height           = 720;
     m_EditorViewFrameBuffer = Dark::Framebuffer::Create(fbSpec);
     m_MainCameraFrameBuffer = Dark::Framebuffer::Create(fbSpec);
 
+    m_Scene = CreateRef<Scene>("SimpleScene1");
+
+    //m_Shader    = ResourceManager::Get().s_ShaderLibrary->Get("Texture");
+    //m_Texture   = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture>("assets/textures/caodi.png");
+    //m_renwuText = ResourceManager::Get().GetResourceAllocator()->GetResource<Texture>("assets/textures/renwu1.png");
+
+    //auto entity2 = m_Scene->CreatEntity<Entity>("entity2");
+    //entity2.AddComponent<MeshComponent>(ResourceManager::Get().s_PanelMesh);
+    //entity2.AddComponent<MaterialComponent>(m_Shader, m_renwuText);
+
+    //auto entity1 = m_Scene->CreatEntity<Entity>("entity1");
+    //entity1.AddComponent<MeshComponent>(ResourceManager::Get().s_PanelMesh);
+    //entity1.AddComponent<MaterialComponent>(m_Shader, m_Texture);
+
+    //
+    //
+    //
     m_Serialize = CreateRef<Serialize>();
-    //m_Scene     = CreateRef<Scene>("SimpleScene1");
     m_Scene     = m_Serialize->DeserializeRuntime("assets/scenes/SimpleScene.ds");
     m_Serialize->SetSerializeScene(m_Scene);
     m_SceneHierarchy.SetContext(m_Scene);
-    //m_Serialize->SerializeRuntime("assets/scenes/SimpleScene1.ds");
+
+    m_Audio = CreateRef<Audio>();
+    m_Audio->InitDevice();
+    m_Audio->SetSound("assets/Audio/test.mp3");
   }
 
   void EditorLayer::OnDetach()
@@ -76,14 +96,27 @@ namespace Dark {
 
     if (m_ToolBar.GetIsRuntime())
     {
+      if (!m_Audio->GetIsPlay())
+        m_Audio->PlaySound();
+
       m_Scene->OnUpdateRunTime(timestep);
     }
     else
     {
+      if (m_Audio->GetIsPlay())
+        m_Audio->StopSound();
+
       if (m_ViewPanelFocused)
         m_CameraController.OnUpdate(timestep);
 
-      m_Scene->OnUpdateEditor(m_CameraController.GetCamera(), timestep);
+      if (m_SceneMousePosX > 0.0f && m_SceneMousePosX < 1.0f && m_SceneMousePosY > 0.0f && m_SceneMousePosY < 1.0f)
+      {
+        m_Scene->OnUpdateEditor(m_CameraController.GetCamera(), timestep, m_SceneMousePosX * m_ViewportSize.x, m_ViewportSize.y - m_SceneMousePosY * m_ViewportSize.y);
+      }
+      else
+      {
+        m_Scene->OnUpdateEditor(m_CameraController.GetCamera(), timestep, 0.0f, 0.0f);
+      }
     }
 
     m_EditorViewFrameBuffer->UnBind();
@@ -94,11 +127,18 @@ namespace Dark {
       m_Scene->OnUpdateRunTime(timestep);
       m_MainCameraFrameBuffer->UnBind();
     }
+
+    m_SceneMousePosX = 0.0f;
+    m_SceneMousePosY = 0.0f;
   }
 
   void EditorLayer::OnEvent(Event& event)
   {
     //DK_TRACE("{0}", event);
+    EventDispatcher dispatcher(event);
+    dispatcher.Dispatch<KeyPressedEvent>(DK_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+    dispatcher.Dispatch<MouseButtonReleasedEvent>(DK_BIND_EVENT_FN(EditorLayer::OnMouseButtonReleased));
+
     if (m_ViewPanelHovered && !m_ToolBar.GetIsRuntime())
       m_CameraController.OnEvent(event);
   }
@@ -257,6 +297,11 @@ namespace Dark {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0.0, 0.0});
     ImGui::Begin("Scene");
 
+    m_SceneWindowPosX   = ImGui::GetWindowPos().x;
+    m_SceneWindowPosY   = ImGui::GetWindowPos().y;
+    m_SceneWindowWidth  = ImGui::GetWindowWidth();
+    m_SceneWindowHeight = ImGui::GetWindowHeight();
+
     ImGuiDockNode* node = ImGui::GetWindowDockNode();
     node->LocalFlags |= ImGuiDockNodeFlags_NoTabBar;
 
@@ -297,7 +342,7 @@ namespace Dark {
 
       glm::mat4 transformation = tc.GetTransform();
 
-      ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection), (ImGuizmo::OPERATION)0, ImGuizmo::LOCAL, glm::value_ptr(transformation));
+      ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection), (ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transformation));
 
       if (ImGuizmo::IsUsing())
       {
@@ -453,6 +498,37 @@ namespace Dark {
       ImGui::End();
     }
     */
+  }
+
+  bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
+  {
+    if (e.GetRepeatCount() > 0)
+      return false;
+
+    switch (e.GetKeyCode())
+    {
+    case DK_KEY_SPACE: {
+      if (m_GizmoType < 2)
+        ++m_GizmoType;
+      else
+        m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+
+      break;
+    }
+    }
+  }
+
+  bool EditorLayer::OnMouseButtonReleased(MouseButtonReleasedEvent& e)
+  {
+    if (e.GetMouseButton() == DK_MOUSE_BUTTON_LEFT)
+    {
+      m_SceneMousePosX = (ImGui::GetMousePos().x - m_SceneWindowPosX) / m_SceneWindowWidth;
+      m_SceneMousePosY = (ImGui::GetMousePos().y - m_SceneWindowPosY) / m_SceneWindowHeight;
+
+      DK_CORE_INFO("POS:{0}, {1}", m_SceneMousePosX, m_SceneMousePosY);
+    }
+
+    return false;
   }
 
 } // namespace Dark
