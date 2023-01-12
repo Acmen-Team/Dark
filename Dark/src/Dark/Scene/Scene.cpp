@@ -5,6 +5,8 @@
 #include "Dark/Core/Utility/ECS/Component.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 
+#include "Dark/Resource/ResourceManager.h"
+
 #include "Dark/Renderer/Renderer.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
@@ -32,7 +34,7 @@ namespace Dark {
     m_Registry.destroy(entity);
   }
 
-  void Scene::OnUpdateRunTime(Timestep timestep)
+  void Scene::OnUpdateRunTime(Timestep timestep, float posX, float posY)
   {
     // Update script
     {
@@ -99,9 +101,87 @@ namespace Dark {
     // TODO: review mainCamera entity in scene
     if (m_MainCamera)
     {
+      Renderer::BeginScene(*m_MainCamera);
+
+      if (posX != 0.0f && posY != 0.0f)
+      {
+        DK_CORE_INFO("Pos:{0}, {1}", posX, posY);
+        RenderCommand::SetClearColor({1.0f, 1.0f, 1.0f, 1.0f});
+        RenderCommand::Clear();
+
+        auto group = m_Registry.group<UUIDComponent>(entt::get<MeshComponent, TransformComponent>);
+        for (auto entity : group)
+        {
+          auto [uuidComponent, mesh, trans] = group.get<UUIDComponent, MeshComponent, TransformComponent>(entity);
+
+          size_t strHash = uuidComponent.Uuid.ConvertUUIDToHash();
+
+          int r = (strHash & 0x000000FF) >> 0;
+          int g = (strHash & 0x0000FF00) >> 8;
+          int b = (strHash & 0x00FF0000) >> 16;
+
+          std::dynamic_pointer_cast<OpenGLShader>(m_ColorShader)->UploadUniformFloat4("u_Color", {r / 255.0f, g / 255.0f, b / 255.0f, 1.0f});
+          std::dynamic_pointer_cast<OpenGLShader>(m_ColorShader)->use();
+
+          for (auto shap : mesh._Mesh->GetMesh())
+          {
+            Renderer::Submit(m_ColorShader, shap.second, trans.GetTransform());
+          }
+        }
+
+        RenderCommand::FlushAndFinish();
+        RenderCommand::PixelStore();
+
+        unsigned char data[4];
+        RenderCommand::ReadPixels(posX, posY, 1, 1, data);
+
+        // Convert the color back to an integer ID
+        int pickedID =
+            data[0] +
+            data[1] * 256 +
+            data[2] * 256 * 256;
+
+        if (pickedID == 0x00ffffff)
+        { // Full white, must be the background !
+          m_SelectEntity = nullptr;
+          DK_CORE_TRACE("picked background");
+        }
+        else
+        {
+          m_Registry.each([&](auto entityID) {
+            Entity entity{entityID, this};
+
+            auto& uuidComponent = entity.GetComponent<UUIDComponent>();
+
+            size_t strHash = uuidComponent.Uuid.ConvertUUIDToHash();
+
+            int r = (strHash & 0x000000FF) >> 0;
+            int g = (strHash & 0x0000FF00) >> 8;
+            int b = (strHash & 0x00FF0000) >> 16;
+
+            //DK_CORE_INFO("data:{0}, {1}, {2}, rgb:{3}, {4}, {5}", data[0], data[1], data[2], r, g, b);
+
+            if (data[0] == r && data[1] == g && data[2] == b)
+            {
+              auto& tag = entity.GetComponent<TagComponent>();
+              DK_CORE_INFO("Picked Entity:{0}", tag.Tag.c_str());
+
+              if (!entity.HasComponent<MaterialComponent>())
+              {
+                auto& material    = entity.AddComponent<MaterialComponent>(ResourceManager::Get().s_ShaderLibrary->Get("Texture"), ResourceManager::Get().GetResourceAllocator()->GetResource<Texture>("assets/textures/yitiaoxin/xqizi.png"));
+                material.IsOpaque = false;
+
+                m_SelectEntity = CreateRef<Entity>(entityID, this);
+              }
+            }
+          });
+
+          DK_CORE_TRACE("picked: {0}", pickedID);
+        }
+      }
+
       RenderCommand::SetClearColor({0.04f, 0.16f, 0.25f, 1.0f});
       RenderCommand::Clear();
-      Renderer::BeginScene(*m_MainCamera);
       auto group = m_Registry.group<TagComponent>(entt::get<MeshComponent, TransformComponent, MaterialComponent>);
 
       // Render Opaque
@@ -246,12 +326,12 @@ namespace Dark {
       }
       else
       {
-        auto view  = m_Registry.view<UUIDComponent, TagComponent>();
+        m_Registry.each([&](auto entityID) {
+          Entity entity{entityID, this};
 
-        for (auto entity : view)
-        {
-          auto& uuidComponent = view.get<UUIDComponent>(entity);
-          size_t strHash      = uuidComponent.Uuid.ConvertUUIDToHash();
+          auto& uuidComponent = entity.GetComponent<UUIDComponent>();
+
+          size_t strHash = uuidComponent.Uuid.ConvertUUIDToHash();
 
           int r = (strHash & 0x000000FF) >> 0;
           int g = (strHash & 0x0000FF00) >> 8;
@@ -261,11 +341,16 @@ namespace Dark {
 
           if (data[0] == r && data[1] == g && data[2] == b)
           {
-            auto& tag = view.get<TagComponent>(entity);
+            auto& tag = entity.GetComponent<TagComponent>();
             DK_CORE_INFO("Picked Entity:{0}", tag.Tag.c_str());
-          }
 
-        }
+            if (!entity.HasComponent<MaterialComponent>())
+            {
+              auto& material     = entity.AddComponent<MaterialComponent>(ResourceManager::Get().s_ShaderLibrary->Get("Texture"), ResourceManager::Get().GetResourceAllocator()->GetResource<Texture>("assets/textures/yitiaoxin/xqizi.png"));
+              material.IsOpaque = false;
+            }
+          }
+        });
 
         DK_CORE_TRACE("picked: {0}", pickedID);
       }

@@ -9,13 +9,6 @@ Entities:
       Scale: [0.200000003, 0.19999674, 0.999986947]
     MeshComponent:
       MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/yitiaoxin/xqizi.png
-        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
-      IsOpaque: true
   - Entity: f74c92c0-91e9-4d72-8a02-1966b8e27206
     TagComponent:
       Tag: qizi8
@@ -25,13 +18,6 @@ Entities:
       Scale: [0.200000003, 0.199992657, 0.999970615]
     MeshComponent:
       MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/yitiaoxin/xqizi.png
-        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
-      IsOpaque: true
   - Entity: b2fd5518-7746-43a3-8381-df5b8853a8fb
     TagComponent:
       Tag: qizi7
@@ -47,7 +33,7 @@ Entities:
       Texture:
         TexturePath: assets/textures/yitiaoxin/xqizi.png
         TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
-      IsOpaque: true
+      IsOpaque: false
   - Entity: de703317-15f1-442d-8e0c-d0f46158a7a3
     TagComponent:
       Tag: qizi6
@@ -57,13 +43,6 @@ Entities:
       Scale: [0.200000003, 0.19999826, 0.999993026]
     MeshComponent:
       MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/yitiaoxin/xqizi.png
-        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
-      IsOpaque: true
   - Entity: de822e5a-0235-4b04-8310-447d5cdcb46f
     TagComponent:
       Tag: qizi5
@@ -79,7 +58,7 @@ Entities:
       Texture:
         TexturePath: assets/textures/yitiaoxin/xqizi.png
         TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
-      IsOpaque: true
+      IsOpaque: false
   - Entity: f1cd7a63-3ea2-44f3-9b5a-380bfa154ee1
     TagComponent:
       Tag: qizi4
@@ -89,13 +68,6 @@ Entities:
       Scale: [0.200000003, 0.199978083, 0.999912322]
     MeshComponent:
       MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/yitiaoxin/xqizi.png
-        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
-      IsOpaque: true
   - Entity: 697b9834-e17e-44b2-9c2e-057cf5d6509b
     TagComponent:
       Tag: xingxing2
@@ -259,13 +231,6 @@ Entities:
       Scale: [0.200000003, 0.199986383, 0.999874949]
     MeshComponent:
       MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/yitiaoxin/xqizi.png
-        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
-      IsOpaque: false
   - Entity: fad37774-e9e7-4501-986f-62ad39972f13
     TagComponent:
       Tag: qipan
@@ -345,7 +310,7 @@ Entities:
       Texture:
         TexturePath: assets/textures/yitiaoxin/xqizi.png
         TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
-      IsOpaque: true
+      IsOpaque: false
   - Entity: 25dd13f8-d496-4453-8dfb-b3f158bebcf6
     TagComponent:
       Tag: zhanshixingxing2
@@ -361,7 +326,7 @@ Entities:
       Texture:
         TexturePath: assets/textures/yitiaoxin/xqizi.png
         TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
-      IsOpaque: true
+      IsOpaque: false
   - Entity: 8a726cc1-9568-4fc1-a924-5e42a83177dc
     TagComponent:
       Tag: zhanshixingxing3
@@ -377,7 +342,7 @@ Entities:
       Texture:
         TexturePath: assets/textures/yitiaoxin/xqizi.png
         TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
-      IsOpaque: true
+      IsOpaque: false
   - Entity: e45f51b2-6348-479f-976b-28defbaebd64
     TagComponent:
       Tag: zhanshiyueliang1
@@ -393,7 +358,7 @@ Entities:
       Texture:
         TexturePath: assets/textures/yitiaoxin/yqizi.png
         TextureUUID: b0b03a51-eeda-5a4d-ad73-ec2b43f81e05
-      IsOpaque: true
+      IsOpaque: false
   - Entity: 3bab804b-ac23-43f5-98d7-5f1026c4ca3a
     TagComponent:
       Tag: zhanshiyueliang2
@@ -409,7 +374,7 @@ Entities:
       Texture:
         TexturePath: assets/textures/yitiaoxin/yqizi.png
         TextureUUID: b0b03a51-eeda-5a4d-ad73-ec2b43f81e05
-      IsOpaque: true
+      IsOpaque: false
   - Entity: 12ac870a-5ea7-4cd9-ac86-b351a9835fed
     TagComponent:
       Tag: zhanshiyueliang3
@@ -425,4 +390,4 @@ Entities:
       Texture:
         TexturePath: assets/textures/yitiaoxin/yqizi.png
         TextureUUID: b0b03a51-eeda-5a4d-ad73-ec2b43f81e05
-      IsOpaque: true
+      IsOpaque: false

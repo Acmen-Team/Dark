@@ -31,6 +31,9 @@ public:
     m_Audio->InitDevice();
     m_Audio->SetSound("assets/Audio/bgm.mp3");
 
+    m_AudioS1 = Dark::CreateRef<Dark::Audio>();
+    m_AudioS1->SetSound("assets/Audio/s1.mp3");
+
     m_Steamworks = Dark::CreateRef<Dark::Steamworks>();
     m_Steamworks->InitSteamAPI();
 
@@ -39,7 +42,26 @@ public:
 
   virtual void OnUpdate(Dark::Timestep timestep) override
   {
-    m_Scene->OnUpdateRunTime(timestep);
+    if (m_SceneMousePosX > 0.0f && m_SceneMousePosX < 1.0f && m_SceneMousePosY > 0.0f && m_SceneMousePosY < 1.0f)
+    {
+      m_Scene->OnUpdateRunTime(timestep, m_SceneMousePosX * windowSize.x, windowSize.y - m_SceneMousePosY * windowSize.y);
+    }
+    else
+    {
+      m_Scene->OnUpdateRunTime(timestep, 0.0f, 0.0f);
+    }
+
+    m_SceneMousePosX = 0.0f;
+    m_SceneMousePosY = 0.0f;
+
+    m_SelectEntity = m_Scene->GetSelectEntity();
+  }
+
+  virtual void OnEvent(Dark::Event& event) override
+  {
+    Dark::EventDispatcher dispatcher(event);
+    dispatcher.Dispatch<Dark::MouseButtonPressedEvent>(DK_BIND_EVENT_FN(ExampleLayer::OnMouseButtonPressed));
+    dispatcher.Dispatch<Dark::MouseButtonReleasedEvent>(DK_BIND_EVENT_FN(ExampleLayer::OnMouseButtonReleased));
   }
 
   virtual void OnImGuiRender() override
@@ -49,9 +71,9 @@ public:
 
     ImVec2 pos = ImGui::GetMousePos();
 
-    ImVec2 windowPos = ImGui::GetMainViewport()->WorkPos;
+    windowPos = ImGui::GetMainViewport()->WorkPos;
     //DK_INFO("pos:{0},{1}", windowPos.x, windowPos.y);
-    ImVec2 windowSize = ImGui::GetMainViewport()->WorkSize;
+    windowSize = ImGui::GetMainViewport()->WorkSize;
     //DK_INFO("size:{0},{1}", windowSize.x, windowSize.y);
 
     {
@@ -92,8 +114,33 @@ public:
     ImGui::GetForegroundDrawList()->AddImage((ImTextureID)m_MouseCursor->GetRendererID(), pos, ImVec2(pos.x + 16, pos.y + 16), ImVec2{0.0f, 1.0f}, ImVec2{1.0f, 0.0f});
   }
 
-  virtual void OnEvent(Dark::Event& event) override
+protected:
+  bool OnMouseButtonPressed(Dark::MouseButtonPressedEvent& e)
   {
+    if (e.GetMouseButton() == DK_MOUSE_BUTTON_LEFT)
+    {
+      windowPos = ImGui::GetMainViewport()->WorkPos;
+      //DK_INFO("pos:{0},{1}", windowPos.x, windowPos.y);
+      windowSize = ImGui::GetMainViewport()->WorkSize;
+
+      m_SceneMousePosX = (ImGui::GetMousePos().x - windowPos.x) / windowSize.x;
+      m_SceneMousePosY = (ImGui::GetMousePos().y - windowPos.y) / windowSize.y;
+
+      DK_INFO("POS:{0}, {1}", m_SceneMousePosX, m_SceneMousePosY);
+    }
+
+    return false;
+  }
+
+  bool OnMouseButtonReleased(Dark::MouseButtonReleasedEvent& e)
+  {
+    if (m_SelectEntity != nullptr)
+    {
+      DK_INFO("tag:{0}", m_SelectEntity->GetComponent<Dark::TagComponent>().Tag.c_str());
+      m_AudioS1->PlaySound();
+    }
+
+    return false;
   }
 
 private:
@@ -103,9 +150,16 @@ private:
 
   Dark::Ref<Dark::Scene> m_Scene;
   Dark::Ref<Dark::Serialize> m_Serialize;
+  Dark::Ref<Dark::Entity> m_SelectEntity;
 
   Dark::Ref<Dark::Audio> m_Audio;
+  Dark::Ref<Dark::Audio> m_AudioS1;
   Dark::Ref<Dark::Steamworks> m_Steamworks;
+
+  ImVec2 windowPos{};
+  ImVec2 windowSize{};
+  float m_SceneMousePosX{-1.0f};
+  float m_SceneMousePosY{-1.0f};
 };
 
 class SandBox : public Dark::Application

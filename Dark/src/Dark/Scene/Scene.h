@@ -32,14 +32,14 @@ namespace Dark {
 
     void DestroyEntity(Entity entity);
     // Temp
-    void OnUpdateRunTime(Timestep timestep);
+    void OnUpdateRunTime(Timestep timestep, float posX, float posY);
 
     void OnUpdateEditor(Camera& camera, Timestep timestep, float posX, float posY);
 
     std::string& GetSceneName() { return m_SceneName; }
 
-    void SetShader(Ref<Shader>& shader) { m_shader = shader; }
     //void SetSelectEntity(Entity entity);
+    Ref<Entity> GetSelectEntity() { return m_SelectEntity; }
   private:
     void Init();
   private:
@@ -52,9 +52,9 @@ namespace Dark {
     friend class Serialize;
 
     //Epoch::ShaderLibrary* m_ShaderLibrary;
-    std::shared_ptr<Shader> m_shader;
     //std::shared_ptr<Shader> m_ColorShader;
     Ref<Shader> m_ColorShader;
+    Ref<Entity> m_SelectEntity{nullptr};
 
     Ref<Camera> m_MainCamera = nullptr;
 

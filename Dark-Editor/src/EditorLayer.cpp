@@ -99,7 +99,16 @@ namespace Dark {
       if (!m_Audio->GetIsPlay())
         m_Audio->PlaySound();
 
-      m_Scene->OnUpdateRunTime(timestep);
+      if (m_SceneMousePosX > 0.0f && m_SceneMousePosX < 1.0f && m_SceneMousePosY > 0.0f && m_SceneMousePosY < 1.0f)
+      {
+        m_Scene->OnUpdateRunTime(timestep, m_SceneMousePosX * m_ViewportSize.x, m_ViewportSize.y - m_SceneMousePosY * m_ViewportSize.y);
+      }
+      else
+      {
+        m_Scene->OnUpdateRunTime(timestep, 0.0f, 0.0f);
+      }
+
+      //m_Scene->OnUpdateRunTime(timestep);
     }
     else
     {
@@ -124,7 +133,7 @@ namespace Dark {
     if (m_SelectedEntity && m_SelectedEntity.HasComponent<CameraComponent>())
     {
       m_MainCameraFrameBuffer->Bind();
-      m_Scene->OnUpdateRunTime(timestep);
+      m_Scene->OnUpdateRunTime(timestep, 0.0f, 0.0f);
       m_MainCameraFrameBuffer->UnBind();
     }
 
