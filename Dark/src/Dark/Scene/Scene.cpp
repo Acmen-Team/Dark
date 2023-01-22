@@ -165,14 +165,15 @@ namespace Dark {
             {
               auto& tag = entity.GetComponent<TagComponent>();
               DK_CORE_INFO("Picked Entity:{0}", tag.Tag.c_str());
+              m_SelectEntity = CreateRef<Entity>(entityID, this);
 
-              if (!entity.HasComponent<MaterialComponent>())
-              {
-                auto& material    = entity.AddComponent<MaterialComponent>(ResourceManager::Get().s_ShaderLibrary->Get("Texture"), ResourceManager::Get().GetResourceAllocator()->GetResource<Texture>("assets/textures/yitiaoxin/xqizi.png"));
-                material.IsOpaque = false;
+              //if (!entity.HasComponent<MaterialComponent>())
+              //{
+              //  auto& material    = entity.AddComponent<MaterialComponent>(ResourceManager::Get().s_ShaderLibrary->Get("Texture"), ResourceManager::Get().GetResourceAllocator()->GetResource<Texture>("assets/textures/yitiaoxin/xqizi.png"));
+              //  material.IsOpaque = false;
 
-                m_SelectEntity = CreateRef<Entity>(entityID, this);
-              }
+              //  m_SelectEntity = CreateRef<Entity>(entityID, this);
+              //}
             }
           });
 

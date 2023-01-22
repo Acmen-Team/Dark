@@ -4,6 +4,9 @@
 #include <Dark/Core/EntryPoint.h>
 
 #include <imgui.h>
+#include <iostream>
+
+#include "TicTacToe.h"
 
 class ExampleLayer : public Dark::Layer
 {
@@ -13,6 +16,8 @@ public:
   {
     DK_INFO("------Dark Demo Created!------");
     Dark::Application::Get().GetWindow().SetWindowAttrib();
+
+    m_Chess = TTT::TicTacToe();
 
     //ImGui::SetMouseCursor(ImGuiMouseCursor_None);
   }
@@ -136,7 +141,62 @@ protected:
   {
     if (m_SelectEntity != nullptr)
     {
-      DK_INFO("tag:{0}", m_SelectEntity->GetComponent<Dark::TagComponent>().Tag.c_str());
+      auto& tagName = m_SelectEntity->GetComponent<Dark::TagComponent>().Tag;
+      DK_INFO("tag:{0}", tagName.c_str());
+
+      // If a player wins, it is not allowed to continue
+      if (m_Chess.GetWinFlag())
+      {
+        return false;
+      }
+
+      if (!m_SelectEntity->HasComponent<Dark::MaterialComponent>())
+      {
+        if (!m_Chess.PlayChess(tagName))
+        {
+          return false;
+        }
+
+        if (m_Chess.GetOffensive())
+        {
+          // True is turn to [xingxing] operator
+          m_SelectEntity->AddComponent<Dark::MaterialComponent>(Dark::ResourceManager::Get().s_ShaderLibrary->Get("Texture"),
+                                                                                         Dark::ResourceManager::Get().GetResourceAllocator()->GetResource<Dark::Texture>("assets/textures/yitiaoxin/xqizi.png"));
+        }
+        else
+        {
+          // False is turn to [yueliang] operator
+          m_SelectEntity->AddComponent<Dark::MaterialComponent>(Dark::ResourceManager::Get().s_ShaderLibrary->Get("Texture"),
+                                                                                         Dark::ResourceManager::Get().GetResourceAllocator()->GetResource<Dark::Texture>("assets/textures/yitiaoxin/yqizi.png"));
+        }
+
+        // Check Win
+        if (m_Chess.CheckWin())
+        {
+          if (m_Chess.GetOffensive())
+          {
+            DK_INFO("xingxing WIN");
+          }
+          else
+          {
+            DK_INFO("yueliang WIN");
+          }
+        }
+        // If no player wins, move on to the next player
+        else
+        {
+          m_Chess.SetOffensive();
+        }
+      }
+      else
+      {
+        if (!m_Chess.GetWinFlag())
+        {
+          DK_CORE_INFO("dogfall");
+          return false;
+        }
+      }
+
       m_AudioS1->PlaySound();
     }
 
@@ -160,6 +220,8 @@ private:
   ImVec2 windowSize{};
   float m_SceneMousePosX{-1.0f};
   float m_SceneMousePosY{-1.0f};
+
+  TTT::TicTacToe m_Chess;
 };
 
 class SandBox : public Dark::Application

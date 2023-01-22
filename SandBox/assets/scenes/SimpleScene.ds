@@ -27,13 +27,6 @@ Entities:
       Scale: [0.200000003, 0.199997157, 0.999988616]
     MeshComponent:
       MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/yitiaoxin/xqizi.png
-        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
-      IsOpaque: false
   - Entity: de703317-15f1-442d-8e0c-d0f46158a7a3
     TagComponent:
       Tag: qizi6
@@ -52,13 +45,6 @@ Entities:
       Scale: [0.200000003, 0.199991331, 0.99996531]
     MeshComponent:
       MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/yitiaoxin/xqizi.png
-        TextureUUID: 3369b689-877f-502c-9bd2-922dbe1135e1
-      IsOpaque: false
   - Entity: f1cd7a63-3ea2-44f3-9b5a-380bfa154ee1
     TagComponent:
       Tag: qizi4
@@ -77,13 +63,6 @@ Entities:
       Scale: [0.999919891, 1, 0.999919891]
     MeshComponent:
       MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/yitiaoxin/xingkong.png
-        TextureUUID: bd3fb26c-f4ba-595a-8178-92d77b6eb861
-      IsOpaque: true
   - Entity: 9e513697-3485-416a-9ba7-5c73d191e59d
     TagComponent:
       Tag: xingxing
@@ -199,13 +178,6 @@ Entities:
       Scale: [0.200000003, 0.199991941, 0.999947965]
     MeshComponent:
       MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/yitiaoxin/yqizi.png
-        TextureUUID: b0b03a51-eeda-5a4d-ad73-ec2b43f81e05
-      IsOpaque: false
   - Entity: 316b89da-1681-4763-8eb5-ee9396dcf970
     TagComponent:
       Tag: qizi2
@@ -215,13 +187,6 @@ Entities:
       Scale: [0.200000003, 0.199986473, 0.999938011]
     MeshComponent:
       MeshName: Panel
-    MaterialComponent:
-      Shader:
-        ShaderName: Texture
-      Texture:
-        TexturePath: assets/textures/yitiaoxin/yqizi.png
-        TextureUUID: b0b03a51-eeda-5a4d-ad73-ec2b43f81e05
-      IsOpaque: false
   - Entity: 090b6cfb-037d-47a8-b95c-e5f6be6402f3
     TagComponent:
       Tag: qizi1
