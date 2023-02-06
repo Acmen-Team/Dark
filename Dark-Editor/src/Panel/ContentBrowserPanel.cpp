@@ -1,4 +1,7 @@
 #include "dkpch.h"
+
+#include "Dark/Tools/String/StringTool.h"
+
 #include "ContentBrowserPanel.h"
 
 #include "Test.h"
@@ -116,19 +119,30 @@ namespace Dark {
     if (off > 0.0f)
       ImGui::SetCursorPosY(curCursorPos.y + off);
 
-    if (ImGui::ImageButton((void*)m_LeftIcon->GetRendererID(), ImVec2(m_LeftIcon->GetWidth(), m_LeftIcon->GetHeight()), ImVec2(0, 1), ImVec2(1, 0), 0.0f, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.8f)))
+    if (m_CurrentDirectory != std::filesystem::path(g_AssetPath))
     {
+      if (ImGui::ImageButton((void*)m_LeftIcon->GetRendererID(), ImVec2(m_LeftIcon->GetWidth(), m_LeftIcon->GetHeight()), ImVec2(0, 1), ImVec2(1, 0), 0.0f, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.6f)))
+      {
+          m_CurrentDirectory = m_CurrentDirectory.parent_path();
+      }
+    }
+    else
+    {
+      if (ImGui::ImageButton((void*)m_LeftIcon->GetRendererID(), ImVec2(m_LeftIcon->GetWidth(), m_LeftIcon->GetHeight()), ImVec2(0, 1), ImVec2(1, 0), 0.0f, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.2f)))
+      {
+      }
     }
 
     ImGui::SameLine(0, 10);
 
-    if (ImGui::ImageButton((void*)m_RightIcon->GetRendererID(), ImVec2(m_RightIcon->GetWidth(), m_RightIcon->GetHeight()), ImVec2(0, 1), ImVec2(1, 0), 0.0f, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.5f)))
+    if (ImGui::ImageButton((void*)m_RightIcon->GetRendererID(), ImVec2(m_RightIcon->GetWidth(), m_RightIcon->GetHeight()), ImVec2(0, 1), ImVec2(1, 0), 0.0f, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.6f)))
     {
     }
 
     ImGui::PopStyleColor(3);
 
     ImGui::SameLine(0, 10);
+
     off = (avail - size) * 0.5;
     if (off > 0.0f)
       ImGui::SetCursorPosY(curCursorPos.y + off);
@@ -136,6 +150,7 @@ namespace Dark {
                                    " Content");
     textSize.x += 15;
     textSize.y += 10;
+
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 10);
     ImGui::Button(ICON_FA_FOLDER
                   " Content",
@@ -150,6 +165,42 @@ namespace Dark {
     if (off > 0.0f)
       ImGui::SetCursorPosY(curCursorPos.y + off);
     ImGui::TextWrapped(ICON_FA_ANGLE_RIGHT);
+
+    //if (m_CurrentDirectory.has_root_directory())
+    auto& relativePath = std::filesystem::relative(m_CurrentDirectory, g_AssetPath);
+    if (relativePath.compare(".") != 0)
+    {
+      auto& relativePathStr = relativePath.string();
+
+      for (auto& iter : SplitString(relativePathStr, "\\"))
+      {
+        std::string directoryName = std::string(ICON_FA_FOLDER) + std::string(" ") + iter;
+
+        ImGui::SameLine(0, 5);
+
+        off = (avail - size) * 0.5;
+        if (off > 0.0f)
+          ImGui::SetCursorPosY(curCursorPos.y + off);
+        textSize = ImGui::CalcTextSize(directoryName.c_str());
+        textSize.x += 15;
+        textSize.y += 10;
+
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 10);
+        ImGui::Button(directoryName.c_str(),
+                      textSize);
+
+        ImGui::PopStyleVar();
+
+        ImGui::SameLine(0, 5);
+
+        textSize = ImGui::CalcTextSize(ICON_FA_ANGLE_RIGHT);
+        off      = (avail - textSize.y - ImGui::GetStyle().FramePadding.y) * 0.5;
+        if (off > 0.0f)
+          ImGui::SetCursorPosY(curCursorPos.y + off);
+        ImGui::TextWrapped(ICON_FA_ANGLE_RIGHT);
+      }
+      
+    }
 
     //ImGui::SameLine(0, 5);
     //ImGui::TextAnsiColored(ImVec4(0.5, 0.6, 0.7, 1.0), "B\033[31m" ICON_FA_FOLDER "\033[mnsi ");
@@ -185,13 +236,13 @@ namespace Dark {
   {
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.2f, 0.205f, 0.21f, 1.0f));
     ImGui::BeginChild("ContentViewWindow", ImVec2(0, 0), false);
-    if (m_CurrentDirectory != std::filesystem::path(g_AssetPath))
-    {
-      if (ImGui::Button("<-"))
-      {
-        m_CurrentDirectory = m_CurrentDirectory.parent_path();
-      }
-    }
+    //if (m_CurrentDirectory != std::filesystem::path(g_AssetPath))
+    //{
+    //  if (ImGui::Button("<-"))
+    //  {
+    //    m_CurrentDirectory = m_CurrentDirectory.parent_path();
+    //  }
+    //}
 
     static float padding       = 16.0f;
     static float thumbnailSize = 64.0f;
