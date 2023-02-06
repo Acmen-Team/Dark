@@ -80,6 +80,7 @@ namespace Dark {
     if (ImGui::IsItemClicked())
     {
       m_SelectionContext = entity;
+      m_Context->SetSelectEntity(CreateRef<Entity>(m_SelectionContext.GetHandle(), m_Context.get()));
     }
 
     bool entityDeleted = false;
@@ -400,7 +401,7 @@ namespace Dark {
     DrawComponent<MaterialComponent>("Material", entity, true, [](auto& component) {
       ImGui::Text("Shader Name:%s", component._Shader->GetName().c_str());
 
-      if (ImGui::ImageButton((void*)component._Texture->GetRendererID(), ImVec2(component._Texture->GetWidth(), component._Texture->GetHeight()), ImVec2(0, 1), ImVec2(1, 0)))
+      if (ImGui::ImageButton((void*)component._Texture->GetRendererID(), ImVec2(80.0f, 80.0f), ImVec2(0, 1), ImVec2(1, 0)))
       {
         // TODO: Show All Textures
 

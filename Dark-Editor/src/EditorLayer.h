@@ -25,6 +25,7 @@ namespace Dark {
 
   protected:
     bool OnKeyPressed(KeyPressedEvent& e);
+    bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
     bool OnMouseButtonReleased(MouseButtonReleasedEvent& e);
   private:
     // Editor Panel
@@ -37,7 +38,7 @@ namespace Dark {
 
     EditorCameraController m_CameraController;
 
-    Entity m_SelectedEntity;
+    Ref<Entity> m_SelectedEntity;
     // Scene
     Ref<Scene> m_Scene;
     Ref<Serialize> m_Serialize;

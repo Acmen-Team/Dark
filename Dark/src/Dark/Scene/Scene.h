@@ -38,7 +38,7 @@ namespace Dark {
 
     std::string& GetSceneName() { return m_SceneName; }
 
-    //void SetSelectEntity(Entity entity);
+    void SetSelectEntity(Ref<Entity> entity) { m_SelectEntity = entity; }
     Ref<Entity> GetSelectEntity() { return m_SelectEntity; }
   private:
     void Init();

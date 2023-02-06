@@ -15,8 +15,6 @@
 
 namespace Dark {
 
-  Entity m_SelectEntity;
-
   Scene::Scene(const std::string& sceneName)
       : m_SceneName(sceneName)
   {
@@ -279,7 +277,6 @@ namespace Dark {
 
   void Scene::OnUpdateEditor(Camera& camera, Timestep timestep, float posX, float posY)
   {
-
     // Pick
     Renderer::BeginScene(camera);
 
@@ -344,12 +341,7 @@ namespace Dark {
           {
             auto& tag = entity.GetComponent<TagComponent>();
             DK_CORE_INFO("Picked Entity:{0}", tag.Tag.c_str());
-
-            if (!entity.HasComponent<MaterialComponent>())
-            {
-              auto& material     = entity.AddComponent<MaterialComponent>(ResourceManager::Get().s_ShaderLibrary->Get("Texture"), ResourceManager::Get().GetResourceAllocator()->GetResource<Texture>("assets/textures/yitiaoxin/xqizi.png"));
-              material.IsOpaque = false;
-            }
+            m_SelectEntity = CreateRef<Entity>(entityID, this);
           }
         });
 

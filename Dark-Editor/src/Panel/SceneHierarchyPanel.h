@@ -22,6 +22,7 @@ namespace Dark {
     void OnImGuiRender();
 
     Entity GetSelectEntity() { return m_SelectionContext; }
+    void SetSelectEntity(Entity& entity) { m_SelectionContext = entity; }
 
   protected:
     void DrawEntityNode(Entity entity);
