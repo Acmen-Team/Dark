@@ -60,6 +60,7 @@ public:
     m_SceneMousePosY = 0.0f;
 
     m_SelectEntity = m_Scene->GetSelectEntity();
+	m_Steamworks->RunCallBacks();
   }
 
   virtual void OnEvent(Dark::Event& event) override
@@ -103,6 +104,15 @@ public:
         m_Steamworks->ShutdownSteamAPI();
         Dark::Application::Get().Exit();
       }
+
+	  if (ImGui::Button("Create"))
+	  {
+		  m_Steamworks->CreatLobbys();
+	  }
+
+
+
+
 
       //ImGui::GetForegroundDrawList()->AddImage((ImTextureID)m_PlayButton->GetRendererID(), posMin, posMax, ImVec2{0.0f, 0.5f}, ImVec2{0.5f, 0.0f});
       ImGui::End();

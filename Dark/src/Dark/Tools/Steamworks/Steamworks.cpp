@@ -3,9 +3,12 @@
 #include "Steamworks.h"
 
 #include <steam/steam_api.h>
+#include <steam/steam_api_common.h>
+
+#include "Lobby.h"
 
 namespace Dark {
-
+Lobby lobby; 
   void Steamworks::InitSteamAPI()
   {
     if (!SteamAPI_Init())
@@ -14,13 +17,21 @@ namespace Dark {
     }
     else
     {
-      DK_CORE_INFO("Init SteamAPI Success");
+		DK_CORE_INFO("Init SteamAPI Success");
     }
   }
 
   void Steamworks::ShutdownSteamAPI()
   {
     SteamAPI_Shutdown();
+  }
+
+  void Steamworks::RunCallBacks() {
+	  SteamAPI_RunCallbacks();
+  }
+
+  void Steamworks::CreatLobbys() {
+	  lobby.CreateLobby();
   }
 
 } // namespace Dark

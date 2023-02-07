@@ -10,7 +10,9 @@ namespace Dark {
 
     void InitSteamAPI();
     void ShutdownSteamAPI();
-  private:
+	void RunCallBacks();
+	void CreatLobbys();
+
   };
 
 } // namespace Dark
