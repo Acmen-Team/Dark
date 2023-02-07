@@ -39,6 +39,9 @@ public:
     m_AudioS1 = Dark::CreateRef<Dark::Audio>();
     m_AudioS1->SetSound("assets/Audio/s1.mp3");
 
+    m_ShengLiAudio = Dark::CreateRef<Dark::Audio>();
+    m_ShengLiAudio->SetSound("assets/Audio/shengli.mp3");
+
     m_Steamworks = Dark::CreateRef<Dark::Steamworks>();
     m_Steamworks->InitSteamAPI();
 
@@ -72,7 +75,6 @@ public:
 
   virtual void OnImGuiRender() override
   {
-
     ImGui::SetMouseCursor(ImGuiMouseCursor_None);
 
     ImVec2 pos = ImGui::GetMousePos();
@@ -149,6 +151,8 @@ protected:
 
   bool OnMouseButtonReleased(Dark::MouseButtonReleasedEvent& e)
   {
+    m_SelectEntity = m_Scene->GetSelectEntity();
+
     if (m_SelectEntity != nullptr)
     {
       auto& tagName = m_SelectEntity->GetComponent<Dark::TagComponent>().Tag;
@@ -171,13 +175,13 @@ protected:
         {
           // True is turn to [xingxing] operator
           m_SelectEntity->AddComponent<Dark::MaterialComponent>(Dark::ResourceManager::Get().s_ShaderLibrary->Get("Texture"),
-                                                                                         Dark::ResourceManager::Get().GetResourceAllocator()->GetResource<Dark::Texture>("assets/textures/yitiaoxin/xqizi.png"));
+                                                                Dark::ResourceManager::Get().GetResourceAllocator()->GetResource<Dark::Texture>("assets/textures/yitiaoxin/xqizi.png"));
         }
         else
         {
           // False is turn to [yueliang] operator
           m_SelectEntity->AddComponent<Dark::MaterialComponent>(Dark::ResourceManager::Get().s_ShaderLibrary->Get("Texture"),
-                                                                                         Dark::ResourceManager::Get().GetResourceAllocator()->GetResource<Dark::Texture>("assets/textures/yitiaoxin/yqizi.png"));
+                                                                Dark::ResourceManager::Get().GetResourceAllocator()->GetResource<Dark::Texture>("assets/textures/yitiaoxin/yqizi.png"));
         }
 
         // Check Win
@@ -185,10 +189,12 @@ protected:
         {
           if (m_Chess.GetOffensive())
           {
+            m_ShengLiAudio->PlaySound();
             DK_INFO("xingxing WIN");
           }
           else
           {
+            m_ShengLiAudio->PlaySound();
             DK_INFO("yueliang WIN");
           }
         }
@@ -224,6 +230,7 @@ private:
 
   Dark::Ref<Dark::Audio> m_Audio;
   Dark::Ref<Dark::Audio> m_AudioS1;
+  Dark::Ref<Dark::Audio> m_ShengLiAudio;
   Dark::Ref<Dark::Steamworks> m_Steamworks;
 
   ImVec2 windowPos{};

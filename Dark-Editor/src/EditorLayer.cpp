@@ -130,7 +130,7 @@ namespace Dark {
 
     m_EditorViewFrameBuffer->UnBind();
 
-    if (m_SelectedEntity && m_SelectedEntity.HasComponent<CameraComponent>())
+    if (m_SelectedEntity && m_SelectedEntity->HasComponent<CameraComponent>())
     {
       m_MainCameraFrameBuffer->Bind();
       m_Scene->OnUpdateRunTime(timestep, 0.0f, 0.0f);
@@ -146,6 +146,7 @@ namespace Dark {
     //DK_TRACE("{0}", event);
     EventDispatcher dispatcher(event);
     dispatcher.Dispatch<KeyPressedEvent>(DK_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+    dispatcher.Dispatch<MouseButtonPressedEvent>(DK_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
     dispatcher.Dispatch<MouseButtonReleasedEvent>(DK_BIND_EVENT_FN(EditorLayer::OnMouseButtonReleased));
 
     if (m_ViewPanelHovered && !m_ToolBar.GetIsRuntime())
@@ -322,7 +323,6 @@ namespace Dark {
     ImGui::Image((void*)m_EditorViewFrameBuffer->GetColorAttachmentRendererID(), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0.0f, 1.0f}, ImVec2{1.0f, 0.0f});
 
     // ImGuizmo
-    m_SelectedEntity = m_SceneHierarchy.GetSelectEntity();
     if (m_SelectedEntity)
     {
       ImGuizmo::SetOrthographic(false);
@@ -347,7 +347,7 @@ namespace Dark {
         cameraView       = m_CameraController.GetCamera().GetViewMatrix();
       }
 
-      auto& tc = m_SelectedEntity.GetComponent<TransformComponent>();
+      auto& tc = m_SelectedEntity->GetComponent<TransformComponent>();
 
       glm::mat4 transformation = tc.GetTransform();
 
@@ -378,7 +378,7 @@ namespace Dark {
           buttonSize = work_area_size.x / 4;
         }
 
-        if (m_SelectedEntity && m_SelectedEntity.HasComponent<CameraComponent>())
+        if (m_SelectedEntity && m_SelectedEntity->HasComponent<CameraComponent>())
         {
           // MainCamera preview
           ImGui::Text("MainCamera");
@@ -527,7 +527,7 @@ namespace Dark {
     }
   }
 
-  bool EditorLayer::OnMouseButtonReleased(MouseButtonReleasedEvent& e)
+  bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
   {
     if (e.GetMouseButton() == DK_MOUSE_BUTTON_LEFT)
     {
@@ -535,6 +535,18 @@ namespace Dark {
       m_SceneMousePosY = (ImGui::GetMousePos().y - m_SceneWindowPosY) / m_SceneWindowHeight;
 
       DK_CORE_INFO("POS:{0}, {1}", m_SceneMousePosX, m_SceneMousePosY);
+    }
+
+    return false;
+  }
+
+  bool EditorLayer::OnMouseButtonReleased(MouseButtonReleasedEvent& e)
+  {
+    m_SelectedEntity = m_Scene->GetSelectEntity();
+
+    if (m_SelectedEntity)
+    {
+      m_SceneHierarchy.SetSelectEntity(*m_SelectedEntity);
     }
 
     return false;

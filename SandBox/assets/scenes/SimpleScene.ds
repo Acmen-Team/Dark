@@ -63,6 +63,13 @@ Entities:
       Scale: [0.999919891, 1, 0.999919891]
     MeshComponent:
       MeshName: Panel
+    MaterialComponent:
+      Shader:
+        ShaderName: Texture
+      Texture:
+        TexturePath: assets/textures/yitiaoxin/xingkong.png
+        TextureUUID: bd3fb26c-f4ba-595a-8178-92d77b6eb861
+      IsOpaque: true
   - Entity: 9e513697-3485-416a-9ba7-5c73d191e59d
     TagComponent:
       Tag: xingxing
