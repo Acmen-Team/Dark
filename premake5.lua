@@ -30,6 +30,7 @@ IncludeDir["OpenXR"] = "Dark/vendor/OpenXR/include"
 IncludeDir["OpenAL"] = "Dark/vendor/OpenAL-Soft/include"
 IncludeDir["minimp3"] = "Dark/vendor/minimp3"
 IncludeDir["Steamworks"] = "Dark/vendor/Steamworks"
+IncludeDir["assimp"] = "Dark/vendor/assimp/include"
 
 group "Dependencies"
 	include "Dark/vendor/GLFW"
@@ -99,9 +100,10 @@ project "Dark"
 		"%{IncludeDir.OpenAL}",
 		"%{IncludeDir.minimp3}",
 		"%{IncludeDir.Steamworks}",
+		"%{IncludeDir.assimp}",
 	}
 
-	libdirs { "Dark/vendor/Vulkan/Lib", "Dark/vendor/Steamworks/lib" }
+	libdirs { "Dark/vendor/Vulkan/Lib", "Dark/vendor/Steamworks/lib", "Dark/vendor/assimp/lib" }
 
 	links
 	{
@@ -114,7 +116,8 @@ project "Dark"
 		"yaml-cpp",
 		"OpenXR-Loader",
 		"OpenAL-Soft",
-		"steam_api64.lib"
+		"steam_api64.lib",
+		"assimp-vc142-mt.lib",
 	}
 
 	filter "files:Dark/vendor/ImGuizmo/**.cpp"
