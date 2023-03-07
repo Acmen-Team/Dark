@@ -44,8 +44,6 @@ public:
 
     m_Steamworks = Dark::CreateRef<Dark::Steamworks>();
     m_Steamworks->InitSteamAPI();
-
-    m_Audio->PlaySound();
   }
 
   virtual void OnUpdate(Dark::Timestep timestep) override
@@ -63,7 +61,7 @@ public:
     m_SceneMousePosY = 0.0f;
 
     m_SelectEntity = m_Scene->GetSelectEntity();
-	m_Steamworks->RunCallBacks();
+    m_Steamworks->RunCallBacks();
   }
 
   virtual void OnEvent(Dark::Event& event) override
@@ -107,15 +105,26 @@ public:
         Dark::Application::Get().Exit();
       }
 
-	  if (ImGui::Button("Create"))
-	  {
-		  m_Steamworks->CreatLobbys();
-	  }
+      if (ImGui::Button("Create Lobby"))
+      {
+        m_Steamworks->CreatLobbys();
+      }
 
+      if (ImGui::Button("Join Lobby"))
+      {
+        m_Steamworks->JoinLobbys();
+      }
 
+      if (ImGui::Button("Leave Lobby"))
+      {
+        //m_Steamworks->JoinLobbys();
+      }
 
-
-
+      if (ImGui::Button("Start Game"))
+      {
+        IsStart = true;
+        m_Audio->PlaySound();
+      }
       //ImGui::GetForegroundDrawList()->AddImage((ImTextureID)m_PlayButton->GetRendererID(), posMin, posMax, ImVec2{0.0f, 0.5f}, ImVec2{0.5f, 0.0f});
       ImGui::End();
     }
@@ -134,6 +143,9 @@ public:
 protected:
   bool OnMouseButtonPressed(Dark::MouseButtonPressedEvent& e)
   {
+    if (!IsStart)
+      return false;
+
     if (e.GetMouseButton() == DK_MOUSE_BUTTON_LEFT)
     {
       windowPos = ImGui::GetMainViewport()->WorkPos;
@@ -151,6 +163,9 @@ protected:
 
   bool OnMouseButtonReleased(Dark::MouseButtonReleasedEvent& e)
   {
+    if (!IsStart)
+      return false;
+
     m_SelectEntity = m_Scene->GetSelectEntity();
 
     if (m_SelectEntity != nullptr)
@@ -237,6 +252,8 @@ private:
   ImVec2 windowSize{};
   float m_SceneMousePosX{-1.0f};
   float m_SceneMousePosY{-1.0f};
+
+  bool IsStart = false;
 
   TTT::TicTacToe m_Chess;
 };
