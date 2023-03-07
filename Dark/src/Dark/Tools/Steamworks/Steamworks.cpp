@@ -8,7 +8,7 @@
 #include "Lobby.h"
 
 namespace Dark {
-Lobby lobby; 
+  Lobby lobby;
   void Steamworks::InitSteamAPI()
   {
     if (!SteamAPI_Init())
@@ -17,7 +17,7 @@ Lobby lobby;
     }
     else
     {
-		DK_CORE_INFO("Init SteamAPI Success");
+      DK_CORE_INFO("Init SteamAPI Success");
     }
   }
 
@@ -26,12 +26,19 @@ Lobby lobby;
     SteamAPI_Shutdown();
   }
 
-  void Steamworks::RunCallBacks() {
-	  SteamAPI_RunCallbacks();
+  void Steamworks::RunCallBacks()
+  {
+    SteamAPI_RunCallbacks();
   }
 
-  void Steamworks::CreatLobbys() {
-	  lobby.CreateLobby();
+  void Steamworks::CreatLobbys()
+  {
+    lobby.CreateLobby();
+  }
+
+  void Steamworks::JoinLobbys()
+  {
+    lobby.JoinLobby(109775243282076632);
   }
 
 } // namespace Dark

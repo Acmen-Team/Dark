@@ -5,14 +5,14 @@ namespace Dark {
   class Steamworks
   {
   public:
-    Steamworks() = default;
+    Steamworks()  = default;
     ~Steamworks() = default;
 
     void InitSteamAPI();
     void ShutdownSteamAPI();
-	void RunCallBacks();
-	void CreatLobbys();
-
+    void RunCallBacks();
+    void CreatLobbys();
+    void JoinLobbys();
   };
 
 } // namespace Dark

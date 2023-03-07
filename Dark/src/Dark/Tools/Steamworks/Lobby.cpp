@@ -98,7 +98,7 @@ namespace Dark {
 
 	void Lobby::JoinLobby(uint64 id) {
 
-		DK_CORE_INFO("Join Lobby" + id);
+		DK_CORE_INFO("Join Lobby{0}", id);
 
 		SteamAPICall_t hSteamAPICall = SteamMatchmaking()->JoinLobby(id);
 
