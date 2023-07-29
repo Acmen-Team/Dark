@@ -9,6 +9,7 @@ Description:Mesh Resource
 #include "Dark/Renderer/VertexArray.h"
 
 #include "Dark/Core/Resource.h"
+#include "Dark/Resource/Texture.h"
 
 #include "glm/glm.hpp"
 
@@ -33,6 +34,10 @@ namespace Dark {
     std::string _Name;
     std::vector<unsigned int> _IndicesList;
     std::vector<Vertex> _VerticesList;
+    //Ref<Material> _Material;
+    std::vector<Texture> _TextureList;
+
+    ShapeData() = default;
   };
 
   class Mesh : public Resource
@@ -42,6 +47,12 @@ namespace Dark {
     {
       //DK_CORE_INFO("Mesh()");
     }
+    Mesh(const std::string& path)
+    {
+      this->m_ResID       = CreateRef<ResourceID>(path);
+      this->m_ResID->type = ResourceType::eMesh;
+    }
+
     virtual ~Mesh() = default;
 
     std::string& GetMeshName() { return m_Name; }
@@ -54,6 +65,7 @@ namespace Dark {
     }
 
   private:
+    void Load(const std::string& path);
     void ObjLoad(const std::string& filePath, const std::string& base_path, bool triangle = true);
     void CreatVertexArrayList();
 
@@ -89,6 +101,9 @@ namespace Dark {
       vertexArray->SetIndexBuffer(indexBuffer);
 
       m_VertexArrayList.insert(std::pair<std::string, Ref<VertexArray>>(m_Name, vertexArray));
+
+      this->m_ResID       = CreateRef<ResourceID>("Panel");
+      this->m_ResID->type = ResourceType::eMesh;
     }
 
   private:

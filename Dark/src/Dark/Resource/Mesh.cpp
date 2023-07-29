@@ -5,7 +5,73 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 namespace Dark {
+
+  Assimp::Importer importer;
+
+  void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::vector<Ref<ShapeData>>* shaps)
+  {
+    Ref<ShapeData> shapData = CreateRef<ShapeData>();
+
+    shapData->_Name = std::string(mesh->mName.C_Str());
+
+    for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+    {
+      glm::vec3 pos;
+      pos.x = mesh->mVertices[i].x;
+      pos.y = mesh->mVertices[i].y;
+      pos.z = mesh->mVertices[i].z;
+
+      glm::vec3 normal;
+      normal.x = mesh->mNormals[i].x;
+      normal.y = mesh->mNormals[i].y;
+      normal.z = mesh->mNormals[i].z;
+
+      glm::vec2 texCoord(0.0f, 0.0f);
+      if (mesh->mTextureCoords[0])
+      {
+        texCoord.x = mesh->mTextureCoords[0][i].x;
+        texCoord.y = mesh->mTextureCoords[0][i].y;
+      }
+
+      Vertex v(pos, normal, texCoord);
+      shapData->_VerticesList.push_back(v);
+    }
+
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+    {
+      aiFace face = mesh->mFaces[i];
+      for (unsigned int j = 0; j < face.mNumIndices; j++)
+        shapData->_IndicesList.push_back(face.mIndices[j]);
+    }
+
+    if (mesh->mMaterialIndex >= 0)
+    {
+      aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+      printf("Material name:%s", material->GetName().C_Str());
+    }
+
+    shaps->push_back(shapData);
+  }
+
+  void ProcessNode(aiNode* node, const aiScene* scene, std::vector<Ref<ShapeData>>* shaps)
+  {
+    for (unsigned int i = 0; i < node->mNumMeshes; i++)
+    {
+      aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+
+      ProcessMesh(mesh, scene, shaps);
+    }
+
+    for (unsigned int i = 0; i < node->mNumChildren; i++)
+    {
+      ProcessNode(node->mChildren[i], scene, shaps);
+    }
+  }
 
   std::map<std::string, Ref<VertexArray>>& Mesh::GetMesh()
   {
@@ -13,6 +79,19 @@ namespace Dark {
       CreatVertexArrayList();
 
     return m_VertexArrayList;
+  }
+
+  void Mesh::Load(const std::string& path)
+  {
+    const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+
+    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+    {
+      DK_CORE_ERROR("ERROR: ASSIMP:{0}", importer.GetErrorString());
+      return;
+    }
+
+    ProcessNode(scene->mRootNode, scene, &(this->_Shapes));
   }
 
   std::pair<Ref<ResourceID>, Ref<Resource>> Mesh::LoadFromFile(const std::string& path)
@@ -25,9 +104,10 @@ namespace Dark {
     auto count     = lastDot == std::string::npos ? path.size() - lastSlash : lastDot - lastSlash;
 
     this->m_Name = path.substr(lastSlash, count);
-    this->ObjLoad(path, basePath);
+    //this->ObjLoad(path, basePath);
+    this->Load(path);
 
-    return std::pair<Ref<ResourceID>, Ref<Resource>>(this->m_ResID, this->m_Res);
+    return std::pair<Ref<ResourceID>, Ref<Resource>>(this->m_ResID, this);
   }
 
   void Mesh::ObjLoad(const std::string& filePath, const std::string& base_path, bool triangle /*= true*/)
