@@ -8,6 +8,7 @@ Description:Component
 #include "Dark/Scene/ScriptableEntity.h"
 #include "Dark/Resource/Mesh.h"
 #include "Dark/Resource/Texture.h"
+#include "Dark/Scene/Light.h"
 
 #include <glm/glm.hpp>
 
@@ -64,7 +65,6 @@ namespace Dark {
     }
   };
 
-  
   struct MeshComponent
   {
     Ref<Mesh> _Mesh;
@@ -82,14 +82,14 @@ namespace Dark {
     Ref<Shader> _Shader;
     Ref<Texture> _Texture;
     bool IsOpaque;
-    MaterialComponent() = default;
+    MaterialComponent()                         = default;
     MaterialComponent(const MaterialComponent&) = default;
     MaterialComponent(const Ref<Shader>& shader, const Ref<Texture>& texture)
         : _Shader(shader), _Texture(texture)
     {
     }
   };
-  
+
   struct NativeScriptComponent
   {
     ScriptableEntity* Instance = nullptr;
@@ -118,6 +118,17 @@ namespace Dark {
     CameraComponent(const CameraComponent&) = default;
     CameraComponent(const Ref<Camera>& camera)
         : _Camera(camera)
+    {
+    }
+  };
+
+  struct LightComponent
+  {
+    Ref<LightProperty> _LightProperty;
+    LightComponent()                      = default;
+    LightComponent(const LightComponent&) = default;
+    LightComponent(const Ref<LightProperty>& lightProp)
+        : _LightProperty(lightProp)
     {
     }
   };
